@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "61997903771",
+    "project_id": "sumobattletap",
+    "storage_bucket": "sumobattletap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61997903771:android:0c658c7bc4869b2372bb3e",
+        "android_client_info": {
+          "package_name": "tdt4240.group2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61997903771-pmggmp72ng7pv3knm1n8qrgbrakiatma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2w3NReiLnhiTBD14ldXfyYgdSWb_hzV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61997903771-pmggmp72ng7pv3knm1n8qrgbrakiatma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
