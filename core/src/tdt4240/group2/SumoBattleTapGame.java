@@ -6,9 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class SumoBattleTapGame extends ApplicationAdapter {
+	private final ScoreAPI scoreAPI;
 	SpriteBatch batch;
 	Texture img;
-	
+
+	public SumoBattleTapGame(ScoreAPI scoreAPI) {
+		this.scoreAPI = scoreAPI;
+	}
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
