@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import tdt4240.group2.SumoBattleTapGame;
+import tdt4240.group2.states.MainMenuState;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
