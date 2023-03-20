@@ -9,7 +9,7 @@ public class DesktopScoreAPI implements ScoreAPI {
     }
 
     @Override
-    public void getScores(Map<String, Long> scores) {
+    public void subscribeToScores(Map<String, Long> scoresHolder) {
         System.err.println("Score API not implemented in desktop version!");
     }
 }

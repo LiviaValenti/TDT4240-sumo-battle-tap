@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface ScoreAPI {
     void incrementScore(String characterName);
-    void getScores(Map<String, Long> scores);
+    void subscribeToScores(Map<String, Long> scoresHolder);
 }
