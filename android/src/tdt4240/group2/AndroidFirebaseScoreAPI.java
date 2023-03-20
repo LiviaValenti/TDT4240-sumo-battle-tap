@@ -6,17 +6,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AndroidFirebaseScoreAPI implements ScoreAPI {
-    private final FirebaseDatabase database;
     private final DatabaseReference scoresRef;
 
     public AndroidFirebaseScoreAPI() {
-        database = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/");
-        scoresRef = database.getReference("scores");
+        scoresRef = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("scores");
     }
 
     @Override
@@ -38,6 +39,8 @@ public class AndroidFirebaseScoreAPI implements ScoreAPI {
 
     @Override
     public void incrementScore(String characterName) {
-
+        Map<String, Object> update = new HashMap<>();
+        update.put(characterName, ServerValue.increment(1));
+        scoresRef.updateChildren(update);
     }
 }
