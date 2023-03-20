@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SumoBattleTapGame extends ApplicationAdapter {
 	private final ScoreAPI scoreAPI;
 	SpriteBatch batch;
