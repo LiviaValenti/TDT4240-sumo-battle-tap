@@ -2,7 +2,7 @@ package tdt4240.group2;
 
 import java.util.Map;
 
-public class DesktopScoreAPI implements ScoreAPI {
+public class UnimplementedScoreAPI implements ScoreAPI {
     @Override
     public void incrementScore(String characterName) {
         System.err.println("Score API not implemented in desktop version!");

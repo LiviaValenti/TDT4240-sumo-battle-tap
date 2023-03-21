@@ -12,12 +12,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AndroidFirebaseScoreAPI implements ScoreAPI {
+public class FirebaseScoreAPI implements ScoreAPI {
     private final DatabaseReference scoresRef;
 
-    public AndroidFirebaseScoreAPI() {
-        scoresRef = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("scores");
+    public FirebaseScoreAPI() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/");
+        scoresRef = database.getReference("scores");
     }
 
     @Override
