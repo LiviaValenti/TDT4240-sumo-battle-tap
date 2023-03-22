@@ -9,70 +9,124 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import tdt4240.group2.SumoBattleTapGame;
 
 public class MainMenuState extends State{
-    Texture playButton;
-    Texture scoreBoardButton;
-    Texture tutorialButton;
+    Texture playButtonTex;
+    Texture scoreBoardButtonTex;
+    Texture tutorialButtonTex;
     Texture logo;
 
     Sprite playButtonSprite;
     Sprite scoreBoardButtonSprite;
     Sprite tutorialButtonSprite;
 
+    Drawable playButtonDrawable;
+    Drawable scoreBoardButtonDrawable;
+    Drawable tutorialButtonDrawable;
+
+    Stage stage;
 
 
-    public MainMenuState(GameStateManager gsm) {
+    public MainMenuState( GameStateManager gsm) {
         super(gsm);
-        playButton = new Texture("playbutton.png");
-        scoreBoardButton = new Texture("scoreBoard.png");
-        tutorialButton = new Texture("tutorialButton.png");
+        playButtonTex = new Texture("play.png");
+        scoreBoardButtonTex = new Texture("scoreBoard.png");
+        tutorialButtonTex = new Texture("tutorialButton.png");
         logo = new Texture("logo.png");
-        playButtonSprite = new Sprite(playButton);
-        scoreBoardButtonSprite = new Sprite(scoreBoardButton);
-        tutorialButtonSprite = new Sprite(tutorialButton);
 
+        playButtonDrawable = new TextureRegionDrawable(playButtonTex);
+        scoreBoardButtonDrawable = new TextureRegionDrawable(scoreBoardButtonTex);
+        tutorialButtonDrawable = new TextureRegionDrawable(tutorialButtonTex);
+
+        ImageButton playButton = new ImageButton(playButtonDrawable);
+        ImageButton scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
+        ImageButton tutorialButton = new ImageButton(tutorialButtonDrawable);
+
+
+        playButton.setPosition(Gdx.graphics.getWidth()/2- scoreBoardButton.getWidth(), tutorialButton.getHeight()+ scoreBoardButton.getHeight()*4);
+        playButton.setTransform(true);
+        playButton.setScale(2f);
+        scoreBoardButton.setPosition(Gdx.graphics.getWidth()/2- scoreBoardButton.getWidth(), tutorialButton.getHeight()+ scoreBoardButton.getHeight()*2);
+        scoreBoardButton.setTransform(true);
+        scoreBoardButton.setScale(2f);
+        tutorialButton.setPosition(Gdx.graphics.getWidth()/2- scoreBoardButton.getWidth(), tutorialButton.getHeight());
+        tutorialButton.setTransform(true);
+        tutorialButton.setScale(2f);
+
+
+        stage = new Stage();
+        stage.addActor(playButton);
+        stage.addActor(scoreBoardButton);
+        stage.addActor(tutorialButton);
+
+        Gdx.input.setInputProcessor(stage);
+
+        playButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("playB");
+            }
+        });
+        scoreBoardButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("scoreBoardB");
+            }
+        });
+        tutorialButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("tutorialB");
+            }
+        });
     }
 
+
     @Override
-    protected void handleInput() {
-        if(Gdx.input.justTouched()) {
-            int x1 = Gdx.input.getX();
-            int y1 = Gdx.input.getY();
-            Vector3 input = new Vector3(x1, y1, 0);
-            cam.unproject(input);
-            if(playButtonSprite.getBoundingRectangle().contains(input.x, input.y)) {
-                gsm.set(new PlayState(gsm));
-            }
+    protected void handleInput(String name) {
+        if (name.equals("playB")) {
+            gsm.set(new PlayState(gsm));
         }
+        if (name.equals("scoreBoardB")) {
+            gsm.set(new ScoreBoardState(gsm));
+        }
+        if (name.equals("tutorialB")) {
+            gsm.set(new PlayState(gsm));
+        }
+
     }
 
 
     @Override
     public void update(float dt) {
-        handleInput();
+
     }
 
     @Override
     public void render (SpriteBatch sb) {
         Gdx.gl.glClearColor(252/255f,231/255f,239/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+        stage.act();
         sb.begin();
         sb.draw(logo, Gdx.graphics.getWidth()/2-logo.getWidth()/2,Gdx.graphics.getHeight()-logo.getHeight()*2);
-        sb.draw(playButtonSprite, Gdx.graphics.getWidth()/2-700/2,Gdx.graphics.getHeight()/2, 700, 220);
-        sb.draw(scoreBoardButtonSprite,Gdx.graphics.getWidth()/2-700/2,Gdx.graphics.getHeight()/2- 220, 700, 220);
-        sb.draw(tutorialButtonSprite,Gdx.graphics.getWidth()/2-700/2,Gdx.graphics.getHeight()/2- 220*2, 700, 220);
         sb.end();
-
     }
 
     @Override
     public void dispose() {
-        playButton.dispose();
-        scoreBoardButton.dispose();
-        tutorialButton.dispose();
+        playButtonTex.dispose();
+        scoreBoardButtonTex.dispose();
+        tutorialButtonTex.dispose();
         logo.dispose();
     }
 

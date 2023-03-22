@@ -13,7 +13,7 @@ public abstract class State {
         mouse = new Vector3();
     }
 
-    protected abstract void handleInput();
+    protected abstract void handleInput(String name);
     public abstract void update(float dt);
     public abstract void render(SpriteBatch sb);
     public abstract void dispose();

@@ -27,7 +27,7 @@ public class PlayState extends State{
       }
 
     @Override
-    protected void handleInput() {
+    protected void handleInput(String name) {
 
     }
 
