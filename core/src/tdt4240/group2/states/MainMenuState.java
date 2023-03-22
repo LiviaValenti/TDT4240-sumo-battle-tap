@@ -1,6 +1,8 @@
 package tdt4240.group2.states;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,8 +13,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -25,16 +29,17 @@ public class MainMenuState extends State{
     Texture tutorialButtonTex;
     Texture logo;
 
-    Sprite playButtonSprite;
-    Sprite scoreBoardButtonSprite;
-    Sprite tutorialButtonSprite;
-
     Drawable playButtonDrawable;
     Drawable scoreBoardButtonDrawable;
     Drawable tutorialButtonDrawable;
 
     Stage stage;
 
+    ImageButton playButton;
+    ImageButton scoreBoardButton;
+    ImageButton tutorialButton;
+
+    Window tutPop;
 
     public MainMenuState( GameStateManager gsm) {
         super(gsm);
@@ -47,9 +52,9 @@ public class MainMenuState extends State{
         scoreBoardButtonDrawable = new TextureRegionDrawable(scoreBoardButtonTex);
         tutorialButtonDrawable = new TextureRegionDrawable(tutorialButtonTex);
 
-        ImageButton playButton = new ImageButton(playButtonDrawable);
-        ImageButton scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
-        ImageButton tutorialButton = new ImageButton(tutorialButtonDrawable);
+        playButton = new ImageButton(playButtonDrawable);
+        scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
+        tutorialButton = new ImageButton(tutorialButtonDrawable);
 
 
         playButton.setPosition(Gdx.graphics.getWidth()/2- scoreBoardButton.getWidth(), tutorialButton.getHeight()+ scoreBoardButton.getHeight()*4);
@@ -67,6 +72,7 @@ public class MainMenuState extends State{
         stage.addActor(playButton);
         stage.addActor(scoreBoardButton);
         stage.addActor(tutorialButton);
+
 
         Gdx.input.setInputProcessor(stage);
 
@@ -88,6 +94,15 @@ public class MainMenuState extends State{
                 handleInput("tutorialB");
             }
         });
+
+        tutPop = new Window("Warning", new Window.WindowStyle(new BitmapFont(),new Color(0,0,0,0), playButtonDrawable)) {
+            public void result(Object obj) {
+                System.out.println("result "+obj);
+            }
+        };
+
+
+
     }
 
 
@@ -100,7 +115,7 @@ public class MainMenuState extends State{
             gsm.set(new ScoreBoardState(gsm));
         }
         if (name.equals("tutorialB")) {
-            gsm.set(new PlayState(gsm));
+            stage.addActor(tutPop);
         }
 
     }
