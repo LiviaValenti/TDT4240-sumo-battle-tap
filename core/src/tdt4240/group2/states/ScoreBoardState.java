@@ -33,7 +33,7 @@ public class ScoreBoardState extends State{
         super(gsm);
         ScoBoTitle = new Texture("scoreboardHeadline.png");
         angelTex = new Texture("angelCharacter.png");
-       constructionTex = new Texture("constructionworker.png");
+        constructionTex = new Texture("constructionworker.png");
         deafTex = new Texture("deafwoman.png");
         eggplantTex = new Texture("eggplant.png");
         backButtonTex = new Texture("back.png");

@@ -41,6 +41,7 @@ public class MainMenuState extends State{
 
     Window tutPop;
 
+
     public MainMenuState( GameStateManager gsm) {
         super(gsm);
         playButtonTex = new Texture("play.png");
@@ -95,7 +96,7 @@ public class MainMenuState extends State{
             }
         });
 
-        tutPop = new Window("Warning", new Window.WindowStyle(new BitmapFont(),new Color(0,0,0,0), playButtonDrawable)) {
+        tutPop = new Window("Tutorial", new Window.WindowStyle(new BitmapFont(),new Color(0,0,0,0), playButtonDrawable)) {
             public void result(Object obj) {
                 System.out.println("result "+obj);
             }
@@ -109,7 +110,7 @@ public class MainMenuState extends State{
     @Override
     protected void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm));
+            gsm.set(new CharacterSelectionState(gsm));
         }
         if (name.equals("scoreBoardB")) {
             gsm.set(new ScoreBoardState(gsm));
