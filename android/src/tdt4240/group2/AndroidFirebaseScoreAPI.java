@@ -9,7 +9,8 @@ public class AndroidFirebaseScoreAPI implements ScoreAPI {
     private final FirebaseDatabase database;
 
     public AndroidFirebaseScoreAPI() {
-        database = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/");
+        database = FirebaseDatabase.getInstance(
+                "https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/");
     }
 
     @Override

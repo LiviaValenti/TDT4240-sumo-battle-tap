@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -45,13 +45,11 @@ allprojects {
             checkstyle: '10.9.2',
     ]
     dependencies {
-        checkstyleConfig("com.puppycrawl.tools:checkstyle:${versions.checkstyle}") {
-            transitive = false
-        }
+        checkstyleConfig("com.puppycrawl.tools:checkstyle:${versions.checkstyle}")
     }
     checkstyle {
+        configFile = rootProject.file('config/checkstyle/sun_checks.xml')
         toolVersion = "${versions.checkstyle}"
-        config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
         ignoreFailures = false
         maxWarnings = 0
     }
@@ -65,7 +63,7 @@ project(":desktop") {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+
     }
 }
 
