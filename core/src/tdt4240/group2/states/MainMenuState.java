@@ -13,8 +13,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -39,7 +42,9 @@ public class MainMenuState extends State{
     ImageButton scoreBoardButton;
     ImageButton tutorialButton;
 
-    Window tutPop;
+    Dialog tutPop;
+
+    ImageButton closeTut;
 
 
     public MainMenuState( GameStateManager gsm) {
@@ -96,13 +101,35 @@ public class MainMenuState extends State{
             }
         });
 
-        tutPop = new Window("Tutorial", new Window.WindowStyle(new BitmapFont(),new Color(0,0,0,0), playButtonDrawable)) {
+        tutPop = new Dialog("Tutorial", new Window.WindowStyle(new BitmapFont(),new Color(0,0,0,0), playButtonDrawable)) {
             public void result(Object obj) {
                 System.out.println("result "+obj);
             }
         };
+        tutPop.text("yes", new Label.LabelStyle(new BitmapFont(), new Color(0,0,0,0)));
+        tutPop.setResizable(true);
+       // tutPop.scaleBy(5f);
+        tutPop.setPosition(0, Gdx.graphics.getHeight()/2);
+        tutPop.pack();
+        float tutX = tutPop.getOriginX()+tutPop.getWidth();
+        float tutY = tutPop.getOriginY()+tutPop.getHeight();
 
 
+
+        closeTut = new ImageButton(scoreBoardButtonDrawable);
+        closeTut.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("closeT");
+            }
+        });
+
+        closeTut.setTransform(true);
+        closeTut.setScale(0.5f);
+        closeTut.setPosition(tutX, tutY);
+        tutPop.button(closeTut);
+
+       // tutPop.add(closeTut);
 
     }
 
@@ -117,6 +144,9 @@ public class MainMenuState extends State{
         }
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);
+        }
+        if (name.equals("closeT")) {
+            stage.addAction(Actions.removeActor(tutPop));
         }
 
     }
