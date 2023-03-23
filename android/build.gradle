@@ -1,4 +1,5 @@
 android {
+    namespace 'tdt4240.group2'
     buildToolsVersion "33.0.1"
     compileSdkVersion 33
     sourceSets {
