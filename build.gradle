@@ -44,9 +44,6 @@ allprojects {
     def versions = [
             checkstyle: '10.9.2',
     ]
-    dependencies {
-        checkstyleConfig("com.puppycrawl.tools:checkstyle:${versions.checkstyle}")
-    }
     checkstyle {
         configFile = rootProject.file('config/checkstyle/sun_checks.xml')
         toolVersion = "${versions.checkstyle}"
@@ -70,9 +67,15 @@ project(":desktop") {
 project(":android") {
     apply plugin: "com.android.application"
     apply plugin: 'com.google.gms.google-services'
+    apply plugin: "checkstyle"
 
-    configurations { natives }
-
+    configurations {
+        natives
+        checkstyleConfig
+    }
+    def versions = [
+            checkstyle: '10.9.2',
+    ]
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
@@ -83,7 +86,29 @@ project(":android") {
         implementation platform('com.google.firebase:firebase-bom:31.2.3')
         implementation 'com.google.firebase:firebase-database'
     }
+
+    checkstyle {
+        configFile = rootProject.file('config/checkstyle/sun_checks.xml')
+        toolVersion = "${versions.checkstyle}"
+        ignoreFailures = false
+        maxWarnings = 0
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def checkstyleTask = tasks.create(name: "checkstyle${variant.name.capitalize()}",
+                    type: Checkstyle, group: 'Verification') {
+                configFile = rootProject.file('config/checkstyle/sun_checks.xml')
+                source = variant.sourceSets.java.srcDirs.collect { it.path }.flatten()
+                include '**/*.java'
+                exclude '**/gen/**'
+                classpath = files()
+            }
+            tasks.named("check").configure { dependsOn checkstyleTask }
+        }
+    }
 }
+
 
 project(":core") {
     apply plugin: "java-library"

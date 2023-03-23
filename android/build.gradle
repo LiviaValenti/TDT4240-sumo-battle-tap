@@ -1,5 +1,5 @@
 android {
-    namespace 'tdt4240.group2'
+    namespace 'prog.sumo'
     buildToolsVersion "33.0.1"
     compileSdkVersion 33
     sourceSets {
@@ -20,7 +20,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "tdt4240.group2"
+        applicationId "prog.sumo"
         minSdkVersion 14
         targetSdkVersion 33
         versionCode 1
@@ -85,7 +85,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'tdt4240.group2/tdt4240.group2.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'prog.sumo/prog.sumo.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
