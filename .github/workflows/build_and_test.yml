@@ -25,8 +25,8 @@ jobs:
         with:
           api-level: 33
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Build and lint with Gradle/Checkstyle
+        run: ./gradlew build --warning-mode=fail
 
       - name: Run tests
         run: ./gradlew test
