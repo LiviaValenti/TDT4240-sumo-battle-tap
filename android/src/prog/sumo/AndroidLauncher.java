@@ -1,11 +1,9 @@
-package tdt4240.group2;
+package prog.sumo;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-
-import tdt4240.group2.SumoBattleTapGame;
 
 public class AndroidLauncher extends AndroidApplication {
     @Override
