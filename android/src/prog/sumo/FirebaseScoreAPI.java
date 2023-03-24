@@ -1,4 +1,4 @@
-package tdt4240.group2;
+package prog.sumo;
 
 import androidx.annotation.NonNull;
 
@@ -12,22 +12,43 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Android implementation of the ScoreAPI using Firebase.
+ */
 public class FirebaseScoreAPI implements ScoreAPI {
+    /**
+     * Reference to the database entry of the scores
+     */
     private final DatabaseReference scoresRef;
 
+    /**
+     * Constructor for the FirebaseScoreAPI.
+     */
     public FirebaseScoreAPI() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://sumobattletap-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseDatabase database = FirebaseDatabase.getInstance(
+                "https://sumobattletap-default-rtdb.europe-"
+                        + "west1.firebasedatabase.app/"
+        );
         scoresRef = database.getReference("scores");
     }
 
     @Override
-    public void subscribeToScores(Map<String, Long> scoresHolder) {
+    public void incrementScore(final String characterName) {
+        Map<String, Object> update = new HashMap<>();
+        update.put(characterName, ServerValue.increment(1));
+        scoresRef.updateChildren(update);
+    }
+
+    @Override
+    public void subscribeToScores(final Map<String, Long> scoresHolder) {
         scoresRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 scoresHolder.clear();
-                for (DataSnapshot score : snapshot.getChildren())
-                    scoresHolder.put(score.getKey(), score.getValue(Long.class));
+                for (DataSnapshot score : snapshot.getChildren()) {
+                    scoresHolder.put(score.getKey(),
+                            score.getValue(Long.class));
+                }
             }
 
             @Override
@@ -35,12 +56,5 @@ public class FirebaseScoreAPI implements ScoreAPI {
                 System.out.println(error.getMessage());
             }
         });
-    }
-
-    @Override
-    public void incrementScore(String characterName) {
-        Map<String, Object> update = new HashMap<>();
-        update.put(characterName, ServerValue.increment(1));
-        scoresRef.updateChildren(update);
     }
 }
