@@ -4,12 +4,12 @@ import java.util.Map;
 
 /**
  * The UnimplementedScoreAPI class is an implementation of the ScoreAPI
- * interface where none of the functions are actually implemented
+ * interface where none of the functions are actually implemented.
  */
 public final class UnimplementedScoreAPI implements ScoreAPI {
 
     /**
-     * Prints an error stating that this function is unimplemented
+     * Prints an error stating that this function is unimplemented.
      *
      * @param characterName The name of the character whose score should be
      *                      incremented.
@@ -20,7 +20,7 @@ public final class UnimplementedScoreAPI implements ScoreAPI {
     }
 
     /**
-     * Prints an error stating that this function is unimplemented
+     * Prints an error stating that this function is unimplemented.
      *
      * @param scoresHolder The Map containing character names and their
      *                     corresponding scores.

@@ -15,9 +15,9 @@ import java.util.Map;
 /**
  * Android implementation of the ScoreAPI using Firebase.
  */
-public class FirebaseScoreAPI implements ScoreAPI {
+public final class FirebaseScoreAPI implements ScoreAPI {
     /**
-     * Reference to the database entry of the scores
+     * Reference to the database entry of the scores.
      */
     private final DatabaseReference scoresRef;
 
@@ -43,7 +43,7 @@ public class FirebaseScoreAPI implements ScoreAPI {
     public void subscribeToScores(final Map<String, Long> scoresHolder) {
         scoresRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
                 scoresHolder.clear();
                 for (DataSnapshot score : snapshot.getChildren()) {
                     scoresHolder.put(score.getKey(),
@@ -52,7 +52,7 @@ public class FirebaseScoreAPI implements ScoreAPI {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull final DatabaseError error) {
                 System.out.println(error.getMessage());
             }
         });
