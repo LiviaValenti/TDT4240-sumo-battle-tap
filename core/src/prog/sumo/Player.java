@@ -35,11 +35,10 @@ public class Player {
     }
 
     public void movePlayer(Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) == 1){
+        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) == 1) {
             this.moveForward();
             otherPlayer.moveBackward();
-        }
-        else {
+        } else {
             this.moveForward();
         }
     }
