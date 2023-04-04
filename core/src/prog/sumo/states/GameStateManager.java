@@ -1,4 +1,4 @@
-package tdt4240.group2.states;
+package prog.sumo.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -7,28 +7,28 @@ import java.util.Stack;
 public class GameStateManager {
     private Stack<State> states;
 
-    public GameStateManager(){
+    public GameStateManager() {
         states = new Stack<State>();
     }
 
-    public void push(State state){
+    public void push(State state) {
         states.push(state);
     }
 
-    public void pop(){
+    public void pop() {
         states.pop().dispose();
     }
 
-    public void set(State state){
+    public void set(State state) {
         states.pop().dispose();
         states.push(state);
     }
 
-    public void update(float dt){
+    public void update(float dt) {
         states.peek().update(dt);
     }
 
-    public void render(SpriteBatch sb){
+    public void render(SpriteBatch sb) {
         states.peek().render(sb);
     }
 }

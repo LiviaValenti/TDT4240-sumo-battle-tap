@@ -1,4 +1,4 @@
-package tdt4240.group2.states;
+package prog.sumo.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class CharacterSelectionState extends State{
+public class CharacterSelectionState extends State {
 
     Texture homeTex;
     Texture playTex;
@@ -27,6 +27,7 @@ public class CharacterSelectionState extends State{
 
     SpriteBatch batch;
     BitmapFont font;
+
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
         homeTex = new Texture("home.png");
@@ -42,12 +43,13 @@ public class CharacterSelectionState extends State{
         stage.addActor(playB);
         stage.addActor(homeB);
 
-        playB.setPosition(Gdx.graphics.getWidth()- playB.getWidth(), Gdx.graphics.getHeight()/2-playB.getHeight()/2);
+        playB.setPosition(Gdx.graphics.getWidth() - playB.getWidth(),
+                Gdx.graphics.getHeight() / 2 - playB.getHeight() / 2);
         playB.setTransform(true);
 
-        homeB.setPosition(homeB.getWidth()/3, Gdx.graphics.getHeight()/2-homeB.getHeight()/2);
+        homeB.setPosition(homeB.getWidth() / 3,
+                Gdx.graphics.getHeight() / 2 - homeB.getHeight() / 2);
         homeB.setTransform(true);
-
 
 
         Gdx.input.setInputProcessor(stage);
@@ -68,7 +70,7 @@ public class CharacterSelectionState extends State{
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.getData().setScale(5f);
-        font.setColor(1,0,0,1);
+        font.setColor(1, 0, 0, 1);
 
     }
 
@@ -89,12 +91,13 @@ public class CharacterSelectionState extends State{
 
     @Override
     public void render(SpriteBatch sb) {
-        Gdx.gl.glClearColor(252/255f,231/255f,239/255f, 1);
+        Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();
         batch.begin();
-        font.draw(batch, "Choose your character!", 0, Gdx.graphics.getHeight()/2-homeB.getHeight()*2);
+        font.draw(batch, "Choose your character!", 0,
+                Gdx.graphics.getHeight() / 2 - homeB.getHeight() * 2);
         batch.end();
 
 
