@@ -21,7 +21,7 @@ public class AndroidLauncher extends AndroidApplication {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config =
                 new AndroidApplicationConfiguration();
-        initialize(new SumoBattleTapGame(new AndroidFirebaseScoreAPI()),
+        initialize(new SumoBattleTapGame(new FirebaseScoreAPI()),
                 config);
     }
 }

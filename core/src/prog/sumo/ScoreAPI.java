@@ -17,10 +17,11 @@ public interface ScoreAPI {
     void incrementScore(String characterName);
 
     /**
-     * Retrieves the scores of all characters in the game.
+     * Subscribes to the scores of all characters in the game.
      *
-     * @param scores A map where the keys are character names and the values are
-     *               their respective scores.
+     * @param scoresHolder A map for holding the scores where the keys are
+     *                     character names and the values are their respective
+     *                     scores.
      */
-    void getScores(Map<String, Long> scores);
+    void subscribeToScores(Map<String, Long> scoresHolder);
 }

@@ -31,7 +31,8 @@ public final class DesktopLauncher {
                 new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(FOREGROUND_FPS);
         config.setTitle("Sumo Battle Tap");
-        new Lwjgl3Application(new SumoBattleTapGame(new DesktopScoreAPI()),
+        new Lwjgl3Application(
+                new SumoBattleTapGame(new UnimplementedScoreAPI()),
                 config);
     }
 }
