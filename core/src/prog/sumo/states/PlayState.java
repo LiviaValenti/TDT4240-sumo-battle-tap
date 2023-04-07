@@ -107,6 +107,8 @@ public class PlayState extends State {
 
     @Override
     public void dispose() {
-
+        settingsWheel.dispose();
+        player1Tex.dispose();
+        player2Tex.dispose();
     }
 }

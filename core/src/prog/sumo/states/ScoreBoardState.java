@@ -110,6 +110,12 @@ public class ScoreBoardState extends State {
 
     @Override
     public void dispose() {
-
+        ScoBoTitle.dispose();
+        backButtonTex.dispose();
+        angelTex.dispose();
+        eggplantTex.dispose();
+        constructionTex.dispose();
+        deafTex.dispose();
+        font.dispose();
     }
 }

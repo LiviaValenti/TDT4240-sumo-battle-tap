@@ -105,6 +105,7 @@ public class CharacterSelectionState extends State {
 
     @Override
     public void dispose() {
-
+        homeTex.dispose();
+        playTex.dispose();
     }
 }
