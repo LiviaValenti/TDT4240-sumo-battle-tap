@@ -1,11 +1,15 @@
 package prog.sumo;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import prog.sumo.states.GameStateManager;
+import prog.sumo.states.MainMenuState;
+
 public final class SumoBattleTapGame extends ApplicationAdapter {
+    public static final String TITLE = "Sumo";
     /**
      * The ScoreAPI implementation to be used for managing player scores.
      */
@@ -13,11 +17,8 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
     /**
      * The SpriteBatch object used for drawing images to the screen.
      */
-    private SpriteBatch batch;
-    /**
-     * The Texture object used for drawing the main game image to the screen.
-     */
-    private Texture img;
+    private SpriteBatch spriteBatch;
+    private GameStateManager gameStateManager;
 
     /**
      * Constructs a new SumoBattleTapGame instance with the given ScoreAPI
@@ -37,8 +38,9 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
      */
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        spriteBatch = new SpriteBatch();
+        gameStateManager = new GameStateManager();
+        gameStateManager.push(new MainMenuState(gameStateManager));
     }
 
     /**
@@ -49,9 +51,8 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
-        batch.begin();
-        batch.draw(img, 0, 0);
-        batch.end();
+        gameStateManager.update(Gdx.graphics.getDeltaTime());
+        gameStateManager.render(spriteBatch);
     }
 
     /**
@@ -61,7 +62,6 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
      */
     @Override
     public void dispose() {
-        batch.dispose();
-        img.dispose();
+        spriteBatch.dispose();
     }
 }
