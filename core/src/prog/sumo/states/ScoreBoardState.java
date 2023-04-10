@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ScoreBoardState extends State {
 
-    Texture ScoBoTitle;
+    Texture scoboTitle;
     Texture backButtonTex;
     Texture angelTex;
     Texture eggplantTex;
@@ -31,7 +31,7 @@ public class ScoreBoardState extends State {
 
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
-        ScoBoTitle = new Texture("scoreboardHeadline.png");
+        scoboTitle = new Texture("scoreboardHeadline.png");
         angelTex = new Texture("angelCharacter.png");
         constructionTex = new Texture("constructionworker.png");
         deafTex = new Texture("deafwoman.png");
@@ -67,7 +67,7 @@ public class ScoreBoardState extends State {
     }
 
     @Override
-    protected void handleInput(String name) {
+    protected final void handleInput(String name) {
         if (name.equals("backB")) {
             gsm.set(new MainMenuState(gsm));
         }
@@ -79,38 +79,38 @@ public class ScoreBoardState extends State {
     }
 
     @Override
-    public void render(SpriteBatch sb) {
+    public final void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();
         sb.begin();
-        sb.draw(ScoBoTitle,
-                Gdx.graphics.getWidth() / 2 - ScoBoTitle.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight());
+        sb.draw(scoboTitle,
+                Gdx.graphics.getWidth() / 2 - scoboTitle.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight());
         sb.draw(angelTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight() -
-                        angelTex.getHeight());
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight());
         sb.draw(constructionTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight() -
-                        angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
         sb.draw(eggplantTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight() -
-                        angelTex.getHeight() * 4);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 4);
         sb.draw(deafTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight() -
-                        angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
         sb.end();
         batch.begin();
         font.draw(batch, "200 points", Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() - ScoBoTitle.getHeight() -
-                        angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() / 2);
         batch.end();
     }
 
     @Override
-    public void dispose() {
-        ScoBoTitle.dispose();
+    public final void dispose() {
+        scoboTitle.dispose();
         backButtonTex.dispose();
         angelTex.dispose();
         eggplantTex.dispose();

@@ -59,7 +59,7 @@ public class PlayState extends State {
     }
 
     @Override
-    protected void handleInput(String name) {
+    protected final void handleInput(String name) {
         if (name.equals("settingsB")) {
             gsm.set(new MainMenuState(gsm));
         }
@@ -71,7 +71,7 @@ public class PlayState extends State {
     }
 
     @Override
-    public void render(SpriteBatch sb) {
+    public final void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -94,7 +94,9 @@ public class PlayState extends State {
         shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
         sb.begin();
-        //sb.draw(settingsWheel, Gdx.graphics.getWidth()-settingsWheel.getWidth(), Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
+        //sb.draw(settingsWheel, Gdx.graphics.getWidth() -
+        // settingsWheel.getWidth(),
+        // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
         sb.draw(player1sprite,
                 Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
         sb.draw(player2sprite,
@@ -106,7 +108,7 @@ public class PlayState extends State {
     }
 
     @Override
-    public void dispose() {
+    public final void dispose() {
         settingsWheel.dispose();
         player1Tex.dispose();
         player2Tex.dispose();

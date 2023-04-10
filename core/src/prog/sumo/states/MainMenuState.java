@@ -135,7 +135,7 @@ public class MainMenuState extends State {
 
 
     @Override
-    protected void handleInput(String name) {
+    protected final void handleInput(String name) {
         if (name.equals("playB")) {
             gsm.set(new CharacterSelectionState(gsm));
         }
@@ -158,7 +158,7 @@ public class MainMenuState extends State {
     }
 
     @Override
-    public void render(SpriteBatch sb) {
+    public final void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -170,7 +170,7 @@ public class MainMenuState extends State {
     }
 
     @Override
-    public void dispose() {
+    public final void dispose() {
         playButtonTex.dispose();
         scoreBoardButtonTex.dispose();
         tutorialButtonTex.dispose();
