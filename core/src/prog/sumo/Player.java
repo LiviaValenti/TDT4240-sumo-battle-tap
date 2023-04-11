@@ -16,6 +16,8 @@ public final class Player {
      */
     private int position;
 
+    private int score;
+
     /**
      * The player's direction.
      */
@@ -40,6 +42,7 @@ public final class Player {
         } else {
             position = MAX_POSITION;
         }
+        score = 0;
     }
 
     /**
@@ -51,6 +54,19 @@ public final class Player {
         } else {
             position--;
         }
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void incrementScore() {
+
+        this.score++;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     /**

@@ -99,8 +99,6 @@ public class CharacterSelectionState extends State {
         font.draw(batch, "Choose your character!", 0,
                 Gdx.graphics.getHeight() / 2 - homeB.getHeight() * 2);
         batch.end();
-
-
     }
 
     @Override
