@@ -1,14 +1,20 @@
 package prog.sumo.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -27,6 +33,10 @@ public class PlayState extends State {
     ImageButton settingsB;
 
     Stage stage;
+
+    Window setPop;
+
+    Skin uiSkin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -56,12 +66,21 @@ public class PlayState extends State {
                 handleInput("settingsB");
             }
         });
+
+        setPop = new Window("Settings", uiSkin);
+        setPop.add("hello");
+        setPop.setResizable(true);
+        setPop.scaleBy(5f);
+        setPop.setPosition(10, Gdx.graphics.getHeight() / 2);
+        setPop.pack();
+
     }
 
     @Override
     protected final void handleInput(String name) {
         if (name.equals("settingsB")) {
-            gsm.set(new MainMenuState(gsm));
+            //gsm.set(new MainMenuState(gsm));
+            stage.addActor(setPop);
         }
     }
 
