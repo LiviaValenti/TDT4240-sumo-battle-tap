@@ -1,8 +1,11 @@
 package prog.sumo.states;
 
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,6 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class PlayState extends State {
+    private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
+    private float timeElapsed = 0f; // Time elapsed since countdown started
+    private BitmapFont font; // Font to draw the countdown
+    private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
+
     Texture settingsWheel;
     Texture player1Tex;
     Texture player2Tex;
@@ -70,8 +78,7 @@ public class PlayState extends State {
 
     }
 
-    @Override
-    public final void render(SpriteBatch sb) {
+    private void drawGame(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -94,7 +101,7 @@ public class PlayState extends State {
         shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
         sb.begin();
-        //sb.draw(settingsWheel, Gdx.graphics.getWidth() -
+        // sb.draw(settingsWheel, Gdx.graphics.getWidth() -
         // settingsWheel.getWidth(),
         // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
         sb.draw(player1sprite,
@@ -105,6 +112,45 @@ public class PlayState extends State {
         sb.end();
         stage.draw();
         stage.act();
+    }
+
+    @Override
+    public final void render(SpriteBatch sb) {
+        if (timeElapsed < COUNTDOWN_TIME) {
+            // Draw game in background
+            drawGame(sb);
+            // Draw the background and overlay
+            Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0, 0, 0, 0.69f);
+            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight());
+            shapeRenderer.end();
+
+            // Update the countdown timer
+            timeElapsed += Gdx.graphics.getDeltaTime();
+            if (timeElapsed >= COUNTDOWN_TIME) {
+                // Countdown finished, switch to game screen
+                // gsm.set(new GameScreen(gsm));
+                Gdx.app.log("PlayState", "Countdown finished");
+            }
+
+            // Draw the countdown
+            int countdownNumber = (int) (COUNTDOWN_TIME - timeElapsed) + 1;
+            if (font == null) {
+                font = new BitmapFont();
+                font.getData().setScale(12f);
+                spriteBatch = new SpriteBatch();
+            }
+            spriteBatch.begin();
+            font.draw(spriteBatch, Integer.toString(countdownNumber),
+                    Gdx.graphics.getWidth() / 2f,
+                    Gdx.graphics.getHeight() / 2f);
+            spriteBatch.end();
+        } else {
+            drawGame(sb);
+        }
     }
 
     @Override
