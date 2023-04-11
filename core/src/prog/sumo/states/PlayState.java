@@ -2,12 +2,14 @@ package prog.sumo.states;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -21,6 +23,7 @@ public class PlayState extends State {
     private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
+    private BitmapFont fontForScore; // Font to draw the countdown
     private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
     Texture settingsWheel;
     Texture player1Tex;
@@ -56,7 +59,9 @@ public class PlayState extends State {
         player2sprite = new Sprite(player2Tex);
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
+        // Player 1 starts from the top
         player1 = new Player(player1Tex, 0);
+        // Player 2 starts from the bottom
         player2 = new Player(player2Tex, 1);
         settingsB = new ImageButton(settingsWheelDrawable);
         roundCounter = 0;
@@ -127,8 +132,31 @@ public class PlayState extends State {
         }
     }
 
+    private void drawScore(SpriteBatch sb) {
+        sb.begin();
+        sb.setTransformMatrix(
+                new Matrix4().setToRotation(0, 0, 1, 90));
+        if (fontForScore == null) {
+            fontForScore = new BitmapFont();
+            fontForScore.getData().setScale(6f);
+            spriteBatch = new SpriteBatch();
+        }
+        fontForScore.setColor(Color.BLACK);
+        fontForScore.draw(sb, "" + player1.getScore(),
+                Gdx.graphics.getWidth() + (fontForScore.getCapHeight() * 2),
+                -fontForScore.getCapHeight());
+        fontForScore.draw(sb, "-",
+                Gdx.graphics.getWidth() + (fontForScore.getCapHeight()),
+                -fontForScore.getCapHeight());
+        fontForScore.draw(sb, "" + player2.getScore(),
+                Gdx.graphics.getWidth(),
+                -fontForScore.getCapHeight());
+        sb.end();
+    }
+
 
     private void drawGame(SpriteBatch sb) {
+
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -150,6 +178,7 @@ public class PlayState extends State {
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
+        drawScore(sb);
         sb.begin();
         // sb.draw(settingsWheel, Gdx.graphics.getWidth() -
         // settingsWheel.getWidth(),
@@ -159,6 +188,7 @@ public class PlayState extends State {
         sb.draw(player2sprite,
                 Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
                 Gdx.graphics.getHeight() - player2sprite.getHeight());
+
         sb.end();
         stage.draw();
         stage.act();
@@ -168,6 +198,7 @@ public class PlayState extends State {
         if (timeElapsed < COUNTDOWN_TIME) {
             // Draw game in background
             drawGame(sb);
+
             // Draw the background and overlay
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -204,6 +235,9 @@ public class PlayState extends State {
     public final void render(SpriteBatch sb) {
         if (timeElapsed < COUNTDOWN_TIME) {
             showCountdown(sb);
+            if (!isGameOver) {
+                whenRoundFinished(sb);
+            }
         } else {
             drawGame(sb);
 
