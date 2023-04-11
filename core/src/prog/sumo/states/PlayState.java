@@ -34,6 +34,7 @@ public class PlayState extends State {
     ShapeRenderer shapeRenderer;
 
     Drawable settingsWheelDrawable;
+    private float countdownStartTime;
 
     ImageButton settingsB;
 
@@ -75,6 +76,7 @@ public class PlayState extends State {
         Gdx.input.setInputProcessor(stage);
         //     roundIsOver = false;
         isGameOver = false;
+        countdownStartTime = 0f;
 
         settingsB.addListener(new ChangeListener() {
             @Override
@@ -111,6 +113,8 @@ public class PlayState extends State {
         incrementScoreOfWinner();
         checkIfGameIsFinished();
         if (!isGameOver) {
+            this.timeElapsed = 0f;
+            this.countdownStartTime = this.timeElapsed;
             showCountdown(sb);
         }
     }
@@ -138,7 +142,7 @@ public class PlayState extends State {
                 new Matrix4().setToRotation(0, 0, 1, 90));
         if (fontForScore == null) {
             fontForScore = new BitmapFont();
-            fontForScore.getData().setScale(6f);
+            fontForScore.getData().setScale(5f);
             spriteBatch = new SpriteBatch();
         }
         fontForScore.setColor(Color.BLACK);
@@ -195,52 +199,51 @@ public class PlayState extends State {
     }
 
     private void showCountdown(SpriteBatch sb) {
-        if (timeElapsed < COUNTDOWN_TIME) {
-            // Draw game in background
-            drawGame(sb);
+        float countdownEndtime = countdownStartTime + COUNTDOWN_TIME;
+        // Draw game in background
+        drawGame(sb);
+        Gdx.app.log("Time", "" + Gdx.graphics.getDeltaTime());
 
-            // Draw the background and overlay
-            Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(0, 0, 0, 0.69f);
-            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(),
-                    Gdx.graphics.getHeight());
-            shapeRenderer.end();
+        // Draw the background and overlay
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0, 0, 0, 0.69f);
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight());
+        shapeRenderer.end();
 
-            // Update the countdown timer
-            timeElapsed += Gdx.graphics.getDeltaTime();
-            if (timeElapsed >= COUNTDOWN_TIME) {
-                // Countdown finished, switch to game screen
-                // gsm.set(new GameScreen(gsm));
-                Gdx.app.log("PlayState", "Countdown finished");
-            }
-
-            // Draw the countdown
-            int countdownNumber = (int) (COUNTDOWN_TIME - timeElapsed) + 1;
-            if (font == null) {
-                font = new BitmapFont();
-                font.getData().setScale(12f);
-                spriteBatch = new SpriteBatch();
-            }
-            spriteBatch.begin();
-            font.draw(spriteBatch, Integer.toString(countdownNumber),
-                    Gdx.graphics.getWidth() / 2f,
-                    Gdx.graphics.getHeight() / 2f);
-            spriteBatch.end();
+        // Update the countdown timer
+        timeElapsed += Gdx.graphics.getDeltaTime();
+        if (timeElapsed >= COUNTDOWN_TIME) {
+            // Countdown finished, switch to game screen
+            // gsm.set(new GameScreen(gsm));
+            Gdx.app.log("PlayState", "Countdown finished");
         }
+        // Draw the countdown
+        int countdownNumber = (int) (countdownEndtime - timeElapsed) + 1;
+        if (font == null) {
+            font = new BitmapFont();
+            font.getData().setScale(12f);
+            spriteBatch = new SpriteBatch();
+        }
+        spriteBatch.begin();
+        font.draw(spriteBatch, Integer.toString(countdownNumber),
+                Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f);
+        spriteBatch.end();
     }
 
     @Override
     public final void render(SpriteBatch sb) {
         if (timeElapsed < COUNTDOWN_TIME) {
             showCountdown(sb);
-            if (!isGameOver) {
-                whenRoundFinished(sb);
-            }
+
         } else {
             drawGame(sb);
-
+         /*   if (!isGameOver && player2.getScore() == 0) {
+                whenRoundFinished(sb);
+            }*/
         }
     }
 
