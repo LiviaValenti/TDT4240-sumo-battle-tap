@@ -41,6 +41,7 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
         spriteBatch = new SpriteBatch();
         gameStateManager = new GameStateManager();
         gameStateManager.push(new MainMenuState(gameStateManager));
+
     }
 
     /**

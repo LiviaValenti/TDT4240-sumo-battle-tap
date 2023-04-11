@@ -23,8 +23,11 @@ public class PlayState extends State {
     ShapeRenderer shapeRenderer;
 
     Drawable settingsWheelDrawable;
+    Drawable player1Drawable;
+
 
     ImageButton settingsB;
+    ImageButton player1;
 
     Stage stage;
 
@@ -38,15 +41,27 @@ public class PlayState extends State {
         player2sprite = new Sprite(player2Tex);
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
+        player1Drawable = new TextureRegionDrawable(player1Tex);
+
 
         settingsB = new ImageButton(settingsWheelDrawable);
+        player1 = new ImageButton(player1Drawable);
 
         stage = new Stage();
         stage.addActor(settingsB);
+        stage.addActor(player1);
+
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
         settingsB.setTransform(true);
+
+        Gdx.input.setInputProcessor(stage);
+
+
+        player1.setPosition(Gdx.graphics.getWidth() / 2 - player1.getWidth()/2,
+                0);
+        player1.setTransform(true);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -56,12 +71,23 @@ public class PlayState extends State {
                 handleInput("settingsB");
             }
         });
+
+        player1.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("player1");
+            }
+        });
+
     }
 
     @Override
     protected final void handleInput(String name) {
         if (name.equals("settingsB")) {
             gsm.set(new MainMenuState(gsm));
+        }
+        if (name.equals("player1")) {
+            // Move player in gamestate
         }
     }
 
@@ -97,8 +123,8 @@ public class PlayState extends State {
         //sb.draw(settingsWheel, Gdx.graphics.getWidth() -
         // settingsWheel.getWidth(),
         // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
-        sb.draw(player1sprite,
-                Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
+        //sb.draw(player1sprite,
+         //       Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
         sb.draw(player2sprite,
                 Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
                 Gdx.graphics.getHeight() - player2sprite.getHeight());
