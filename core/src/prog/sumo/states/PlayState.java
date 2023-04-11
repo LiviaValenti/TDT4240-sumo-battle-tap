@@ -2,7 +2,6 @@ package prog.sumo.states;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,12 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import prog.sumo.Player;
+
 public class PlayState extends State {
     private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
     private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
-
     Texture settingsWheel;
     Texture player1Tex;
     Texture player2Tex;
@@ -35,6 +35,16 @@ public class PlayState extends State {
     ImageButton settingsB;
 
     Stage stage;
+    Player player1;
+    Player player2;
+
+    // The following should be changed to Player objects when that part is ready
+    String winnerOfTheRound = "";
+    String winnerOfTheGame = "";
+
+    int roundCounter;
+    private final static int MAX_ROUNDS = 3;
+    boolean isGameOver;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -46,9 +56,10 @@ public class PlayState extends State {
         player2sprite = new Sprite(player2Tex);
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
-
+        player1 = new Player(player1Tex, 0);
+        player2 = new Player(player2Tex, 1);
         settingsB = new ImageButton(settingsWheelDrawable);
-
+        roundCounter = 0;
         stage = new Stage();
         stage.addActor(settingsB);
 
@@ -57,6 +68,8 @@ public class PlayState extends State {
         settingsB.setTransform(true);
 
         Gdx.input.setInputProcessor(stage);
+        //     roundIsOver = false;
+        isGameOver = false;
 
         settingsB.addListener(new ChangeListener() {
             @Override
@@ -75,8 +88,45 @@ public class PlayState extends State {
 
     @Override
     public void update(float dt) {
-
     }
+
+    private void incrementScoreOfWinner() {
+        // TODO: winner is a string now, but needs to be changed to the Player object
+        // We need to determine how to keep track of the winner of the round. But that is another task
+        if (winnerOfTheRound.equals("Player1")) {
+            player1.incrementScore();
+        } else {
+            player2.incrementScore();
+        }
+    }
+
+    // The following method should be used when a round is finished
+    public void whenRoundFinished(SpriteBatch sb) {
+        incrementRoundCounter();
+        incrementScoreOfWinner();
+        checkIfGameIsFinished();
+        if (!isGameOver) {
+            showCountdown(sb);
+        }
+    }
+
+    private void incrementRoundCounter() {
+        roundCounter++;
+    }
+
+    public void checkIfGameIsFinished() {
+        // to avoid running unneccessary code in simplest code
+        if (roundCounter == MAX_ROUNDS) {
+            isGameOver = true;
+        } else {
+            // if either player has higher score than half of max rounds, the game is over
+            int breakpoint = (int) Math.floor(MAX_ROUNDS / 2);
+            if (player1.getScore() > breakpoint || player2.getScore() > breakpoint) {
+                isGameOver = true;
+            }
+        }
+    }
+
 
     private void drawGame(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
@@ -114,8 +164,7 @@ public class PlayState extends State {
         stage.act();
     }
 
-    @Override
-    public final void render(SpriteBatch sb) {
+    private void showCountdown(SpriteBatch sb) {
         if (timeElapsed < COUNTDOWN_TIME) {
             // Draw game in background
             drawGame(sb);
@@ -148,8 +197,16 @@ public class PlayState extends State {
                     Gdx.graphics.getWidth() / 2f,
                     Gdx.graphics.getHeight() / 2f);
             spriteBatch.end();
+        }
+    }
+
+    @Override
+    public final void render(SpriteBatch sb) {
+        if (timeElapsed < COUNTDOWN_TIME) {
+            showCountdown(sb);
         } else {
             drawGame(sb);
+
         }
     }
 
