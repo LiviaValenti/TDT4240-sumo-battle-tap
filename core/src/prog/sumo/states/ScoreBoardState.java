@@ -24,10 +24,15 @@ public class ScoreBoardState extends State {
     Drawable backButtonDrawable;
 
     ImageButton backB;
+    String winnerOfTheGame = "";
 
     Stage stage;
     SpriteBatch batch;
     BitmapFont font;
+
+    public ScoreBoardState(GameStateManager gsm, String winnerOfTheGame) {
+        this(gsm);
+    }
 
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
@@ -37,8 +42,6 @@ public class ScoreBoardState extends State {
         deafTex = new Texture("deafwoman.png");
         eggplantTex = new Texture("eggplant.png");
         backButtonTex = new Texture("back.png");
-
-
         backButtonDrawable = new TextureRegionDrawable(backButtonTex);
 
         backB = new ImageButton(backButtonDrawable);
@@ -50,21 +53,19 @@ public class ScoreBoardState extends State {
 
         stage = new Stage();
         stage.addActor(backB);
-
         Gdx.input.setInputProcessor(stage);
-
         backB.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 handleInput("backB");
             }
         });
-
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.getData().setScale(5f);
         font.setColor(1, 0, 0, 1);
     }
+
 
     @Override
     protected final void handleInput(String name) {

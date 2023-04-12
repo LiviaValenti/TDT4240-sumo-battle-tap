@@ -61,7 +61,6 @@ public final class Player {
     }
 
     public void incrementScore() {
-
         this.score++;
     }
 
