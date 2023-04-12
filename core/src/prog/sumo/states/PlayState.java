@@ -97,6 +97,10 @@ public class PlayState extends State {
     public void update(float dt) {
     }
 
+    public String getWinnerOfTheGame() {
+        return winnerOfTheGame;
+    }
+
     private void incrementScoreOfWinner() {
         // TODO: winner is a string now, but needs to be changed to the Player object
         // We need to determine how to keep track of the winner of the round. But that is another task
@@ -130,9 +134,20 @@ public class PlayState extends State {
         } else {
             // if either player has higher score than half of max rounds, the game is over
             int breakpoint = (int) Math.floor(MAX_ROUNDS / 2);
-            if (player1.getScore() > breakpoint || player2.getScore() > breakpoint) {
+            if (player1.getScore() > breakpoint) {
+                isGameOver = true;
+                winnerOfTheGame = "Player1";
+            } else if (player2.getScore() > breakpoint) {
+                winnerOfTheGame = "Player2";
                 isGameOver = true;
             }
+        }
+    }
+
+    public void whenGameIsFinished() {
+        if (isGameOver) {
+            // TODO: Direct first to winner screen
+            gsm.set(new ScoreBoardState(gsm, winnerOfTheGame));
         }
     }
 
@@ -157,7 +172,6 @@ public class PlayState extends State {
                 -fontForScore.getCapHeight());
         sb.end();
     }
-
 
     private void drawGame(SpriteBatch sb) {
 
@@ -241,9 +255,10 @@ public class PlayState extends State {
 
         } else {
             drawGame(sb);
-         /*   if (!isGameOver && player2.getScore() == 0) {
+            if (!isGameOver && player2.getScore() < 3) {
                 whenRoundFinished(sb);
-            }*/
+                whenGameIsFinished();
+            }
         }
     }
 
