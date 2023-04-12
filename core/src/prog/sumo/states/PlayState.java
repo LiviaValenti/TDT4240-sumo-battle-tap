@@ -255,6 +255,7 @@ public class PlayState extends State {
 
         } else {
             drawGame(sb);
+
             if (!isGameOver && player2.getScore() < 3) {
                 whenRoundFinished(sb);
                 whenGameIsFinished();
