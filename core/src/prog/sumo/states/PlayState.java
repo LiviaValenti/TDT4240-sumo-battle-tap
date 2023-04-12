@@ -10,10 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -35,8 +38,14 @@ public class PlayState extends State {
     Stage stage;
 
     Window setPop;
+    Window tutorial;
 
-    Skin uiSkin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
+    TextButton xMenu;
+
+    TextButton tutButton;
+    TextButton xTutorial;
+
+    Skin uiSkin = new Skin(Gdx.files.internal("skin/level-plane-ui.json"));
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -60,20 +69,50 @@ public class PlayState extends State {
 
         Gdx.input.setInputProcessor(stage);
 
+
+        tutorial = new Window("Tutorial", uiSkin, "default");
+        tutorial.add("how you play the game");
+        tutorial.scaleBy(5f);
+        xTutorial = new TextButton("Back", uiSkin, "small-1");
+        tutorial.add(xTutorial);
+
+
+        setPop = new Window("Settings", uiSkin, "default");
+        setPop.add("hello");
+        setPop.scaleBy(5f);
+        setPop.setPosition(10, Gdx.graphics.getHeight() / 2);
+
+
+        xMenu = new TextButton("Back to game", uiSkin, "small-1");
+        tutButton = new TextButton("Read tutorial", uiSkin, "small-2");
+        setPop.add(xMenu);
+        setPop.add(tutButton);
+
+
         settingsB.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 handleInput("settingsB");
             }
         });
-
-        setPop = new Window("Settings", uiSkin);
-        setPop.add("hello");
-        setPop.setResizable(true);
-        setPop.scaleBy(5f);
-        setPop.setPosition(10, Gdx.graphics.getHeight() / 2);
-        setPop.pack();
-
+        xMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("xMenu");
+            }
+        });
+        tutButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("tutButton");
+            }
+        });
+        xTutorial.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("xTut");
+            }
+        });
     }
 
     @Override
@@ -81,6 +120,15 @@ public class PlayState extends State {
         if (name.equals("settingsB")) {
             //gsm.set(new MainMenuState(gsm));
             stage.addActor(setPop);
+        }
+        if (name.equals("xMenu")) {
+            stage.addAction(Actions.removeActor(setPop));
+        }
+        if (name.equals("tutButton")) {
+            stage.addActor(tutorial);
+        }
+        if (name.equals("xTut")) {
+            stage.addAction(Actions.removeActor(tutorial));
         }
     }
 
