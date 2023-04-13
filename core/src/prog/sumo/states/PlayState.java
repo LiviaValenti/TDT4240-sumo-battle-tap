@@ -12,11 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -44,6 +47,7 @@ public class PlayState extends State {
 
     TextButton tutButton;
     TextButton xTutorial;
+    CheckBox soundBox;
 
     Skin uiSkin = new Skin(Gdx.files.internal("skin/level-plane-ui.json"));
 
@@ -78,15 +82,25 @@ public class PlayState extends State {
 
 
         setPop = new Window("Settings", uiSkin, "default");
-        setPop.add("hello");
-        setPop.scaleBy(5f);
-        setPop.setPosition(10, Gdx.graphics.getHeight() / 2);
+        setPop.scaleBy(3f);
+        setPop.setPosition(Gdx.graphics.getWidth()/2-setPop.getWidth(), Gdx.graphics.getHeight() / 2);
 
 
         xMenu = new TextButton("Back to game", uiSkin, "small-1");
         tutButton = new TextButton("Read tutorial", uiSkin, "small-2");
-        setPop.add(xMenu);
-        setPop.add(tutButton);
+        soundBox = new CheckBox("Sound", uiSkin, "c3");
+
+        Table table = new Table();
+        table.add(xMenu).width(100);
+        table.row();
+        table.add(tutButton).width(100);
+        table.row();
+        table.add(soundBox);
+
+        //setPop.add(xMenu);
+        //setPop.add(tutButton);
+        setPop.add(table);
+        setPop.pack();
 
 
         settingsB.addListener(new ChangeListener() {
