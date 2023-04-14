@@ -26,8 +26,8 @@ public class CharacterSelectionState extends State {
     Texture homeTex;
     Texture playTex;
 
-    Texture redTex;
-    Texture blueTex;
+    public Texture redTex;
+    public Texture blueTex;
 
 
 
@@ -35,8 +35,6 @@ public class CharacterSelectionState extends State {
     Drawable playDraw;
     Drawable redDraw;
     Drawable blueDraw;
-
-
 
     ImageButton homeB;
     ImageButton playB;
@@ -179,7 +177,6 @@ public class CharacterSelectionState extends State {
         playTex.dispose();
         redTex.dispose();
         blueTex.dispose();
-
 
     }
 
