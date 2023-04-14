@@ -12,181 +12,126 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CharacterSelectionState extends State {
 
-    //Texture for home-button and play-button
-    Texture homeTex, playTex;
+    private final String[] colors = new String[]{
+            "red",
+            "green",
+            "yellow",
 
-    //Texture for the different characters
-    Texture redTex, blueTex, greenTex, yellowTex, pinkTex, purpleTex;
+            "pink",
+            "purple",
+            "blue"
+    };
 
-    //Drawable for home-button and play-button
-    Drawable homeDraw, playDraw;
+    // Initialize textures and drawables
+    private final Texture[] buttonTextures = new Texture[]{
+            new Texture("home.png"),
+            new Texture("play.png"),
 
-    //Drawable for the different characters
-    Drawable redDraw, blueDraw, greenDraw, yellowDraw, pinkDraw, purpleDraw;
+            new Texture("redplayer.png"),
+            new Texture("greenplayer.png"),
+            new Texture("yellowplayer.png"),
 
-    //ImageButtons for home-button and play-button
-    ImageButton homeB, playB;
+            new Texture("pinkplayer.png"),
+            new Texture("purpleplayer.png"),
+            new Texture("blueplayer.png"),
+    };
+    private final Drawable[] buttonDrawables = new Drawable[buttonTextures.length];
+    private final ImageButton[] buttons = new ImageButton[buttonTextures.length];
 
-    //ImageButtons for the different characters
-    ImageButton redB, blueB, greenB, yellowB, pinkB, purpleB;
 
-    Stage stage;
+    // Stage, sprite batch, and font
+    private final Stage stage = new Stage();
+    private final SpriteBatch batch = new SpriteBatch();
+    private final BitmapFont font = new BitmapFont();
 
-    SpriteBatch batch;
-    BitmapFont font;
+    // Map for player hash
+    private final Map<Integer, String> playerHash = new HashMap<>();
 
-    public Map<Integer, String> playerHash = new HashMap<>();
-    public ArrayList<Integer> selectC = new ArrayList<>();
 
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
-        homeTex = new Texture("home.png");
-        playTex = new Texture("play.png");
-        redTex = new Texture("redplayer.png");
-        blueTex = new Texture("blueplayer.png");
-        greenTex = new Texture("greenplayer.png");
-        purpleTex = new Texture("purpleplayer.png");
-        yellowTex = new Texture("yellowplayer.png");
-        pinkTex = new Texture("pinkplayer.png");
 
-        homeDraw = new TextureRegionDrawable(homeTex);
-        playDraw = new TextureRegionDrawable(playTex);
-        redDraw = new TextureRegionDrawable(redTex);
-        blueDraw = new TextureRegionDrawable(blueTex);
-        greenDraw = new TextureRegionDrawable(greenTex);
-        yellowDraw = new TextureRegionDrawable(yellowTex);
-        pinkDraw = new TextureRegionDrawable(pinkTex);
-        purpleDraw = new TextureRegionDrawable(purpleTex);
+        for (int i = 0; i < buttonTextures.length; i++) {
+            buttonDrawables[i] = new TextureRegionDrawable(buttonTextures[i]);
+            buttons[i] = new ImageButton(buttonDrawables[i]);
+            //Do not add the Play button to the stage yet
+            if (i != 1) {
+                stage.addActor(buttons[i]);
+            }
+        }
 
-        homeB = new ImageButton(homeDraw);
-        playB = new ImageButton(playDraw);
-        redB =  new ImageButton(redDraw);
-        blueB =  new ImageButton(blueDraw);
-        greenB =  new ImageButton(greenDraw);
-        yellowB =  new ImageButton(yellowDraw);
-        pinkB =  new ImageButton(pinkDraw);
-        purpleB =  new ImageButton(purpleDraw);
+        // Set button positions
+        buttons[1].setPosition(Gdx.graphics.getWidth() - buttons[1].getWidth(), Gdx.graphics.getHeight() / 2 - buttons[1].getHeight() / 2);
+        buttons[0].setPosition(buttons[0].getWidth() / 3, Gdx.graphics.getHeight() / 2 - buttons[0].getHeight() / 2);
+        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 400);
+        buttons[3].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 + 400);
+        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 50, Gdx.graphics.getHeight() / 2 + 400);
+        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 600);
+        buttons[6].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 - 600);
+        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 50, Gdx.graphics.getHeight() / 2 - 600);
 
-        stage = new Stage();
-        stage.addActor(homeB);
-        stage.addActor(redB);
-        stage.addActor(blueB);
-        stage.addActor(greenB);
-        stage.addActor(yellowB);
-        stage.addActor(pinkB);
-        stage.addActor(purpleB);
-
-        playB.setPosition(Gdx.graphics.getWidth() - playB.getWidth(),
-                Gdx.graphics.getHeight() / 2 - playB.getHeight() / 2);
-        playB.setTransform(true);
-
-        homeB.setPosition(homeB.getWidth() / 3,
-                Gdx.graphics.getHeight() / 2 - homeB.getHeight() / 2);
-        homeB.setTransform(true);
-
-        redB.setPosition(Gdx.graphics.getWidth() / 2 - 50,
-                Gdx.graphics.getHeight() / 2 + 400);
-        redB.setTransform(true);
-
-        blueB.setPosition(Gdx.graphics.getWidth() / 2 - 50,
-                Gdx.graphics.getHeight() / 2 - 600);
-        blueB.setTransform(true);
-
-        greenB.setPosition(Gdx.graphics.getWidth() / 4 - 50,
-                Gdx.graphics.getHeight() / 2 + 400);
-        greenB.setTransform(true);
-
-        yellowB.setPosition(Gdx.graphics.getWidth() / 2 + 220,
-                Gdx.graphics.getHeight() / 2 + 400);
-        yellowB.setTransform(true);
-
-        pinkB.setPosition(Gdx.graphics.getWidth() / 2 + 220,
-                Gdx.graphics.getHeight() / 2 - 600);
-        pinkB.setTransform(true);
-
-        purpleB.setPosition(Gdx.graphics.getWidth() / 4 - 50,
-                Gdx.graphics.getHeight() / 2 - 600);
-        purpleB.setTransform(true);
-
+        // Set input processor
         Gdx.input.setInputProcessor(stage);
 
-        playB.addListener(new ChangeListener() {
+        // Set button names with loop and using color array
+        for (int i = 2; i < buttons.length; i++) {
+            buttons[i].setName(colors[i - 2] + "player.png");
+        }
+
+        // Add listeners to buttons
+        buttons[1].addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 handleInput("playB");
             }
         });
-        homeB.addListener(new ChangeListener() {
+        buttons[0].addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 handleInput("homeB");
             }
         });
-
-        redB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("redB");
-            }
-        });
-        blueB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("blueB");
-            }
-        });
-        greenB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("greenB");
-            }
-        });
-        yellowB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("yellowB");
-            }
-        });
-        pinkB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("pinkB");
-            }
-        });
-        purpleB.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("purpleB");
-            }
-        });
-
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.getData().setScale(5f);
-        font.setColor(1, 0, 0, 1);
-
+        for (int i = 2; i < buttons.length; i++) {
+            buttons[i].addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    handleInput(actor.getName());
+                }
+            });
+        }
     }
 
     @Override
     protected final void handleInput(String name) {
-        if (name.equals("playB")) {
+        if (name.equals("playB") ) {
             gsm.set(new PlayState(gsm, playerHash));
         }
-        if (name.equals("homeB")) {
+        if (name.equals("homeB") ) {
             gsm.set(new MainMenuState(gsm));
         }
-        else {
-            //Add the character to the playerHash
-            playerHash.put(getCharacterValue(name), getCharacterString(name));
+
+        //If name equals the first half of the color array, add key 1 to the playerHash map
+        for (int i = 0; i < colors.length / 2; i++) {
+            if (name.equals(colors[i] + "player.png")) {
+                playerHash.put(1, name);
+            }
         }
+
+        //If name equals the second half of the color array, add key 0 to the playerHash map
+        for (int i = colors.length / 2; i < colors.length; i++) {
+            if (name.equals(colors[i] + "player.png")) {
+                playerHash.put(0, name);
+            }
+        }
+
+        //If both players have chosen a color, the play button is added to the stage
         if (playerHash.size() == 2){
-            stage.addActor(playB);
+            stage.addActor(buttons[1]);
         }
     }
 
@@ -202,65 +147,24 @@ public class CharacterSelectionState extends State {
         stage.draw();
         stage.act();
         batch.begin();
-
-        //Draw the text in black and in smaller font and centered
         font.getData().setScale(4f);
         font.setColor(0, 0, 0, 1);
         font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth()/8 ,
                 Gdx.graphics.getHeight() / 2 - 300);
-        //Make the font twisted 180 degrees
 
         font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth()/8 ,
                 Gdx.graphics.getHeight() / 2 + 300);
-
         batch.end();
     }
 
     @Override
     public final void dispose() {
-        homeTex.dispose();
-        playTex.dispose();
-        redTex.dispose();
-        blueTex.dispose();
-        greenTex.dispose();
-        yellowTex.dispose();
-        pinkTex.dispose();
-        purpleTex.dispose();
-    }
-
-    public Integer getCharacterValue(String c) {
-        Integer value = 0;
-        if (c == "redB" || c == "greenB" || c == "yellowB"){
-            value = 0;
+        for (Texture t : buttonTextures) {
+            t.dispose();
         }
-        if (c == "blueB" || c == "pinkB" || c == "purpleB"){
-            value = 1;
-        }
-        return value;
-    }
-
-
-    public String getCharacterString(String c){
-        String color = "";
-        if (c == "redB"){
-            color = "redplayer.png";
-        }
-        if (c == "blueB"){
-            color = "blueplayer.png";
-        }
-        if (c == "greenB"){
-            color = "greenplayer.png";
-        }
-        if (c == "yellowB"){
-            color = "yellowplayer.png";
-        }
-        if (c == "pinkB"){
-            color = "pinkplayer.png";
-        }
-        if (c == "purpleB"){
-            color = "purpleplayer.png";
-        }
-        return color;
+        stage.dispose();
+        batch.dispose();
+        font.dispose();
     }
 
 }

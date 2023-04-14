@@ -1,8 +1,6 @@
-package prog.sumo.sprites;
+package prog.sumo;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import prog.sumo.states.PlayState;
 
 /**
@@ -15,7 +13,7 @@ public final class Player {
      */
 
     private static final int MAX_POSITION_1 = PlayState.battleCircleHeight + PlayState.battleCircleRadius - 300;
-    private static final int MAX_POSITION_2 = PlayState.battleCircleHeight - PlayState.battleCircleRadius + 200;
+    private static final int MAX_POSITION_2 = PlayState.battleCircleHeight - PlayState.battleCircleRadius + 150;
 
     /**
      * The player's position.
@@ -44,9 +42,9 @@ public final class Player {
         this.texture = playerTexture;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = Gdx.graphics.getHeight() / 4 - playerTexture.getHeight() / 2;
+            position = MAX_POSITION_2 - texture.getHeight();
         } else {
-            position = Gdx.graphics.getHeight() / 4 * 3 - playerTexture.getHeight() / 2;
+            position = MAX_POSITION_1 + texture.getHeight();
         }
     }
 
@@ -85,14 +83,16 @@ public final class Player {
             this.moveForward();
         }
 
-        if (this.getPosition() > MAX_POSITION_1 && otherPlayer.getPosition() > MAX_POSITION_1) {
+        if (this.getPosition() > MAX_POSITION_1 && this.direction == 1) {
 
             //Insert ROUND OVER HERE (Player 1 wins)
+
             this.setPosition(0);
             otherPlayer.setPosition(0);
-        } else if (this.getPosition() < MAX_POSITION_2 && otherPlayer.getPosition() < MAX_POSITION_2) {
+        } else if (this.getPosition() < MAX_POSITION_2 && this.direction == 0) {
 
             //Insert ROUND OVER HERE (Player 2 wins)
+
             this.setPosition(0);
             otherPlayer.setPosition(0);
         }
