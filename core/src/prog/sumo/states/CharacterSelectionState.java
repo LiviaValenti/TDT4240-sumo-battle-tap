@@ -15,10 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 public class CharacterSelectionState extends State {
 
@@ -49,8 +50,9 @@ public class CharacterSelectionState extends State {
     SpriteBatch batch;
     BitmapFont font;
 
-    Array<Integer> selectedCharacters;
+    public Map<Integer, Texture> playerHash = new HashMap<>();
 
+    public ArrayList<Integer> selectC = new ArrayList<>();
 
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
@@ -58,6 +60,9 @@ public class CharacterSelectionState extends State {
         playTex = new Texture("play.png");
         redTex = new Texture("redplayer.png");
         blueTex = new Texture("blueplayer.png");
+
+        playerHash.put(0, redTex);
+        playerHash.put(1, blueTex);
 
         homeDraw = new TextureRegionDrawable(homeTex);
         playDraw = new TextureRegionDrawable(playTex);
@@ -71,7 +76,6 @@ public class CharacterSelectionState extends State {
         blueB =  new ImageButton(blueDraw);
 
         stage = new Stage();
-        stage.addActor(playB);
         stage.addActor(homeB);
         stage.addActor(redB);
         stage.addActor(blueB);
@@ -132,14 +136,20 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm));
+            gsm.set(new PlayState(gsm, selectC));
+
         }
+
         if (name.equals("homeB")) {
             gsm.set(new MainMenuState(gsm));
         }
         else {
-            System.out.println(name);
-            selectedCharacters.add(getCharacterValue(name));
+            selectC.add(getCharacterValue(name));
+
+        }
+
+        if (selectC.size() == 2){
+            stage.addActor(playB);
         }
 
     }
