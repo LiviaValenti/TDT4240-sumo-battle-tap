@@ -3,7 +3,6 @@ package prog.sumo.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Map;
 
-import prog.sumo.sprites.Player;
+import prog.sumo.Player;
 
 public class PlayState extends State {
     Texture settingsWheel;
@@ -35,17 +34,16 @@ public class PlayState extends State {
     private Player player2game;
 
     public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
+
         super(gsm);
+
         shapeRenderer = new ShapeRenderer();
+
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("purplehand.png");
         hand2Tex = new Texture("greenhand.png");
-
         car1 = new Texture (playerHash.get(0));
         car2 = new Texture (playerHash.get(1));
-
-        System.out.println(car1); // add this line to check the value of car1
-        System.out.println(car2); // add this line to check the value of car2
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(hand1Tex);
@@ -56,6 +54,7 @@ public class PlayState extends State {
         hand2 = new ImageButton(player2Drawable);
 
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(settingsB);
         stage.addActor(hand1);
         stage.addActor(hand2);
@@ -65,21 +64,10 @@ public class PlayState extends State {
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
-        settingsB.setTransform(true);
-
-        Gdx.input.setInputProcessor(stage);
-
         hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth()/2,
                 0);
-        hand1.setTransform(true);
-
-        Gdx.input.setInputProcessor(stage);
-
         hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth()/2,
                 Gdx.graphics.getHeight() - hand2.getHeight());
-        hand2.setTransform(true);
-
-        Gdx.input.setInputProcessor(stage);
 
         settingsB.addListener(new ChangeListener() {
             @Override
@@ -105,20 +93,21 @@ public class PlayState extends State {
 
     @Override
     protected final void handleInput(String name) {
-        if (name.equals("settingsB")) {
-            gsm.set(new MainMenuState(gsm));
-        }
-
-        if (name.equals("player1")) {
-            //Move the car1 forward
-            player1game.movePlayer(player2game);
-            System.out.println("Player 1 button pressed");
-        }
-
-        if (name.equals("player2")) {
-            //Move the car2 forward
-            player2game.movePlayer(player1game);
-            System.out.println("Player 2 button pressed");
+        switch (name) {
+            case "settingsB":
+                gsm.set(new MainMenuState(gsm));
+                break;
+            case "player1":
+                //Calling the movePlayer method from the Player class
+                player1game.movePlayer(player2game);
+                break;
+            case "player2":
+                //Calling the movePlayer method from the Player class
+                player2game.movePlayer(player1game);
+                break;
+            default:
+                // handle invalid input
+                break;
         }
     }
 
@@ -157,8 +146,6 @@ public class PlayState extends State {
         sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2,
                 player2game.getPosition());
         sb.end();
-
-
 
         stage.draw();
         stage.act();
