@@ -28,6 +28,9 @@ public class PlayState extends State {
     ImageButton hand1, hand2;
     Stage stage;
 
+    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
+    public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
+
     private Player player1game;
     private Player player2game;
 
@@ -108,13 +111,13 @@ public class PlayState extends State {
 
         if (name.equals("player1")) {
             //Move the car1 forward
-            player1game.moveForward();
+            player1game.movePlayer(player2game);
             System.out.println("Player 1 button pressed");
         }
 
         if (name.equals("player2")) {
             //Move the car2 forward
-            player2game.moveForward();
+            player2game.movePlayer(player1game);
             System.out.println("Player 2 button pressed");
         }
     }
@@ -131,7 +134,7 @@ public class PlayState extends State {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 + 20);
+                battleCircleHeight, battleCircleRadius);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
