@@ -119,6 +119,7 @@ font-title-export
   orig: 171, 171
   offset: 0, 0
   index: -1
+  scale: 3f
 font-underline
   rotate: false
   xy: 790, 911
@@ -430,9 +431,9 @@ window-1
   index: -1
 window-2
   rotate: false
-  xy: 480, 600
-  size: 100, 90
-  split: 0, 0, 21, 0
+  xy: 433, 500
+  size: 300, 350
+  split: 0, 0, 2, 0
   pad: 2, 2, 23, 2
   orig: 45, 42
   offset: 0, 0

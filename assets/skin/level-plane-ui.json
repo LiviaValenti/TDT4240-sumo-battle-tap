@@ -780,7 +780,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	}
 	c2: {
 		background: window-2
-		titleFont: font
+		titleFont: title
+		titleFontColor: black
 
 	}
 	c3: {

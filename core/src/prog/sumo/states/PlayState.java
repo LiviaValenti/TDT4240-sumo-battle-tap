@@ -20,10 +20,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 
 public class PlayState extends State {
     Texture settingsWheel;
@@ -81,9 +83,10 @@ public class PlayState extends State {
         tutorial.add(xTutorial);
 
 
-        setPop = new Window("Settings", uiSkin, "default");
-        setPop.scaleBy(3f);
-        setPop.setPosition(Gdx.graphics.getWidth()/2-setPop.getWidth(), Gdx.graphics.getHeight() / 2);
+        setPop = new Window("Settings", uiSkin, "c2");
+        setPop.scaleBy(2);
+
+        setPop.setPosition(Gdx.graphics.getWidth()/2-setPop.getWidth()*3/2, Gdx.graphics.getHeight() / 2);
 
 
         xMenu = new TextButton("Back to game", uiSkin, "small-1");
@@ -91,7 +94,9 @@ public class PlayState extends State {
         soundBox = new CheckBox("Sound", uiSkin, "c3");
 
         Table table = new Table();
-        table.add(xMenu).width(100);
+        table.top()
+                .padTop(Value.percentWidth(.015f, table));
+        table.add(xMenu).align(Align.center).width(100).padBottom(Value.percentWidth(.015f, table));
         table.row();
         table.add(tutButton).width(100);
         table.row();
@@ -100,7 +105,7 @@ public class PlayState extends State {
         //setPop.add(xMenu);
         //setPop.add(tutButton);
         setPop.add(table);
-        setPop.pack();
+        //setPop.pack();
 
 
         settingsB.addListener(new ChangeListener() {
