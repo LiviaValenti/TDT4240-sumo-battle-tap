@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 import prog.sumo.sprites.Player;
 
+import prog.sumo.states.CharacterSelectionState;
+
 public class PlayState extends State {
     Texture settingsWheel;
     Texture player1Tex;
@@ -38,6 +40,8 @@ public class PlayState extends State {
     ImageButton settingsB;
     ImageButton player1;
 
+    Texture redPlayer;
+
     Stage stage;
 
     public PlayState(GameStateManager gsm, ArrayList<Integer> selectedC) {
@@ -46,8 +50,13 @@ public class PlayState extends State {
         settingsWheel = new Texture("settingswheel.png");
         player1Tex = new Texture("purplehand.png");
         player2Tex = new Texture("greenhand.png");
+
+
         player1sprite = new Sprite(player1Tex);
         player2sprite = new Sprite(player2Tex);
+
+
+
         //player1game = new Player();
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
@@ -148,5 +157,11 @@ public class PlayState extends State {
         settingsWheel.dispose();
         player1Tex.dispose();
         player2Tex.dispose();
+    }
+
+    public Texture getCharacter(Integer i) {
+        if (i == 0){
+
+        }
     }
 }
