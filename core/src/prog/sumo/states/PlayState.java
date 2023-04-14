@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import prog.sumo.sprites.Player;
+
 public class PlayState extends State {
     Texture settingsWheel;
     Texture player1Tex;
@@ -20,6 +22,10 @@ public class PlayState extends State {
 
     Sprite player1sprite;
     Sprite player2sprite;
+
+    private Player player1game;
+    private Player player2game;
+
     ShapeRenderer shapeRenderer;
 
     Drawable settingsWheelDrawable;
@@ -39,6 +45,7 @@ public class PlayState extends State {
         player2Tex = new Texture("greenhand.png");
         player1sprite = new Sprite(player1Tex);
         player2sprite = new Sprite(player2Tex);
+        //player1game = new Player();
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(player1Tex);
