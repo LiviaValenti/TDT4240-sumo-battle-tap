@@ -3,19 +3,14 @@ package prog.sumo.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureArray;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ArraySelection;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,35 +18,31 @@ import java.util.Map;
 
 public class CharacterSelectionState extends State {
 
-    Texture homeTex;
-    Texture playTex;
+    //Texture for home-button and play-button
+    Texture homeTex, playTex;
 
-    public Texture redTex;
-    public Texture blueTex;
+    //Texture for the different characters
+    Texture redTex, blueTex, greenTex, yellowTex, pinkTex, purpleTex;
 
+    //Drawable for home-button and play-button
+    Drawable homeDraw, playDraw;
 
-    Drawable homeDraw;
-    Drawable playDraw;
-    Drawable redDraw;
-    Drawable blueDraw;
+    //Drawable for the different characters
+    Drawable redDraw, blueDraw, greenDraw, yellowDraw, pinkDraw, purpleDraw;
 
-    ImageButton homeB;
-    ImageButton playB;
+    //ImageButtons for home-button and play-button
+    ImageButton homeB, playB;
 
-    ImageButton redB;
-
-    ImageButton blueB;
+    //ImageButtons for the different characters
+    ImageButton redB, blueB, greenB, yellowB, pinkB, purpleB;
 
     Stage stage;
 
     SpriteBatch batch;
     BitmapFont font;
 
-    public Map<Integer, Texture> playerHash = new HashMap<>();
-
+    public Map<Integer, String> playerHash = new HashMap<>();
     public ArrayList<Integer> selectC = new ArrayList<>();
-    
-
 
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
@@ -59,26 +50,37 @@ public class CharacterSelectionState extends State {
         playTex = new Texture("play.png");
         redTex = new Texture("redplayer.png");
         blueTex = new Texture("blueplayer.png");
-
-        playerHash.put(0, redTex);
-        playerHash.put(1, blueTex);
+        greenTex = new Texture("greenplayer.png");
+        purpleTex = new Texture("purpleplayer.png");
+        yellowTex = new Texture("yellowplayer.png");
+        pinkTex = new Texture("pinkplayer.png");
 
         homeDraw = new TextureRegionDrawable(homeTex);
         playDraw = new TextureRegionDrawable(playTex);
         redDraw = new TextureRegionDrawable(redTex);
         blueDraw = new TextureRegionDrawable(blueTex);
-
+        greenDraw = new TextureRegionDrawable(greenTex);
+        yellowDraw = new TextureRegionDrawable(yellowTex);
+        pinkDraw = new TextureRegionDrawable(pinkTex);
+        purpleDraw = new TextureRegionDrawable(purpleTex);
 
         homeB = new ImageButton(homeDraw);
         playB = new ImageButton(playDraw);
         redB =  new ImageButton(redDraw);
         blueB =  new ImageButton(blueDraw);
+        greenB =  new ImageButton(greenDraw);
+        yellowB =  new ImageButton(yellowDraw);
+        pinkB =  new ImageButton(pinkDraw);
+        purpleB =  new ImageButton(purpleDraw);
 
         stage = new Stage();
         stage.addActor(homeB);
         stage.addActor(redB);
         stage.addActor(blueB);
-
+        stage.addActor(greenB);
+        stage.addActor(yellowB);
+        stage.addActor(pinkB);
+        stage.addActor(purpleB);
 
         playB.setPosition(Gdx.graphics.getWidth() - playB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - playB.getHeight() / 2);
@@ -88,13 +90,29 @@ public class CharacterSelectionState extends State {
                 Gdx.graphics.getHeight() / 2 - homeB.getHeight() / 2);
         homeB.setTransform(true);
 
-        redB.setPosition(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 + 180);
+        redB.setPosition(Gdx.graphics.getWidth() / 2 - 50,
+                Gdx.graphics.getHeight() / 2 + 400);
         redB.setTransform(true);
 
-        blueB.setPosition(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - 400);
+        blueB.setPosition(Gdx.graphics.getWidth() / 2 - 50,
+                Gdx.graphics.getHeight() / 2 - 600);
         blueB.setTransform(true);
+
+        greenB.setPosition(Gdx.graphics.getWidth() / 4 - 50,
+                Gdx.graphics.getHeight() / 2 + 400);
+        greenB.setTransform(true);
+
+        yellowB.setPosition(Gdx.graphics.getWidth() / 2 + 220,
+                Gdx.graphics.getHeight() / 2 + 400);
+        yellowB.setTransform(true);
+
+        pinkB.setPosition(Gdx.graphics.getWidth() / 2 + 220,
+                Gdx.graphics.getHeight() / 2 - 600);
+        pinkB.setTransform(true);
+
+        purpleB.setPosition(Gdx.graphics.getWidth() / 4 - 50,
+                Gdx.graphics.getHeight() / 2 - 600);
+        purpleB.setTransform(true);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -123,7 +141,30 @@ public class CharacterSelectionState extends State {
                 handleInput("blueB");
             }
         });
-
+        greenB.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("greenB");
+            }
+        });
+        yellowB.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("yellowB");
+            }
+        });
+        pinkB.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("pinkB");
+            }
+        });
+        purpleB.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("purpleB");
+            }
+        });
 
         batch = new SpriteBatch();
         font = new BitmapFont();
@@ -135,22 +176,18 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm));
-
+            gsm.set(new PlayState(gsm, playerHash));
         }
-
         if (name.equals("homeB")) {
             gsm.set(new MainMenuState(gsm));
         }
         else {
-            selectC.add(getCharacterValue(name));
-
+            //Add the character to the playerHash
+            playerHash.put(getCharacterValue(name), getCharacterString(name));
         }
-
-        if (selectC.size() == 2){
+        if (playerHash.size() == 2){
             stage.addActor(playB);
         }
-
     }
 
     @Override
@@ -165,11 +202,18 @@ public class CharacterSelectionState extends State {
         stage.draw();
         stage.act();
         batch.begin();
-        font.draw(batch, "Choose your character!", Gdx.graphics.getWidth()/5 ,
-                Gdx.graphics.getHeight() / 2 - homeB.getHeight());
+
+        //Draw the text in black and in smaller font and centered
+        font.getData().setScale(4f);
+        font.setColor(0, 0, 0, 1);
+        font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth()/8 ,
+                Gdx.graphics.getHeight() / 2 - 300);
+        //Make the font twisted 180 degrees
+
+        font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth()/8 ,
+                Gdx.graphics.getHeight() / 2 + 300);
+
         batch.end();
-
-
     }
 
     @Override
@@ -178,23 +222,45 @@ public class CharacterSelectionState extends State {
         playTex.dispose();
         redTex.dispose();
         blueTex.dispose();
-
+        greenTex.dispose();
+        yellowTex.dispose();
+        pinkTex.dispose();
+        purpleTex.dispose();
     }
 
     public Integer getCharacterValue(String c) {
         Integer value = 0;
-        if (c == "redB"){
+        if (c == "redB" || c == "greenB" || c == "yellowB"){
             value = 0;
         }
-        if (c == "blueB"){
+        if (c == "blueB" || c == "pinkB" || c == "purpleB"){
             value = 1;
-
         }
         return value;
     }
 
-    public HashMap<Integer, Texture> getPlayerHash(){
-        return (HashMap<Integer, Texture>) playerHash;
+
+    public String getCharacterString(String c){
+        String color = "";
+        if (c == "redB"){
+            color = "redplayer.png";
+        }
+        if (c == "blueB"){
+            color = "blueplayer.png";
+        }
+        if (c == "greenB"){
+            color = "greenplayer.png";
+        }
+        if (c == "yellowB"){
+            color = "yellowplayer.png";
+        }
+        if (c == "pinkB"){
+            color = "pinkplayer.png";
+        }
+        if (c == "purpleB"){
+            color = "purpleplayer.png";
+        }
+        return color;
     }
 
 }
