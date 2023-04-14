@@ -14,19 +14,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+//import the hashmap from the character selection state
+
+import prog.sumo.states.CharacterSelectionState.*;
+
 import java.util.ArrayList;
 
 import prog.sumo.sprites.Player;
-
-import prog.sumo.states.CharacterSelectionState;
 
 public class PlayState extends State {
     Texture settingsWheel;
     Texture player1Tex;
     Texture player2Tex;
 
+    Texture car1;
+    Texture car2;
+
     Sprite player1sprite;
     Sprite player2sprite;
+
+    Sprite car1sprite;
+    Sprite car2sprite;
 
     private Player player1game;
     private Player player2game;
@@ -35,16 +43,18 @@ public class PlayState extends State {
 
     Drawable settingsWheelDrawable;
     Drawable player1Drawable;
+    Drawable player2Drawable;
 
 
     ImageButton settingsB;
     ImageButton player1;
+    ImageButton player2;
 
-    Texture redPlayer;
 
     Stage stage;
 
-    public PlayState(GameStateManager gsm, ArrayList<Integer> selectedC) {
+
+    public PlayState(GameStateManager gsm) {
         super(gsm);
         shapeRenderer = new ShapeRenderer();
         settingsWheel = new Texture("settingswheel.png");
@@ -55,20 +65,27 @@ public class PlayState extends State {
         player1sprite = new Sprite(player1Tex);
         player2sprite = new Sprite(player2Tex);
 
+        CharacterSelectionState characterSelectionState = new CharacterSelectionState(gsm);
 
+        car1 = characterSelectionState.playerHash.get(0);
+        car2 = characterSelectionState.playerHash.get(1);
 
-        //player1game = new Player();
+        car1sprite = new Sprite(car1);
+        car2sprite = new Sprite(car2);
+
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(player1Tex);
-
+        player2Drawable = new TextureRegionDrawable(player2Tex);
 
         settingsB = new ImageButton(settingsWheelDrawable);
         player1 = new ImageButton(player1Drawable);
+        player2 = new ImageButton(player2Drawable);
 
         stage = new Stage();
         stage.addActor(settingsB);
         stage.addActor(player1);
+        stage.addActor(player2);
 
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
@@ -81,6 +98,12 @@ public class PlayState extends State {
         player1.setPosition(Gdx.graphics.getWidth() / 2 - player1.getWidth()/2,
                 0);
         player1.setTransform(true);
+
+        Gdx.input.setInputProcessor(stage);
+
+        player2.setPosition(Gdx.graphics.getWidth() / 2 - player2.getWidth()/2,
+                Gdx.graphics.getHeight() - player2.getHeight());
+        player2.setTransform(true);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -98,6 +121,13 @@ public class PlayState extends State {
             }
         });
 
+        player2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("player2");
+            }
+        });
+
     }
 
     @Override
@@ -105,8 +135,19 @@ public class PlayState extends State {
         if (name.equals("settingsB")) {
             gsm.set(new MainMenuState(gsm));
         }
+
         if (name.equals("player1")) {
-            // Move player in gamestate
+            //Call the player class and pass in the player1sprite
+            //console log that the button was pressed
+            System.out.println("Player 1 button pressed");
+
+        }
+
+        if (name.equals("player2")) {
+            //Call the player class and pass in the player1sprite
+            //console log that the button was pressed
+            System.out.println("Player 2 button pressed");
+
         }
     }
 
@@ -139,12 +180,12 @@ public class PlayState extends State {
         shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
         sb.begin();
-        //sb.draw(settingsWheel, Gdx.graphics.getWidth() -
-        // settingsWheel.getWidth(),
-        // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
-        //sb.draw(player1sprite,
-         //       Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
-        sb.draw(player2sprite,
+
+        sb.draw(car1sprite,
+                Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
+                300);
+
+        sb.draw(car2sprite,
                 Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
                 Gdx.graphics.getHeight() - player2sprite.getHeight());
         sb.end();
@@ -159,9 +200,4 @@ public class PlayState extends State {
         player2Tex.dispose();
     }
 
-    public Texture getCharacter(Integer i) {
-        if (i == 0){
-
-        }
-    }
 }
