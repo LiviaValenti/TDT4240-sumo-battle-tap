@@ -30,7 +30,6 @@ public class CharacterSelectionState extends State {
     public Texture blueTex;
 
 
-
     Drawable homeDraw;
     Drawable playDraw;
     Drawable redDraw;
@@ -51,6 +50,8 @@ public class CharacterSelectionState extends State {
     public Map<Integer, Texture> playerHash = new HashMap<>();
 
     public ArrayList<Integer> selectC = new ArrayList<>();
+    
+
 
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
@@ -134,7 +135,7 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm, selectC));
+            gsm.set(new PlayState(gsm));
 
         }
 
@@ -190,6 +191,10 @@ public class CharacterSelectionState extends State {
 
         }
         return value;
+    }
+
+    public HashMap<Integer, Texture> getPlayerHash(){
+        return (HashMap<Integer, Texture>) playerHash;
     }
 
 }
