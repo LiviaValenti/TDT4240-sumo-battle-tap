@@ -57,6 +57,9 @@ public class PlayState extends State {
         stage.addActor(hand1);
         stage.addActor(hand2);
 
+        player1game = new Player(car1, 1);
+        player2game = new Player(car2, 0);
+
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
         settingsB.setTransform(true);
@@ -104,10 +107,14 @@ public class PlayState extends State {
         }
 
         if (name.equals("player1")) {
+            //Move the car1 forward
+            player1game.moveForward();
             System.out.println("Player 1 button pressed");
         }
 
         if (name.equals("player2")) {
+            //Move the car2 forward
+            player2game.moveForward();
             System.out.println("Player 2 button pressed");
         }
     }
@@ -142,12 +149,13 @@ public class PlayState extends State {
         shapeRenderer.end();
 
         sb.begin();
-        sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2,
-                Gdx.graphics.getHeight() / 4 - car2.getHeight() / 2);
-
         sb.draw(car1, Gdx.graphics.getWidth() / 2 - car1.getWidth() / 2,
-                Gdx.graphics.getHeight() / 4 * 3 - car1.getHeight() / 2);
+                player1game.getPosition());
+        sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2,
+                player2game.getPosition());
         sb.end();
+
+
 
         stage.draw();
         stage.act();

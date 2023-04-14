@@ -1,5 +1,6 @@
 package prog.sumo.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -8,18 +9,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public final class Player {
 
-    private Texture player1game;
-
-    private Sprite player1sprite;
     /**
      * The maximum position a player can have.
      */
-    private static final int MAX_POSITION = 4;
+    private static final int MAX_POSITION = Gdx.graphics.getHeight() / 4 * 3;
 
     /**
      * The player's position.
      */
     private int position;
+
+    private int stepSize = 30;
 
     /**
      * The player's direction.
@@ -41,9 +41,9 @@ public final class Player {
         this.texture = playerTexture;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = 0;
+            position = Gdx.graphics.getHeight() / 4 - playerTexture.getHeight() / 2;
         } else {
-            position = MAX_POSITION;
+            position = Gdx.graphics.getHeight() / 4 * 3 - playerTexture.getHeight() / 2;
         }
     }
 
@@ -52,9 +52,9 @@ public final class Player {
      */
     public void moveForward() {
         if (direction == 1) {
-            position++;
+            position += stepSize;
         } else {
-            position--;
+            position -= stepSize;
         }
     }
 
@@ -63,9 +63,9 @@ public final class Player {
      */
     public void moveBackward() {
         if (direction == 1) {
-            position--;
+            position -= stepSize;
         } else {
-            position++;
+            position += stepSize;
         }
     }
 
