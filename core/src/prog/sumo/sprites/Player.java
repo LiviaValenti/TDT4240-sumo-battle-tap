@@ -1,11 +1,16 @@
-package prog.sumo;
+package prog.sumo.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * Represents a player in the sumo game.
  */
 public final class Player {
+
+    private Texture player1game;
+
+    private Sprite player1sprite;
     /**
      * The maximum position a player can have.
      */
