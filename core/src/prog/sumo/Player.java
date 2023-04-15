@@ -1,5 +1,6 @@
 package prog.sumo;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import prog.sumo.states.PlayState;
 
@@ -12,8 +13,8 @@ public final class Player {
      * The maximum position a player can have.
      */
 
-    private static final int MAX_POSITION_1 = PlayState.battleCircleHeight + PlayState.battleCircleRadius - 300;
-    private static final int MAX_POSITION_2 = PlayState.battleCircleHeight - PlayState.battleCircleRadius + 150;
+    private static final int MAX_POSITION_1 = Gdx.graphics.getHeight()/2 + PlayState.battleCircleRadius - 260;
+    private static final int MAX_POSITION_2 = Gdx.graphics.getHeight()/2 - PlayState.battleCircleRadius;
 
     /**
      * The player's position.
@@ -42,9 +43,9 @@ public final class Player {
         this.texture = playerTexture;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = MAX_POSITION_2 - texture.getHeight();
+            position = MAX_POSITION_2;
         } else {
-            position = MAX_POSITION_1 + texture.getHeight();
+            position = MAX_POSITION_1;
         }
     }
 
@@ -83,18 +84,12 @@ public final class Player {
             this.moveForward();
         }
 
-        if (this.getPosition() > MAX_POSITION_1 && this.direction == 1) {
-
-            //Insert ROUND OVER HERE (Player 1 wins)
-
-            this.setPosition(MAX_POSITION_2 - texture.getHeight());
-            otherPlayer.setPosition(MAX_POSITION_1 + texture.getHeight());
-        } else if (this.getPosition() < MAX_POSITION_2 && this.direction == 0) {
-
-            //Insert ROUND OVER HERE (Player 2 wins)
-
-            this.setPosition(MAX_POSITION_1 + texture.getHeight());
-            otherPlayer.setPosition(MAX_POSITION_2 - texture.getHeight());
+        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1 && this.direction == 1) {
+            //Player 1 wins
+            roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
+        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2 && this.direction == 0) {
+            //Player 2 wins
+            roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
         }
     }
 
@@ -123,5 +118,13 @@ public final class Player {
      */
     public Texture getTexture() {
         return texture;
+    }
+
+    private void roundOver(Player otherPlayer, int thisPosition, int otherPosition) {
+
+        //Insert ROUND OVER HERE
+
+        this.setPosition(thisPosition);
+        otherPlayer.setPosition(otherPosition);
     }
 }

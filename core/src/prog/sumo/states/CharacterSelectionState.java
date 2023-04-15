@@ -71,12 +71,12 @@ public class CharacterSelectionState extends State {
         // Set button positions
         buttons[1].setPosition(Gdx.graphics.getWidth() - buttons[1].getWidth(), Gdx.graphics.getHeight() / 2 - buttons[1].getHeight() / 2);
         buttons[0].setPosition(buttons[0].getWidth() / 3, Gdx.graphics.getHeight() / 2 - buttons[0].getHeight() / 2);
-        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 400);
+        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 + 400);
         buttons[3].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 + 400);
-        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 50, Gdx.graphics.getHeight() / 2 + 400);
-        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 600);
+        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 150, Gdx.graphics.getHeight() / 2 + 400);
+        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 600);
         buttons[6].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 - 600);
-        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 50, Gdx.graphics.getHeight() / 2 - 600);
+        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 150, Gdx.graphics.getHeight() / 2 - 600);
 
         // Set input processor
         Gdx.input.setInputProcessor(stage);
@@ -157,7 +157,7 @@ public class CharacterSelectionState extends State {
         font.getData().setScale(4f);
         font.setColor(0, 0, 0, 1);
         font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth()/8 ,
-                Gdx.graphics.getHeight() / 2 - 300);
+                Gdx.graphics.getHeight() / 2 - 250);
 
         font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth()/8 ,
                 Gdx.graphics.getHeight() / 2 + 300);
@@ -165,15 +165,15 @@ public class CharacterSelectionState extends State {
         //If the map contains a key 0, draw an X on top of the player's character
         if (playerHash.containsKey(0)) {
             font.getData().setScale(13f);
-            font.draw(batch, "O", firstPlayerX,
-                    Gdx.graphics.getHeight() / 2 - 450);
+            font.draw(batch, "X", firstPlayerX + 50,
+                    Gdx.graphics.getHeight() / 2 - 400);
         }
         //If the map contains a key 1, draw a black rectangle around the player's character
         if (playerHash.containsKey(1)) {
             //Set font size to 10
             font.getData().setScale(13f);
-            font.draw(batch, "O", secondPlayerX ,
-                    Gdx.graphics.getHeight() / 2 + 550);
+            font.draw(batch, "X", secondPlayerX + 50,
+                    Gdx.graphics.getHeight() / 2 + 600);
         }
 
         batch.end();
