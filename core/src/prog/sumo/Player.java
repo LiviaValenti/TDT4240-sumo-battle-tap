@@ -20,7 +20,7 @@ public final class Player {
      */
     private int position;
 
-    private int stepSize = 30;
+    private int stepSize = 50;
 
     /**
      * The player's direction.
@@ -87,14 +87,14 @@ public final class Player {
 
             //Insert ROUND OVER HERE (Player 1 wins)
 
-            this.setPosition(0);
-            otherPlayer.setPosition(0);
+            this.setPosition(MAX_POSITION_2 - texture.getHeight());
+            otherPlayer.setPosition(MAX_POSITION_1 + texture.getHeight());
         } else if (this.getPosition() < MAX_POSITION_2 && this.direction == 0) {
 
             //Insert ROUND OVER HERE (Player 2 wins)
 
-            this.setPosition(0);
-            otherPlayer.setPosition(0);
+            this.setPosition(MAX_POSITION_1 + texture.getHeight());
+            otherPlayer.setPosition(MAX_POSITION_2 - texture.getHeight());
         }
     }
 
