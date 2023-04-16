@@ -26,7 +26,7 @@ public class ScoreBoardState extends State {
     ImageButton backB;
     Stage stage;
     BitmapFont font;
-    private Map<String, Long> scores;
+    private final Map<String, Long> scores;
 
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
@@ -85,11 +85,13 @@ public class ScoreBoardState extends State {
                 Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f,
                 Gdx.graphics.getHeight() - scoboTitle.getHeight());
 
-        final float xOffset = Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f;
+        final float xOffset =
+                Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f;
         float yOffset = Gdx.graphics.getHeight() - scoboTitle.getHeight();
         for (Map.Entry<String, Long> score : scores.entrySet()) {
             font.draw(sb, score.getKey(), xOffset, yOffset);
-            font.draw(sb, score.getValue().toString(), Gdx.graphics.getWidth() - xOffset, yOffset);
+            font.draw(sb, score.getValue().toString(),
+                    Gdx.graphics.getWidth() - xOffset, yOffset);
             yOffset -= font.getLineHeight() * 1.5f;
         }
         sb.end();
