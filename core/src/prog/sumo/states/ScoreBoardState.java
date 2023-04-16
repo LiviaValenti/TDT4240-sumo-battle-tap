@@ -43,7 +43,8 @@ public class ScoreBoardState extends State {
 
         backB = new ImageButton(backButtonDrawable);
 
-        backB.setPosition(backB.getWidth(), Gdx.graphics.getHeight() - backB.getHeight() * 5);
+        backB.setPosition(backB.getWidth(),
+                Gdx.graphics.getHeight() - backB.getHeight() * 5);
         backB.setTransform(true);
         backB.setScale(4f);
 
@@ -84,14 +85,26 @@ public class ScoreBoardState extends State {
         stage.draw();
         stage.act();
         sb.begin();
-        sb.draw(scoboTitle, Gdx.graphics.getWidth() / 2 - scoboTitle.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight());
-        sb.draw(angelTex, angelTex.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight() - angelTex.getHeight());
-        sb.draw(constructionTex, angelTex.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight() - angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
-        sb.draw(eggplantTex, angelTex.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight() - angelTex.getHeight() * 4);
-        sb.draw(deafTex, angelTex.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight() - angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
+        sb.draw(scoboTitle,
+                Gdx.graphics.getWidth() / 2 - scoboTitle.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight());
+        sb.draw(angelTex, angelTex.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
+                        angelTex.getHeight());
+        sb.draw(constructionTex, angelTex.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
+                        angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
+        sb.draw(eggplantTex, angelTex.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
+                        angelTex.getHeight() * 4);
+        sb.draw(deafTex, angelTex.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
+                        angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
         sb.end();
         batch.begin();
-        font.draw(batch, "200 points", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - scoboTitle.getHeight() - angelTex.getHeight() / 2);
+        font.draw(batch, "200 points", Gdx.graphics.getWidth() / 2,
+                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
+                        angelTex.getHeight() / 2);
         batch.end();
     }
 

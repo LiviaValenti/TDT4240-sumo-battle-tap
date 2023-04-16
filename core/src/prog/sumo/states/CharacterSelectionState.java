@@ -17,29 +17,23 @@ import java.util.Map;
 
 public class CharacterSelectionState extends State {
 
-    private final String[] colors = new String[]{
-            "red",
-            "green",
-            "yellow",
-            "pink",
-            "purple",
-            "blue"
-    };
+    private final String[] colors =
+            new String[] {"red", "green", "yellow", "pink", "purple", "blue"};
 
     // Initialize textures and drawables
-    private final Texture[] buttonTextures = new Texture[]{
-            new Texture("home.png"),
-            new Texture("play.png"),
+    private final Texture[] buttonTextures =
+            new Texture[] {new Texture("home.png"), new Texture("play.png"),
 
-            new Texture("redplayer.png"),
-            new Texture("greenplayer.png"),
-            new Texture("yellowplayer.png"),
-            new Texture("pinkplayer.png"),
-            new Texture("purpleplayer.png"),
-            new Texture("blueplayer.png"),
-    };
-    private final Drawable[] buttonDrawables = new Drawable[buttonTextures.length];
-    private final ImageButton[] buttons = new ImageButton[buttonTextures.length];
+                    new Texture("redplayer.png"),
+                    new Texture("greenplayer.png"),
+                    new Texture("yellowplayer.png"),
+                    new Texture("pinkplayer.png"),
+                    new Texture("purpleplayer.png"),
+                    new Texture("blueplayer.png"),};
+    private final Drawable[] buttonDrawables =
+            new Drawable[buttonTextures.length];
+    private final ImageButton[] buttons =
+            new ImageButton[buttonTextures.length];
 
     // Stage, sprite batch, and font
     private final Stage stage = new Stage();
@@ -66,14 +60,22 @@ public class CharacterSelectionState extends State {
         }
 
         // Set button positions
-        buttons[1].setPosition(Gdx.graphics.getWidth() - buttons[1].getWidth(), Gdx.graphics.getHeight() / 2 - buttons[1].getHeight() / 2);
-        buttons[0].setPosition(buttons[0].getWidth() / 3, Gdx.graphics.getHeight() / 2 - buttons[0].getHeight() / 2);
-        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 + 400);
-        buttons[3].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 + 400);
-        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 150, Gdx.graphics.getHeight() / 2 + 400);
-        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 600);
-        buttons[6].setPosition(Gdx.graphics.getWidth() / 2 + 220, Gdx.graphics.getHeight() / 2 - 600);
-        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 150, Gdx.graphics.getHeight() / 2 - 600);
+        buttons[1].setPosition(Gdx.graphics.getWidth() - buttons[1].getWidth(),
+                Gdx.graphics.getHeight() / 2 - buttons[1].getHeight() / 2);
+        buttons[0].setPosition(buttons[0].getWidth() / 3,
+                Gdx.graphics.getHeight() / 2 - buttons[0].getHeight() / 2);
+        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 100,
+                Gdx.graphics.getHeight() / 2 + 400);
+        buttons[3].setPosition(Gdx.graphics.getWidth() / 2 + 220,
+                Gdx.graphics.getHeight() / 2 + 400);
+        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 150,
+                Gdx.graphics.getHeight() / 2 + 400);
+        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 100,
+                Gdx.graphics.getHeight() / 2 - 600);
+        buttons[6].setPosition(Gdx.graphics.getWidth() / 2 + 220,
+                Gdx.graphics.getHeight() / 2 - 600);
+        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 150,
+                Gdx.graphics.getHeight() / 2 - 600);
 
         // Set input processor
         Gdx.input.setInputProcessor(stage);
@@ -153,10 +155,12 @@ public class CharacterSelectionState extends State {
         batch.begin();
         font.getData().setScale(4f);
         font.setColor(0, 0, 0, 1);
-        font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth() / 8,
+        font.draw(batch, "Player 1: Choose your character!",
+                Gdx.graphics.getWidth() / 8,
                 Gdx.graphics.getHeight() / 2 - 250);
 
-        font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth() / 8,
+        font.draw(batch, "Player 2: Choose your character!",
+                Gdx.graphics.getWidth() / 8,
                 Gdx.graphics.getHeight() / 2 + 300);
 
         //If the map contains a key 0, draw an X on top of the player's character

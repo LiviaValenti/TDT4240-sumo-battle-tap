@@ -14,8 +14,10 @@ public final class Player {
      * The maximum position a player can have.
      */
 
-    private static final int MAX_POSITION_1 = Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius - 260;
-    private static final int MAX_POSITION_2 = Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
+    private static final int MAX_POSITION_1 =
+            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius - 260;
+    private static final int MAX_POSITION_2 =
+            Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
 
     /**
      * The player's position.
@@ -78,17 +80,21 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) <= this.texture.getHeight()) {
+        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) <=
+                this.texture.getHeight()) {
             this.moveForward();
             otherPlayer.moveBackward();
         } else {
             this.moveForward();
         }
 
-        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1 && this.direction == 1) {
+        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1 &&
+                this.direction == 1) {
             //Player 1 wins
             roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
-        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2 && this.direction == 0) {
+        } else if (
+                this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2 &&
+                        this.direction == 0) {
             //Player 2 wins
             roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
         }
@@ -121,7 +127,8 @@ public final class Player {
         return texture;
     }
 
-    private void roundOver(Player otherPlayer, int thisPosition, int otherPosition) {
+    private void roundOver(Player otherPlayer, int thisPosition,
+                           int otherPosition) {
 
         //Insert ROUND OVER HERE
 
