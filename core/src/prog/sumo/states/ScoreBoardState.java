@@ -89,22 +89,22 @@ public class ScoreBoardState extends State {
                 Gdx.graphics.getWidth() / 2 - scoboTitle.getWidth() / 2,
                 Gdx.graphics.getHeight() - scoboTitle.getHeight());
         sb.draw(angelTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
-                        angelTex.getHeight());
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight());
         sb.draw(constructionTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
-                        angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
         sb.draw(eggplantTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
-                        angelTex.getHeight() * 4);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 4);
         sb.draw(deafTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
-                        angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
         sb.end();
         batch.begin();
         font.draw(batch, "200 points", Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight() -
-                        angelTex.getHeight() / 2);
+                Gdx.graphics.getHeight() - scoboTitle.getHeight()
+                        - angelTex.getHeight() / 2);
         batch.end();
     }
 

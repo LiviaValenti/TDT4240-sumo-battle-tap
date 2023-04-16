@@ -22,9 +22,7 @@ public class CharacterSelectionState extends State {
 
     // Initialize textures and drawables
     private final Texture[] buttonTextures =
-            new Texture[] {
-                    new Texture("home.png"),
-                    new Texture("play.png"),
+            new Texture[] {new Texture("home.png"), new Texture("play.png"),
                     new Texture("redplayer.png"),
                     new Texture("greenplayer.png"),
                     new Texture("pinkplayer.png"),
@@ -55,7 +53,7 @@ public class CharacterSelectionState extends State {
         for (int i = 0; i < buttonTextures.length; i++) {
             buttonDrawables[i] = new TextureRegionDrawable(buttonTextures[i]);
             buttons[i] = new ImageButton(buttonDrawables[i]);
-            //Waiting to add the Play button to the stage
+            // Waiting to add the Play button to the stage
             if (i != 1) {
                 stage.addActor(buttons[i]);
             }
@@ -119,25 +117,30 @@ public class CharacterSelectionState extends State {
             gsm.set(new MainMenuState(gsm));
         }
 
-        // If name equals the first half of the color array, add key 1 to the playerHash map
+        // If name equals the first half of the color array,
+        // add key 1 to the playerHash map
         for (int i = 0; i < colors.length / 2; i++) {
             if (name.equals(colors[i] + "player.png")) {
                 playerHash.put(1, name);
-                //Set the position of xCoordinates to the x position of the button
+                // Set the position of xCoordinates to the
+                // x position of the button
                 secondPlayerX = (int) buttons[i + 2].getX();
             }
         }
 
-        // If name equals the second half of the color array, add key 0 to the playerHash map
+        // If name equals the second half of the color array,
+        // add key 0 to the playerHash map
         for (int i = colors.length / 2; i < colors.length; i++) {
             if (name.equals(colors[i] + "player.png")) {
                 playerHash.put(0, name);
-                //Set the position of xCoordinates to the x position of the button
+                //Set the position of xCoordinates to the
+                // x position of the button
                 firstPlayerX = (int) buttons[i + 2].getX();
             }
         }
 
-        // If both players have chosen a color, the play button is added to the stage
+        // If both players have chosen a color,
+        // the play button is added to the stage
         if (playerHash.size() == 2) {
             stage.addActor(buttons[1]);
         }
@@ -165,13 +168,15 @@ public class CharacterSelectionState extends State {
                 Gdx.graphics.getWidth() / 8,
                 Gdx.graphics.getHeight() / 2 + 300);
 
-        //If the map contains a key 0, draw an X on top of the player's character
+        // If the map contains a key 0,
+        // draw an X on top of the player's character
         if (playerHash.containsKey(0)) {
             font.getData().setScale(25f);
             font.draw(batch, "O", firstPlayerX - 20,
                     Gdx.graphics.getHeight() / 2 - 300);
         }
-        //If the map contains a key 1, draw a black rectangle around the player's character
+        //If the map contains a key 1,
+        // draw a black rectangle around the player's character
         if (playerHash.containsKey(1)) {
             //Set font size to 10
             font.getData().setScale(25f);

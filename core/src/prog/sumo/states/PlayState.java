@@ -28,8 +28,8 @@ public class PlayState extends State {
     ImageButton settingsB;
     ImageButton hand1, hand2;
     Stage stage;
-    private Player player1game;
-    private Player player2game;
+    private final Player player1game;
+    private final Player player2game;
 
     public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
 

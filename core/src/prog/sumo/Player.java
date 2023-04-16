@@ -19,23 +19,19 @@ public final class Player {
                     - PlayState.car1.getHeight();
     private static final int MAX_POSITION_2 =
             Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
-
+    private final int stepSize = PlayState.battleCircleHeight / 10;
+    /**
+     * The player's direction.
+     */
+    private final int direction;
+    /**
+     * The player's texture.
+     */
+    private final Texture texture;
     /**
      * The player's position.
      */
     private int position;
-
-    private int stepSize = PlayState.battleCircleHeight / 10;
-
-    /**
-     * The player's direction.
-     */
-    private int direction;
-
-    /**
-     * The player's texture.
-     */
-    private Texture texture;
 
     /**
      * Constructs a new Player.
@@ -81,21 +77,20 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) <=
-                this.texture.getHeight()) {
+        if (Math.abs(otherPlayer.getPosition() - this.getPosition())
+                <= this.texture.getHeight()) {
             this.moveForward();
             otherPlayer.moveBackward();
         } else {
             this.moveForward();
         }
 
-        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1 &&
-                this.direction == 1) {
+        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
+                && this.direction == 1) {
             //Player 1 wins
             roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
-        } else if (
-                this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2 &&
-                        this.direction == 0) {
+        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2
+                && this.direction == 0) {
             //Player 2 wins
             roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
         }
@@ -131,7 +126,7 @@ public final class Player {
     private void roundOver(Player otherPlayer, int thisPosition,
                            int otherPosition) {
 
-        // TODO: INCREMENT WHEN ROUND IS OVER
+        // todo: INCREMENT WHEN ROUND IS OVER
 
         this.setPosition(thisPosition);
         otherPlayer.setPosition(otherPosition);
