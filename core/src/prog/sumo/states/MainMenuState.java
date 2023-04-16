@@ -18,25 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuState extends State {
-    Texture playButtonTex;
-    Texture scoreBoardButtonTex;
-    Texture tutorialButtonTex;
-    Texture logo;
-
-    Drawable playButtonDrawable;
-    Drawable scoreBoardButtonDrawable;
-    Drawable tutorialButtonDrawable;
-
+    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo;
+    Drawable playButtonDrawable, scoreBoardButtonDrawable,
+            tutorialButtonDrawable;
     Stage stage;
-
-    ImageButton playButton;
-    ImageButton scoreBoardButton;
-    ImageButton tutorialButton;
-
+    ImageButton playButton, scoreBoardButton, tutorialButton;
     Dialog tutPop;
-
     ImageButton closeTut;
-
 
     public MainMenuState(GameStateManager gsm) {
         super(gsm);
@@ -54,7 +42,6 @@ public class MainMenuState extends State {
         scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
         tutorialButton = new ImageButton(tutorialButtonDrawable);
 
-
         playButton.setPosition(
                 Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
                 tutorialButton.getHeight() + scoreBoardButton.getHeight() * 4);
@@ -71,12 +58,10 @@ public class MainMenuState extends State {
         tutorialButton.setTransform(true);
         tutorialButton.setScale(2f);
 
-
         stage = new Stage();
         stage.addActor(playButton);
         stage.addActor(scoreBoardButton);
         stage.addActor(tutorialButton);
-
 
         Gdx.input.setInputProcessor(stage);
 
@@ -115,7 +100,6 @@ public class MainMenuState extends State {
         float tutX = tutPop.getOriginX() + tutPop.getWidth();
         float tutY = tutPop.getOriginY() + tutPop.getHeight();
 
-
         closeTut = new ImageButton(scoreBoardButtonDrawable);
         closeTut.addListener(new ChangeListener() {
             @Override
@@ -130,9 +114,7 @@ public class MainMenuState extends State {
         tutPop.button(closeTut);
 
         // tutPop.add(closeTut);
-
     }
-
 
     @Override
     protected final void handleInput(String name) {
@@ -150,7 +132,6 @@ public class MainMenuState extends State {
         }
 
     }
-
 
     @Override
     public void update(float dt) {
@@ -176,5 +157,4 @@ public class MainMenuState extends State {
         tutorialButtonTex.dispose();
         logo.dispose();
     }
-
 }

@@ -1,30 +1,37 @@
 package prog.sumo;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+
+import prog.sumo.states.PlayState;
 
 /**
  * Represents a player in the sumo game.
  */
 public final class Player {
+
     /**
      * The maximum position a player can have.
      */
-    private static final int MAX_POSITION = 4;
 
+    private static final int MAX_POSITION_1 =
+            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
+                    - PlayState.char1.getHeight();
+    private static final int MAX_POSITION_2 =
+            Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
+    private final int stepSize = PlayState.battleCircleHeight / 10;
+    /**
+     * The player's direction.
+     */
+    private final int direction;
+    /**
+     * The player's texture.
+     */
+    private final Texture texture;
     /**
      * The player's position.
      */
     private int position;
-
-    /**
-     * The player's direction.
-     */
-    private int direction;
-
-    /**
-     * The player's texture.
-     */
-    private Texture texture;
 
     /**
      * Constructs a new Player.
@@ -36,9 +43,9 @@ public final class Player {
         this.texture = playerTexture;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = 0;
+            position = MAX_POSITION_2;
         } else {
-            position = MAX_POSITION;
+            position = MAX_POSITION_1;
         }
     }
 
@@ -47,9 +54,9 @@ public final class Player {
      */
     public void moveForward() {
         if (direction == 1) {
-            position++;
+            position += stepSize;
         } else {
-            position--;
+            position -= stepSize;
         }
     }
 
@@ -58,9 +65,9 @@ public final class Player {
      */
     public void moveBackward() {
         if (direction == 1) {
-            position--;
+            position -= stepSize;
         } else {
-            position++;
+            position += stepSize;
         }
     }
 
@@ -70,11 +77,22 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition()) == 1) {
+        if (Math.abs(otherPlayer.getPosition() - this.getPosition())
+                <= this.texture.getHeight()) {
             this.moveForward();
             otherPlayer.moveBackward();
         } else {
             this.moveForward();
+        }
+
+        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
+                && this.direction == 1) {
+            //Player 1 wins
+            roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
+        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2
+                && this.direction == 0) {
+            //Player 2 wins
+            roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
         }
     }
 
@@ -103,5 +121,14 @@ public final class Player {
      */
     public Texture getTexture() {
         return texture;
+    }
+
+    private void roundOver(Player otherPlayer, int thisPosition,
+                           int otherPosition) {
+
+        // todo: INCREMENT WHEN ROUND IS OVER
+
+        this.setPosition(thisPosition);
+        otherPlayer.setPosition(otherPosition);
     }
 }
