@@ -70,7 +70,7 @@ public class PlayState extends State {
         stage.addActor(settingsB);
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
-                Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
+                Gdx.graphics.getHeight() / 2f - settingsB.getHeight() / 2);
         settingsB.setTransform(true);
 
         Gdx.input.setInputProcessor(stage);
@@ -133,7 +133,7 @@ public class PlayState extends State {
             isGameOver = true;
         } else {
             // if either player has higher score than half of max rounds, the game is over
-            int breakpoint = (int) Math.floor(MAX_ROUNDS / 2);
+            int breakpoint = (int) Math.floor(MAX_ROUNDS / 2f);
             if (player1.getScore() > breakpoint) {
                 isGameOver = true;
                 winnerOfTheGame = "Player1";
@@ -144,10 +144,9 @@ public class PlayState extends State {
         }
     }
 
-    public void whenGameIsFinished() {
+    public void whenGameIsFinished(SpriteBatch sb) {
         if (isGameOver) {
-            // TODO: Direct first to winner screen
-            gsm.set(new ScoreBoardState(gsm, winnerOfTheGame));
+            gsm.set(new WinnerState(gsm, winnerOfTheGame));
         }
     }
 
@@ -179,22 +178,24 @@ public class PlayState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 + 20);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                Gdx.graphics.getWidth() / 2f + 20);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 - 70);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                Gdx.graphics.getWidth() / 2f - 70);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(Gdx.graphics.getWidth() + 10,
-                Gdx.graphics.getHeight() / 2, 160);
+                Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
+        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
         drawScore(sb);
         sb.begin();
@@ -202,9 +203,9 @@ public class PlayState extends State {
         // settingsWheel.getWidth(),
         // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
         sb.draw(player1sprite,
-                Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
+                Gdx.graphics.getWidth() / 2f - player1sprite.getWidth() / 2, 0);
         sb.draw(player2sprite,
-                Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
+                Gdx.graphics.getWidth() / 2f - player2sprite.getWidth() / 2,
                 Gdx.graphics.getHeight() - player2sprite.getHeight());
 
         sb.end();
@@ -216,7 +217,6 @@ public class PlayState extends State {
         float countdownEndtime = countdownStartTime + COUNTDOWN_TIME;
         // Draw game in background
         drawGame(sb);
-        Gdx.app.log("Time", "" + Gdx.graphics.getDeltaTime());
 
         // Draw the background and overlay
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
@@ -254,11 +254,10 @@ public class PlayState extends State {
             showCountdown(sb);
 
         } else {
-            drawGame(sb);
-
             if (!isGameOver && player2.getScore() < 3) {
                 whenRoundFinished(sb);
-                whenGameIsFinished();
+                whenGameIsFinished(sb);
+
             }
         }
     }
