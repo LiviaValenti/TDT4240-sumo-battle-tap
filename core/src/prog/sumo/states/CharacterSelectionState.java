@@ -108,10 +108,10 @@ public class CharacterSelectionState extends State {
 
     @Override
     protected final void handleInput(String name) {
-        if (name.equals("playB") ) {
+        if (name.equals("playB")) {
             gsm.set(new PlayState(gsm, playerHash));
         }
-        if (name.equals("homeB") ) {
+        if (name.equals("homeB")) {
             gsm.set(new MainMenuState(gsm));
         }
 
@@ -134,7 +134,7 @@ public class CharacterSelectionState extends State {
         }
 
         // If both players have chosen a color, the play button is added to the stage
-        if (playerHash.size() == 2){
+        if (playerHash.size() == 2) {
             stage.addActor(buttons[1]);
         }
     }
@@ -153,10 +153,10 @@ public class CharacterSelectionState extends State {
         batch.begin();
         font.getData().setScale(4f);
         font.setColor(0, 0, 0, 1);
-        font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth()/8 ,
+        font.draw(batch, "Player 1: Choose your character!", Gdx.graphics.getWidth() / 8,
                 Gdx.graphics.getHeight() / 2 - 250);
 
-        font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth()/8 ,
+        font.draw(batch, "Player 2: Choose your character!", Gdx.graphics.getWidth() / 8,
                 Gdx.graphics.getHeight() / 2 + 300);
 
         //If the map contains a key 0, draw an X on top of the player's character

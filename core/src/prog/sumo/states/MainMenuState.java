@@ -40,19 +40,13 @@ public class MainMenuState extends State {
         scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
         tutorialButton = new ImageButton(tutorialButtonDrawable);
 
-        playButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
-                tutorialButton.getHeight() + scoreBoardButton.getHeight() * 4);
+        playButton.setPosition(Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(), tutorialButton.getHeight() + scoreBoardButton.getHeight() * 4);
         playButton.setTransform(true);
         playButton.setScale(2f);
-        scoreBoardButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
-                tutorialButton.getHeight() + scoreBoardButton.getHeight() * 2);
+        scoreBoardButton.setPosition(Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(), tutorialButton.getHeight() + scoreBoardButton.getHeight() * 2);
         scoreBoardButton.setTransform(true);
         scoreBoardButton.setScale(2f);
-        tutorialButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
-                tutorialButton.getHeight());
+        tutorialButton.setPosition(Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(), tutorialButton.getHeight());
         tutorialButton.setTransform(true);
         tutorialButton.setScale(2f);
 
@@ -82,15 +76,12 @@ public class MainMenuState extends State {
             }
         });
 
-        tutPop = new Dialog("Tutorial",
-                new Window.WindowStyle(new BitmapFont(), new Color(0, 0, 0, 0),
-                        playButtonDrawable)) {
+        tutPop = new Dialog("Tutorial", new Window.WindowStyle(new BitmapFont(), new Color(0, 0, 0, 0), playButtonDrawable)) {
             public void result(Object obj) {
                 System.out.println("result " + obj);
             }
         };
-        tutPop.text("yes",
-                new Label.LabelStyle(new BitmapFont(), new Color(0, 0, 0, 0)));
+        tutPop.text("yes", new Label.LabelStyle(new BitmapFont(), new Color(0, 0, 0, 0)));
         tutPop.setResizable(true);
         // tutPop.scaleBy(5f);
         tutPop.setPosition(0, Gdx.graphics.getHeight() / 2);
@@ -143,8 +134,7 @@ public class MainMenuState extends State {
         stage.draw();
         stage.act();
         sb.begin();
-        sb.draw(logo, Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2,
-                Gdx.graphics.getHeight() - logo.getHeight() * 2);
+        sb.draw(logo, Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2, Gdx.graphics.getHeight() - logo.getHeight() * 2);
         sb.end();
     }
 

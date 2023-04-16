@@ -2,6 +2,7 @@ package prog.sumo;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+
 import prog.sumo.states.PlayState;
 
 /**
@@ -13,8 +14,8 @@ public final class Player {
      * The maximum position a player can have.
      */
 
-    private static final int MAX_POSITION_1 = Gdx.graphics.getHeight()/2 + PlayState.battleCircleRadius - 260;
-    private static final int MAX_POSITION_2 = Gdx.graphics.getHeight()/2 - PlayState.battleCircleRadius;
+    private static final int MAX_POSITION_1 = Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius - 260;
+    private static final int MAX_POSITION_2 = Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
 
     /**
      * The player's position.

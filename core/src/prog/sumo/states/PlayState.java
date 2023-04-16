@@ -42,8 +42,8 @@ public class PlayState extends State {
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("purplehand.png");
         hand2Tex = new Texture("greenhand.png");
-        car1 = new Texture (playerHash.get(0));
-        car2 = new Texture (playerHash.get(1));
+        car1 = new Texture(playerHash.get(0));
+        car2 = new Texture(playerHash.get(1));
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(hand1Tex);
@@ -62,12 +62,9 @@ public class PlayState extends State {
         player1game = new Player(car1, 1);
         player2game = new Player(car2, 0);
 
-        settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
-                Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
-        hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth()/2,
-                0);
-        hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth()/2,
-                Gdx.graphics.getHeight() - hand2.getHeight());
+        settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(), Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
+        hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth() / 2, 0);
+        hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth() / 2, Gdx.graphics.getHeight() - hand2.getHeight());
 
         settingsB.addListener(new ChangeListener() {
             @Override
@@ -122,18 +119,15 @@ public class PlayState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                battleCircleHeight, battleCircleRadius);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2, battleCircleHeight, battleCircleRadius);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 - 70);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 - 70);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() + 10,
-                Gdx.graphics.getHeight() / 2, 160);
+        shapeRenderer.circle(Gdx.graphics.getWidth() + 10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
@@ -141,10 +135,8 @@ public class PlayState extends State {
         shapeRenderer.end();
 
         sb.begin();
-        sb.draw(car1, Gdx.graphics.getWidth() / 2 - car1.getWidth() / 2,
-                player1game.getPosition());
-        sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2,
-                player2game.getPosition());
+        sb.draw(car1, Gdx.graphics.getWidth() / 2 - car1.getWidth() / 2, player1game.getPosition());
+        sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2, player2game.getPosition());
         sb.end();
 
         stage.draw();
