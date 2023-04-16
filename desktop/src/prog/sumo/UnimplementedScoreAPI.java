@@ -8,6 +8,18 @@ import java.util.Map;
  */
 public final class UnimplementedScoreAPI implements ScoreAPI {
 
+    private static UnimplementedScoreAPI instance;
+
+    private UnimplementedScoreAPI() {
+    }
+
+    public static ScoreAPI getInstance() {
+        if (instance == null) {
+            instance = new UnimplementedScoreAPI();
+        }
+        return UnimplementedScoreAPI.instance;
+    }
+
     /**
      * Prints an error stating that this function is unimplemented.
      *
