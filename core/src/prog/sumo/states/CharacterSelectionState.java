@@ -18,18 +18,20 @@ import java.util.Map;
 public class CharacterSelectionState extends State {
 
     private final String[] colors =
-            new String[] {"red", "green", "yellow", "pink", "purple", "blue"};
+            new String[] {"red", "green", "pink", "purple", "blue", "orange"};
 
     // Initialize textures and drawables
     private final Texture[] buttonTextures =
-            new Texture[] {new Texture("home.png"), new Texture("play.png"),
-
+            new Texture[] {
+                    new Texture("home.png"),
+                    new Texture("play.png"),
                     new Texture("redplayer.png"),
                     new Texture("greenplayer.png"),
-                    new Texture("yellowplayer.png"),
                     new Texture("pinkplayer.png"),
                     new Texture("purpleplayer.png"),
-                    new Texture("blueplayer.png"),};
+                    new Texture("blueplayer.png"),
+                    new Texture("orangeplayer.png"),
+            };
     private final Drawable[] buttonDrawables =
             new Drawable[buttonTextures.length];
     private final ImageButton[] buttons =
@@ -43,8 +45,8 @@ public class CharacterSelectionState extends State {
     // Map for player hash
     private final Map<Integer, String> playerHash = new HashMap<>();
 
-    int firstPlayerX = 0;
-    int secondPlayerX = 0;
+    private int firstPlayerX = 0;
+    private int secondPlayerX = 0;
 
 
     public CharacterSelectionState(GameStateManager gsm) {

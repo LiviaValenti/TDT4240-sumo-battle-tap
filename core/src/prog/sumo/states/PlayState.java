@@ -17,19 +17,17 @@ import java.util.Map;
 import prog.sumo.Player;
 
 public class PlayState extends State {
+    public static Texture car1, car2;
+    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
+    public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
     Texture settingsWheel;
     Texture hand1Tex, hand2Tex;
-    Texture car1, car2;
     ShapeRenderer shapeRenderer;
     Drawable settingsWheelDrawable;
     Drawable player1Drawable, player2Drawable;
     ImageButton settingsB;
     ImageButton hand1, hand2;
     Stage stage;
-
-    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
-    public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
-
     private Player player1game;
     private Player player2game;
 
@@ -40,8 +38,8 @@ public class PlayState extends State {
         shapeRenderer = new ShapeRenderer();
 
         settingsWheel = new Texture("settingswheel.png");
-        hand1Tex = new Texture("purplehand.png");
-        hand2Tex = new Texture("greenhand.png");
+        hand1Tex = new Texture("greenhand.png");
+        hand2Tex = new Texture("purplehand.png");
         car1 = new Texture(playerHash.get(0));
         car2 = new Texture(playerHash.get(1));
 

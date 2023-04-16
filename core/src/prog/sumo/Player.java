@@ -15,7 +15,8 @@ public final class Player {
      */
 
     private static final int MAX_POSITION_1 =
-            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius - 260;
+            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
+                    - PlayState.car1.getHeight();
     private static final int MAX_POSITION_2 =
             Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
 
@@ -24,7 +25,7 @@ public final class Player {
      */
     private int position;
 
-    private int stepSize = 50;
+    private int stepSize = PlayState.battleCircleHeight / 10;
 
     /**
      * The player's direction.
@@ -130,7 +131,7 @@ public final class Player {
     private void roundOver(Player otherPlayer, int thisPosition,
                            int otherPosition) {
 
-        //Insert ROUND OVER HERE
+        // TODO: INCREMENT WHEN ROUND IS OVER
 
         this.setPosition(thisPosition);
         otherPlayer.setPosition(otherPosition);
