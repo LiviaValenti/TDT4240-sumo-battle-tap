@@ -21,7 +21,6 @@ public class CharacterSelectionState extends State {
             "red",
             "green",
             "yellow",
-
             "pink",
             "purple",
             "blue"
@@ -35,14 +34,12 @@ public class CharacterSelectionState extends State {
             new Texture("redplayer.png"),
             new Texture("greenplayer.png"),
             new Texture("yellowplayer.png"),
-
             new Texture("pinkplayer.png"),
             new Texture("purpleplayer.png"),
             new Texture("blueplayer.png"),
     };
     private final Drawable[] buttonDrawables = new Drawable[buttonTextures.length];
     private final ImageButton[] buttons = new ImageButton[buttonTextures.length];
-
 
     // Stage, sprite batch, and font
     private final Stage stage = new Stage();
@@ -164,16 +161,16 @@ public class CharacterSelectionState extends State {
 
         //If the map contains a key 0, draw an X on top of the player's character
         if (playerHash.containsKey(0)) {
-            font.getData().setScale(13f);
-            font.draw(batch, "X", firstPlayerX + 50,
-                    Gdx.graphics.getHeight() / 2 - 400);
+            font.getData().setScale(25f);
+            font.draw(batch, "O", firstPlayerX - 20,
+                    Gdx.graphics.getHeight() / 2 - 300);
         }
         //If the map contains a key 1, draw a black rectangle around the player's character
         if (playerHash.containsKey(1)) {
             //Set font size to 10
-            font.getData().setScale(13f);
-            font.draw(batch, "X", secondPlayerX + 50,
-                    Gdx.graphics.getHeight() / 2 + 600);
+            font.getData().setScale(25f);
+            font.draw(batch, "O", secondPlayerX - 20,
+                    Gdx.graphics.getHeight() / 2 + 700);
         }
 
         batch.end();
