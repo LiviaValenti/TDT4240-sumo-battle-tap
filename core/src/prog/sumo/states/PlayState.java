@@ -3,7 +3,6 @@ package prog.sumo.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,42 +12,60 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import java.util.Map;
+
+import prog.sumo.Player;
+
 public class PlayState extends State {
+    public static Texture char1, char2;
+    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
+    public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
     Texture settingsWheel;
-    Texture player1Tex;
-    Texture player2Tex;
-
-    Sprite player1sprite;
-    Sprite player2sprite;
+    Texture hand1Tex, hand2Tex;
     ShapeRenderer shapeRenderer;
-
     Drawable settingsWheelDrawable;
-
+    Drawable player1Drawable, player2Drawable;
     ImageButton settingsB;
-
+    ImageButton hand1, hand2;
     Stage stage;
+    private final Player player1;
+    private final Player player2;
 
-    public PlayState(GameStateManager gsm) {
+    public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
+
         super(gsm);
+
         shapeRenderer = new ShapeRenderer();
+
         settingsWheel = new Texture("settingswheel.png");
-        player1Tex = new Texture("purplehand.png");
-        player2Tex = new Texture("greenhand.png");
-        player1sprite = new Sprite(player1Tex);
-        player2sprite = new Sprite(player2Tex);
+        hand1Tex = new Texture("greenhand.png");
+        hand2Tex = new Texture("purplehand.png");
+        char1 = new Texture(playerHash.get(0));
+        char2 = new Texture(playerHash.get(1));
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
+        player1Drawable = new TextureRegionDrawable(hand1Tex);
+        player2Drawable = new TextureRegionDrawable(hand2Tex);
 
         settingsB = new ImageButton(settingsWheelDrawable);
+        hand1 = new ImageButton(player1Drawable);
+        hand2 = new ImageButton(player2Drawable);
 
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(settingsB);
+        stage.addActor(hand1);
+        stage.addActor(hand2);
+
+        player1 = new Player(char1, 1);
+        player2 = new Player(char2, 0);
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
-        settingsB.setTransform(true);
-
-        Gdx.input.setInputProcessor(stage);
+        hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth() / 2,
+                0);
+        hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth() / 2,
+                Gdx.graphics.getHeight() - hand2.getHeight());
 
         settingsB.addListener(new ChangeListener() {
             @Override
@@ -56,12 +73,39 @@ public class PlayState extends State {
                 handleInput("settingsB");
             }
         });
+
+        hand1.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("player1");
+            }
+        });
+
+        hand2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("player2");
+            }
+        });
     }
 
     @Override
     protected final void handleInput(String name) {
-        if (name.equals("settingsB")) {
-            gsm.set(new MainMenuState(gsm));
+        switch (name) {
+            case "settingsB":
+                gsm.set(new MainMenuState(gsm));
+                break;
+            case "player1":
+                //Calling the movePlayer method from the Player class
+                player1.movePlayer(player2);
+                break;
+            case "player2":
+                //Calling the movePlayer method from the Player class
+                player2.movePlayer(player1);
+                break;
+            default:
+                // handle invalid input
+                break;
         }
     }
 
@@ -76,8 +120,8 @@ public class PlayState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 + 20);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2, battleCircleHeight,
+                battleCircleRadius);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
@@ -93,16 +137,14 @@ public class PlayState extends State {
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
         shapeRenderer.end();
+
         sb.begin();
-        //sb.draw(settingsWheel, Gdx.graphics.getWidth() -
-        // settingsWheel.getWidth(),
-        // Gdx.graphics.getHeight()/2-settingsWheel.getHeight()/2 );
-        sb.draw(player1sprite,
-                Gdx.graphics.getWidth() / 2 - player1sprite.getWidth() / 2, 0);
-        sb.draw(player2sprite,
-                Gdx.graphics.getWidth() / 2 - player2sprite.getWidth() / 2,
-                Gdx.graphics.getHeight() - player2sprite.getHeight());
+        sb.draw(char1, Gdx.graphics.getWidth() / 2 - char1.getWidth() / 2,
+                player1.getPosition());
+        sb.draw(char2, Gdx.graphics.getWidth() / 2 - char2.getWidth() / 2,
+                player2.getPosition());
         sb.end();
+
         stage.draw();
         stage.act();
     }
@@ -110,7 +152,11 @@ public class PlayState extends State {
     @Override
     public final void dispose() {
         settingsWheel.dispose();
-        player1Tex.dispose();
-        player2Tex.dispose();
+        hand1Tex.dispose();
+        hand2Tex.dispose();
+        char1.dispose();
+        char2.dispose();
+        stage.dispose();
     }
+
 }
