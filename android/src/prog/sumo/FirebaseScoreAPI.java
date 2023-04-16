@@ -16,6 +16,17 @@ import java.util.Map;
  * Android implementation of the ScoreAPI using Firebase.
  */
 public final class FirebaseScoreAPI implements ScoreAPI {
+
+    private static FirebaseScoreAPI instance;
+
+
+    public static FirebaseScoreAPI getInstance() {
+        if (instance == null) {
+            instance = new FirebaseScoreAPI();
+        }
+        return FirebaseScoreAPI.instance;
+    }
+
     /**
      * Reference to the database entry of the scores.
      */
@@ -24,7 +35,7 @@ public final class FirebaseScoreAPI implements ScoreAPI {
     /**
      * Constructor for the FirebaseScoreAPI.
      */
-    public FirebaseScoreAPI() {
+    private FirebaseScoreAPI() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(
                 "https://sumobattletap-default-rtdb.europe-"
                         + "west1.firebasedatabase.app/"
