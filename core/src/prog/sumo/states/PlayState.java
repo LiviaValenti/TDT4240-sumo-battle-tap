@@ -17,7 +17,7 @@ import java.util.Map;
 import prog.sumo.Player;
 
 public class PlayState extends State {
-    public static Texture car1, car2;
+    public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
     Texture settingsWheel;
@@ -28,8 +28,8 @@ public class PlayState extends State {
     ImageButton settingsB;
     ImageButton hand1, hand2;
     Stage stage;
-    private final Player player1game;
-    private final Player player2game;
+    private final Player player1;
+    private final Player player2;
 
     public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
 
@@ -40,8 +40,8 @@ public class PlayState extends State {
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
         hand2Tex = new Texture("purplehand.png");
-        car1 = new Texture(playerHash.get(0));
-        car2 = new Texture(playerHash.get(1));
+        char1 = new Texture(playerHash.get(0));
+        char2 = new Texture(playerHash.get(1));
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(hand1Tex);
@@ -57,8 +57,8 @@ public class PlayState extends State {
         stage.addActor(hand1);
         stage.addActor(hand2);
 
-        player1game = new Player(car1, 1);
-        player2game = new Player(car2, 0);
+        player1 = new Player(char1, 1);
+        player2 = new Player(char2, 0);
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
@@ -97,11 +97,11 @@ public class PlayState extends State {
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                player1game.movePlayer(player2game);
+                player1.movePlayer(player2);
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                player2game.movePlayer(player1game);
+                player2.movePlayer(player1);
                 break;
             default:
                 // handle invalid input
@@ -139,10 +139,10 @@ public class PlayState extends State {
         shapeRenderer.end();
 
         sb.begin();
-        sb.draw(car1, Gdx.graphics.getWidth() / 2 - car1.getWidth() / 2,
-                player1game.getPosition());
-        sb.draw(car2, Gdx.graphics.getWidth() / 2 - car2.getWidth() / 2,
-                player2game.getPosition());
+        sb.draw(char1, Gdx.graphics.getWidth() / 2 - char1.getWidth() / 2,
+                player1.getPosition());
+        sb.draw(char2, Gdx.graphics.getWidth() / 2 - char2.getWidth() / 2,
+                player2.getPosition());
         sb.end();
 
         stage.draw();
@@ -154,8 +154,8 @@ public class PlayState extends State {
         settingsWheel.dispose();
         hand1Tex.dispose();
         hand2Tex.dispose();
-        car1.dispose();
-        car2.dispose();
+        char1.dispose();
+        char2.dispose();
         stage.dispose();
     }
 

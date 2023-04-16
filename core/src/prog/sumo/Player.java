@@ -16,7 +16,7 @@ public final class Player {
 
     private static final int MAX_POSITION_1 =
             Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
-                    - PlayState.car1.getHeight();
+                    - PlayState.char1.getHeight();
     private static final int MAX_POSITION_2 =
             Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
     private final int stepSize = PlayState.battleCircleHeight / 10;
