@@ -39,24 +39,25 @@ public class WinnerState extends State {
     public void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         if (fontForWinner == null) {
             fontForWinner = new BitmapFont();
             fontForWinner.getData().setScale(12f);
-            spriteBatch = new SpriteBatch();
         }
-        spriteBatch.setTransformMatrix(
+        Matrix4 originalMatrix =
+                sb.getTransformMatrix().cpy(); // Save the original matrix
+        sb.setTransformMatrix(
                 new Matrix4().setToRotation(0, 0, 1, 90));
-        spriteBatch.begin();
+        sb.begin();
         fontForWinner.setColor(Color.BLACK);
-        fontForWinner.draw(spriteBatch, "Winner is " + this.winner,
+        fontForWinner.draw(sb, "Winner is " + this.winner,
                 (Gdx.graphics.getWidth() + (fontForWinner.getCapHeight())) / 2f,
                 -fontForWinner.getCapHeight());
-        spriteBatch.end();
+        sb.end();
+        sb.setTransformMatrix(originalMatrix); // Restore the original matrix
         Timer.schedule(new Timer.Task() {
             public void run() {
                 gsm.set(new ScoreBoardState(gsm, winner));
-                
+
 
             }
         }, 3);
