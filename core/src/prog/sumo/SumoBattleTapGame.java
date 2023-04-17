@@ -13,7 +13,7 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
     /**
      * The ScoreAPI implementation to be used for managing player scores.
      */
-    private final ScoreAPI scoreApi;
+    private static ScoreAPI scoreApi;
     /**
      * The SpriteBatch object used for drawing images to the screen.
      */
@@ -28,7 +28,11 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
      *                      player scores.
      */
     public SumoBattleTapGame(final ScoreAPI scoreApiParam) {
-        this.scoreApi = scoreApiParam;
+        scoreApi = scoreApiParam;
+    }
+
+    public static ScoreAPI getScoreApi() {
+        return scoreApi;
     }
 
     /**

@@ -12,23 +12,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import prog.sumo.ScoreAPI;
+import prog.sumo.SumoBattleTapGame;
+
 public class ScoreBoardState extends State {
 
     Texture scoboTitle;
     Texture backButtonTex;
-    Texture angelTex;
-    Texture eggplantTex;
-    Texture constructionTex;
-    Texture deafTex;
-
     Drawable backButtonDrawable;
-
     ImageButton backB;
     String winnerOfTheGame = "";
 
     Stage stage;
-    SpriteBatch batch;
     BitmapFont font;
+    private final Map<String, Long> scores;
 
     public ScoreBoardState(GameStateManager gsm, String winnerOfTheGame) {
         this(gsm);
@@ -36,16 +36,16 @@ public class ScoreBoardState extends State {
 
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
+
+        scores = new HashMap<>();
+        ScoreAPI scoreAPI = SumoBattleTapGame.getScoreApi();
+        scoreAPI.subscribeToScores(scores);
+
         scoboTitle = new Texture("scoreboardHeadline.png");
-        angelTex = new Texture("angelCharacter.png");
-        constructionTex = new Texture("constructionworker.png");
-        deafTex = new Texture("deafwoman.png");
-        eggplantTex = new Texture("eggplant.png");
+
         backButtonTex = new Texture("back.png");
         backButtonDrawable = new TextureRegionDrawable(backButtonTex);
-
         backB = new ImageButton(backButtonDrawable);
-
         backB.setPosition(backB.getWidth(),
                 Gdx.graphics.getHeight() - backB.getHeight() * 5);
         backB.setTransform(true);
@@ -60,12 +60,11 @@ public class ScoreBoardState extends State {
                 handleInput("backB");
             }
         });
-        batch = new SpriteBatch();
+
         font = new BitmapFont();
         font.getData().setScale(5f);
         font.setColor(1, 0, 0, 1);
     }
-
 
     @Override
     protected final void handleInput(String name) {
@@ -87,36 +86,25 @@ public class ScoreBoardState extends State {
         stage.act();
         sb.begin();
         sb.draw(scoboTitle,
-                Gdx.graphics.getWidth() / 2 - scoboTitle.getWidth() / 2,
+                Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f,
                 Gdx.graphics.getHeight() - scoboTitle.getHeight());
-        sb.draw(angelTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight()
-                        - angelTex.getHeight());
-        sb.draw(constructionTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight()
-                        - angelTex.getHeight() * 2 - angelTex.getHeight() / 2);
-        sb.draw(eggplantTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight()
-                        - angelTex.getHeight() * 4);
-        sb.draw(deafTex, angelTex.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight()
-                        - angelTex.getHeight() * 5 - angelTex.getHeight() / 2);
+
+        final float xOffset =
+                Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f;
+        float yOffset = Gdx.graphics.getHeight() - scoboTitle.getHeight();
+        for (Map.Entry<String, Long> score : scores.entrySet()) {
+            font.draw(sb, score.getKey(), xOffset, yOffset);
+            font.draw(sb, score.getValue().toString(),
+                    Gdx.graphics.getWidth() - xOffset, yOffset);
+            yOffset -= font.getLineHeight() * 1.5f;
+        }
         sb.end();
-        batch.begin();
-        font.draw(batch, "200 points", Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() - scoboTitle.getHeight()
-                        - angelTex.getHeight() / 2);
-        batch.end();
     }
 
     @Override
     public final void dispose() {
         scoboTitle.dispose();
         backButtonTex.dispose();
-        angelTex.dispose();
-        eggplantTex.dispose();
-        constructionTex.dispose();
-        deafTex.dispose();
         font.dispose();
     }
 }

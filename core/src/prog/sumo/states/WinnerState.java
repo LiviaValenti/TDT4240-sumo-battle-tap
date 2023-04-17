@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Timer;
 
+import jdk.tools.jmod.Main;
+
 public class WinnerState extends State {
 
     private final String winner;
@@ -54,6 +56,8 @@ public class WinnerState extends State {
         Timer.schedule(new Timer.Task() {
             public void run() {
                 gsm.set(new ScoreBoardState(gsm, winner));
+                
+
             }
         }, 3);
     }
