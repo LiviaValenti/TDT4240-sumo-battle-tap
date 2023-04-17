@@ -12,19 +12,20 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuState extends State {
-    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo, windowTex;
-    Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw,
+    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo, windowTex, writtenTutTex, back2Tex;
+    Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw, writtenTutDraw, back2Draw,
             tutorialButtonDrawable;
     Stage stage;
     ImageButton playButton, scoreBoardButton, tutorialButton;
     Window tutPop;
-    ImageButton closeTut;
+    ImageButton writtenTutB, back2B;
 
     public MainMenuState(GameStateManager gsm) {
         super(gsm);
@@ -32,17 +33,27 @@ public class MainMenuState extends State {
         scoreBoardButtonTex = new Texture("scoreBoard.png");
         tutorialButtonTex = new Texture("tutorialButton.png");
         logo = new Texture("logo.png");
-        windowTex = new Texture("pinkWindow.png");
+        windowTex = new Texture("orangeWindow.png");
+        writtenTutTex = new Texture("writtenTutorial.png");
+        back2Tex = new Texture("back2.png");
 
         playButtonDrawable = new TextureRegionDrawable(playButtonTex);
         scoreBoardButtonDrawable =
                 new TextureRegionDrawable(scoreBoardButtonTex);
         tutorialButtonDrawable = new TextureRegionDrawable(tutorialButtonTex);
         windowDraw = new TextureRegionDrawable(windowTex);
+        writtenTutDraw = new TextureRegionDrawable(writtenTutTex);
+        back2Draw = new TextureRegionDrawable(back2Tex);
 
         playButton = new ImageButton(playButtonDrawable);
         scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
         tutorialButton = new ImageButton(tutorialButtonDrawable);
+        writtenTutB = new ImageButton(writtenTutDraw);
+        writtenTutB.setTransform(true);
+        writtenTutB.setScale(2f);
+        back2B = new ImageButton(back2Draw);
+        back2B.setTransform(true);
+        back2B.setScale(2f);
 
         playButton.setPosition(
                 Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
@@ -85,6 +96,12 @@ public class MainMenuState extends State {
                 handleInput("tutorialB");
             }
         });
+        back2B.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                handleInput("back2");
+            }
+        });
 
         tutPop = new Window("Tutorial",
                 new Window.WindowStyle(new BitmapFont(), new Color(0, 0, 0, 0),
@@ -94,27 +111,16 @@ public class MainMenuState extends State {
             }
         };
 
-        tutPop.setResizable(true);
-        // tutPop.scaleBy(5f);
-        tutPop.setPosition(0, Gdx.graphics.getHeight() / 2);
+        Table table2 = new Table();
+
+        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth()/2 + 40).padTop(550);
+        table2.row().padTop(300);
+        table2.add(back2B).padRight(Gdx.graphics.getWidth()/ 2 +30);
+
+        tutPop.add(table2);
         tutPop.pack();
-       // float tutX = tutPop.getOriginX() + tutPop.getWidth();
-       // float tutY = tutPop.getOriginY() + tutPop.getHeight();
-
-        closeTut = new ImageButton(scoreBoardButtonDrawable);
-        closeTut.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                handleInput("closeT");
-            }
-        });
-
-        closeTut.setTransform(true);
-        //closeTut.setScale(0.5f);
-        //closeTut.setPosition(tutX, tutY);
 
 
-         tutPop.add(closeTut);
     }
 
     @Override
@@ -128,7 +134,7 @@ public class MainMenuState extends State {
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);
         }
-        if (name.equals("closeT")) {
+        if (name.equals("back2")) {
             stage.addAction(Actions.removeActor(tutPop));
         }
 
