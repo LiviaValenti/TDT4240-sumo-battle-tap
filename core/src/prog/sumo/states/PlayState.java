@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 
 import java.util.Map;
 
@@ -27,17 +25,18 @@ public class PlayState extends State {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
-    Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex, writtenTutTex, back2Tex;
+    private final Player player1;
+    private final Player player2;
+    Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex,
+            writtenTutTex, back2Tex;
     Texture hand1Tex, hand2Tex;
     ShapeRenderer shapeRenderer;
-    Drawable settingsWheelDrawable, windowDraw, backDraw, quitDraw, tutorialDraw, tutWinDraw, writtenTutDraw, back2Draw;
+    Drawable settingsWheelDrawable, windowDraw, backDraw, quitDraw,
+            tutorialDraw, tutWinDraw, writtenTutDraw, back2Draw;
     Drawable player1Drawable, player2Drawable;
     ImageButton settingsB, quitB, backB, tutB, writtenTutB, back2B;
     ImageButton hand1, hand2;
     Stage stage;
-    private final Player player1;
-    private final Player player2;
-
     Window pinkWindow, orangeWindow;
 
     public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
@@ -58,7 +57,6 @@ public class PlayState extends State {
         tutWinTex = new Texture("orangeWindow.png");
         writtenTutTex = new Texture("writtenTutorial.png");
         back2Tex = new Texture("back2.png");
-
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(hand1Tex);
@@ -89,7 +87,6 @@ public class PlayState extends State {
         back2B = new ImageButton(back2Draw);
         back2B.setTransform(true);
         back2B.setScale(2f);
-
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -134,7 +131,6 @@ public class PlayState extends State {
         });
 
 
-
         hand1.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -169,14 +165,13 @@ public class PlayState extends State {
             }
         };
 
-
         Table table = new Table();
         // Add buttons to the table
-        table.add(tutB).padRight(Gdx.graphics.getWidth()/2 + 30);
+        table.add(tutB).padRight(Gdx.graphics.getWidth() / 2 + 30);
         table.row().padTop(200); // Create a new row
-        table.add(backB).padRight(Gdx.graphics.getWidth()/ 2 +30);
+        table.add(backB).padRight(Gdx.graphics.getWidth() / 2 + 30);
         table.row().padTop(185); // Create a new row
-        table.add(quitB).padRight(Gdx.graphics.getWidth()/ 2 + 30);
+        table.add(quitB).padRight(Gdx.graphics.getWidth() / 2 + 30);
 
         pinkWindow.setResizable(true);
         pinkWindow.add(table);
@@ -184,9 +179,10 @@ public class PlayState extends State {
 
         Table table2 = new Table();
 
-        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth()/2 + 40).padTop(550);
+        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2 + 40)
+                .padTop(550);
         table2.row().padTop(300);
-        table2.add(back2B).padRight(Gdx.graphics.getWidth()/ 2 +30);
+        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2 + 30);
 
         //table2.add(back2B).padRight(Gdx.graphics.getWidth()/ 2 +30);
         orangeWindow.add(table2);

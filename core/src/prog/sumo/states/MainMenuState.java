@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -19,9 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuState extends State {
-    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo, windowTex, writtenTutTex, back2Tex;
-    Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw, writtenTutDraw, back2Draw,
-            tutorialButtonDrawable;
+    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo,
+            windowTex, writtenTutTex, back2Tex;
+    Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw,
+            writtenTutDraw, back2Draw, tutorialButtonDrawable;
     Stage stage;
     ImageButton playButton, scoreBoardButton, tutorialButton;
     Window tutPop;
@@ -113,9 +112,10 @@ public class MainMenuState extends State {
 
         Table table2 = new Table();
 
-        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth()/2 + 40).padTop(550);
+        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2 + 40)
+                .padTop(550);
         table2.row().padTop(300);
-        table2.add(back2B).padRight(Gdx.graphics.getWidth()/ 2 +30);
+        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2 + 30);
 
         tutPop.add(table2);
         tutPop.pack();
