@@ -31,12 +31,15 @@ public class PlayState extends State {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
+
+    public static int startPosition1, startPosition2;
     Texture settingsWheel;
     Texture hand1Tex, hand2Tex;
     ShapeRenderer shapeRenderer;
     Drawable settingsWheelDrawable;
     Drawable player1Drawable, player2Drawable;
     private float countdownStartTime;
+    private boolean roundIsOver;
 
     ImageButton settingsB;
     ImageButton hand1, hand2;
@@ -49,12 +52,13 @@ public class PlayState extends State {
     String winnerOfTheGame = "";
 
     int roundCounter;
-    private final static int MAX_ROUNDS = 3;
+    private final static int MAX_ROUNDS = 2;
     boolean isGameOver;
 
     public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
 
         super(gsm);
+        roundIsOver = false;
         shapeRenderer = new ShapeRenderer();
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
@@ -70,12 +74,16 @@ public class PlayState extends State {
         hand1 = new ImageButton(player1Drawable);
         hand2 = new ImageButton(player2Drawable);
 
-        roundCounter = 0;
+
+        roundCounter = 1;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(settingsB);
         stage.addActor(hand1);
         stage.addActor(hand2);
+        startPosition1 = Gdx.graphics.getHeight() / 2 + battleCircleRadius
+                - char1.getHeight();
+        startPosition2 = Gdx.graphics.getHeight() / 2 - battleCircleRadius;
 
         player1 = new Player(char1, 1);
         player2 = new Player(char2, 0);
@@ -119,15 +127,37 @@ public class PlayState extends State {
             case "player1":
                 //Calling the movePlayer method from the Player class
                 player1.movePlayer(player2);
+                isRoundOver();
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
                 player2.movePlayer(player1);
+                isRoundOver();
                 break;
             default:
                 // handle invalid input
                 break;
         }
+    }
+
+
+    public void isRoundOver() {
+        if (player1.getPosition() + player1.getTexture().getHeight() / 2 > startPosition1) {
+
+            //Increment score for player 2
+            player1.setPosition(startPosition2);
+            player2.setPosition(startPosition1);
+            whenRoundFinished();
+            roundIsOver = true;
+
+        } else if (player2.getPosition() - player2.getTexture().getHeight() / 2 < startPosition2) {
+            //Increment score for player 1
+            player1.setPosition(startPosition2);
+            player2.setPosition(startPosition1);
+            whenRoundFinished();
+            roundIsOver = true;
+        }
+        roundIsOver = false;
     }
 
     @Override
@@ -149,15 +179,12 @@ public class PlayState extends State {
     }
 
     // The following method should be used when a round is finished
-    public void whenRoundFinished(SpriteBatch sb) {
+    public void whenRoundFinished() {
         incrementRoundCounter();
         incrementScoreOfWinner();
+
         checkIfGameIsFinished();
-        if (!isGameOver) {
-            this.timeElapsed = 0f;
-            this.countdownStartTime = this.timeElapsed;
-            showCountdown(sb);
-        }
+        Gdx.app.log("round", "" + roundCounter);
     }
 
     private void incrementRoundCounter() {
@@ -173,15 +200,18 @@ public class PlayState extends State {
             int breakpoint = (int) Math.floor(MAX_ROUNDS / 2f);
             if (player1.getScore() > breakpoint) {
                 isGameOver = true;
+                whenGameIsFinished();
+
                 winnerOfTheGame = "Player1";
             } else if (player2.getScore() > breakpoint) {
                 winnerOfTheGame = "Player2";
                 isGameOver = true;
+                whenGameIsFinished();
             }
         }
     }
 
-    public void whenGameIsFinished(SpriteBatch sb) {
+    public void whenGameIsFinished() {
         if (isGameOver) {
             gsm.set(new WinnerState(gsm, winnerOfTheGame));
         }
@@ -263,36 +293,24 @@ public class PlayState extends State {
 
         // Update the countdown timer
         timeElapsed += Gdx.graphics.getDeltaTime();
-        if (timeElapsed >= COUNTDOWN_TIME) {
-            // Countdown finished, switch to game screen
-            // gsm.set(new GameScreen(gsm));
-            Gdx.app.log("PlayState", "Countdown finished");
-        }
         // Draw the countdown
         int countdownNumber = (int) (countdownEndtime - timeElapsed) + 1;
         if (font == null) {
             font = new BitmapFont();
             font.getData().setScale(12f);
-            // spriteBatch = new SpriteBatch();
         }
-        //spriteBatch.begin();
         sb.begin();
         font.draw(sb, Integer.toString(countdownNumber),
                 Gdx.graphics.getWidth() / 2f,
                 Gdx.graphics.getHeight() / 2f);
         sb.end();
-        //    spriteBatch.end();
     }
 
     @Override
     public final void render(SpriteBatch sb) {
+        drawGame(sb);
         if (timeElapsed < COUNTDOWN_TIME) {
             showCountdown(sb);
-        } else {
-            if (!isGameOver && player2.getScore() < 3) {
-                whenRoundFinished(sb);
-                whenGameIsFinished(sb);
-            }
         }
     }
 

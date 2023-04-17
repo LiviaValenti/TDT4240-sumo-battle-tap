@@ -13,12 +13,6 @@ public final class Player {
     /**
      * The maximum position a player can have.
      */
-
-    private static final int MAX_POSITION_1 =
-            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
-                    - PlayState.char1.getHeight();
-    private static final int MAX_POSITION_2 =
-            Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
     private final int stepSize = PlayState.battleCircleHeight / 10;
     /**
      * The player's direction.
@@ -45,9 +39,9 @@ public final class Player {
         this.texture = playerTexture;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = MAX_POSITION_2;
+            position = PlayState.startPosition2;
         } else {
-            position = MAX_POSITION_1;
+            position = PlayState.startPosition1;
         }
         score = 0;
     }
@@ -68,6 +62,7 @@ public final class Player {
     }
 
     public void incrementScore() {
+        
         this.score++;
     }
 
@@ -100,15 +95,16 @@ public final class Player {
             this.moveForward();
         }
 
-        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
+      /*  if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
                 && this.direction == 1) {
             //Player 1 wins
             roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
+
         } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2
                 && this.direction == 0) {
             //Player 2 wins
             roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
-        }
+        }*/
     }
 
     /**
@@ -138,12 +134,12 @@ public final class Player {
         return texture;
     }
 
-    private void roundOver(Player otherPlayer, int thisPosition,
+  /*  private void roundOver(Player otherPlayer, int thisPosition,
                            int otherPosition) {
 
         // todo: INCREMENT WHEN ROUND IS OVER
 
         this.setPosition(thisPosition);
         otherPlayer.setPosition(otherPosition);
-    }
+    }*/
 }
