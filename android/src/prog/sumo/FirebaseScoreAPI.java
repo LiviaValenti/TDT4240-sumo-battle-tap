@@ -9,8 +9,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Android implementation of the ScoreAPI using Firebase.
@@ -59,6 +63,13 @@ public final class FirebaseScoreAPI implements ScoreAPI {
                 for (DataSnapshot score : snapshot.getChildren()) {
                     scoresHolder.put(score.getKey(),
                             score.getValue(Long.class));
+                }
+                List<Entry<String, Long>> list =
+                        new ArrayList<>(scoresHolder.entrySet());
+                Collections.sort(list, Entry.comparingByValue());
+                scoresHolder.clear();
+                for (Entry<String, Long> entry : list) {
+                    scoresHolder.put(entry.getKey(), entry.getValue());
                 }
             }
 
