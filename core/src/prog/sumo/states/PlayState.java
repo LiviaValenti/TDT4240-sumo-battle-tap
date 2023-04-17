@@ -24,7 +24,6 @@ public class PlayState extends State {
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
     private BitmapFont fontForScore; // Font to draw the countdown
-    private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
     Texture settingsWheel;
     Texture player1Tex;
     Texture player2Tex;
@@ -151,13 +150,14 @@ public class PlayState extends State {
     }
 
     private void drawScore(SpriteBatch sb) {
+        Matrix4 originalMatrix =
+                sb.getTransformMatrix().cpy(); // Save the original matrix
         sb.begin();
         sb.setTransformMatrix(
                 new Matrix4().setToRotation(0, 0, 1, 90));
         if (fontForScore == null) {
             fontForScore = new BitmapFont();
             fontForScore.getData().setScale(5f);
-            spriteBatch = new SpriteBatch();
         }
         fontForScore.setColor(Color.BLACK);
         fontForScore.draw(sb, "" + player1.getScore(),
@@ -170,6 +170,8 @@ public class PlayState extends State {
                 Gdx.graphics.getWidth(),
                 -fontForScore.getCapHeight());
         sb.end();
+        sb.setTransformMatrix(originalMatrix); // Restore the original matrix
+
     }
 
     private void drawGame(SpriteBatch sb) {
@@ -239,13 +241,12 @@ public class PlayState extends State {
         if (font == null) {
             font = new BitmapFont();
             font.getData().setScale(12f);
-            spriteBatch = new SpriteBatch();
         }
-        spriteBatch.begin();
-        font.draw(spriteBatch, Integer.toString(countdownNumber),
+        sb.begin();
+        font.draw(sb, Integer.toString(countdownNumber),
                 Gdx.graphics.getWidth() / 2f,
                 Gdx.graphics.getHeight() / 2f);
-        spriteBatch.end();
+        sb.end();
     }
 
     @Override
