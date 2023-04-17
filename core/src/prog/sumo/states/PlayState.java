@@ -193,7 +193,6 @@ public class PlayState extends State {
         sb.begin();
         sb.setTransformMatrix(
                 new Matrix4().setToRotation(0, 0, 1, 90));
-        sb.setTransformMatrix(originalMatrix); // Restore the original matrix
         if (fontForScore == null) {
             fontForScore = new BitmapFont();
             fontForScore.getData().setScale(5f);
@@ -209,6 +208,8 @@ public class PlayState extends State {
                 Gdx.graphics.getWidth(),
                 -fontForScore.getCapHeight());
         sb.end();
+        sb.setTransformMatrix(originalMatrix); // Restore the original matrix
+
     }
 
     private void drawGame(SpriteBatch sb) {
@@ -222,27 +223,26 @@ public class PlayState extends State {
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 - 70);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                Gdx.graphics.getWidth() / 2f - 70);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(Gdx.graphics.getWidth() + 10,
-                Gdx.graphics.getHeight() / 2, 160);
+                Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
+        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
-
-
+        drawScore(sb);
         sb.begin();
         sb.draw(char1, Gdx.graphics.getWidth() / 2 - char1.getWidth() / 2,
                 player1.getPosition());
         sb.draw(char2, Gdx.graphics.getWidth() / 2 - char2.getWidth() / 2,
                 player2.getPosition());
         sb.end();
-        drawScore(sb);
         stage.draw();
         stage.act();
     }
