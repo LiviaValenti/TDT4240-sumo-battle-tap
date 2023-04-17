@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.ListIterator;
 import java.util.Map;
 
 import prog.sumo.ScoreAPI;
@@ -37,7 +39,7 @@ public class ScoreBoardState extends State {
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
 
-        scores = new HashMap<>();
+        scores = new LinkedHashMap<>();
         ScoreAPI scoreAPI = SumoBattleTapGame.getScoreApi();
         scoreAPI.subscribeToScores(scores);
 
@@ -92,7 +94,12 @@ public class ScoreBoardState extends State {
         final float xOffset =
                 Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f;
         float yOffset = Gdx.graphics.getHeight() - scoboTitle.getHeight();
-        for (Map.Entry<String, Long> score : scores.entrySet()) {
+        ListIterator<Map.Entry<String, Long>> iterator =
+                new ArrayList<>(
+                        scores.entrySet()).listIterator(
+                        scores.size());
+        while (iterator.hasPrevious()) {
+            Map.Entry<String, Long> score = iterator.previous();
             font.draw(sb, score.getKey(), xOffset, yOffset);
             font.draw(sb, score.getValue().toString(),
                     Gdx.graphics.getWidth() - xOffset, yOffset);
