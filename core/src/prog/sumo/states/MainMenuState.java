@@ -18,25 +18,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuState extends State {
-    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo;
-    Drawable playButtonDrawable, scoreBoardButtonDrawable,
+    Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo, windowTex;
+    Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw,
             tutorialButtonDrawable;
     Stage stage;
     ImageButton playButton, scoreBoardButton, tutorialButton;
-    Dialog tutPop;
+    Window tutPop;
     ImageButton closeTut;
 
     public MainMenuState(GameStateManager gsm) {
         super(gsm);
-        playButtonTex = new Texture("play.png");
+        playButtonTex = new Texture("newGame.png");
         scoreBoardButtonTex = new Texture("scoreBoard.png");
         tutorialButtonTex = new Texture("tutorialButton.png");
         logo = new Texture("logo.png");
+        windowTex = new Texture("pinkWindow.png");
 
         playButtonDrawable = new TextureRegionDrawable(playButtonTex);
         scoreBoardButtonDrawable =
                 new TextureRegionDrawable(scoreBoardButtonTex);
         tutorialButtonDrawable = new TextureRegionDrawable(tutorialButtonTex);
+        windowDraw = new TextureRegionDrawable(windowTex);
 
         playButton = new ImageButton(playButtonDrawable);
         scoreBoardButton = new ImageButton(scoreBoardButtonDrawable);
@@ -84,21 +86,20 @@ public class MainMenuState extends State {
             }
         });
 
-        tutPop = new Dialog("Tutorial",
+        tutPop = new Window("Tutorial",
                 new Window.WindowStyle(new BitmapFont(), new Color(0, 0, 0, 0),
-                        playButtonDrawable)) {
+                        windowDraw)) {
             public void result(Object obj) {
                 System.out.println("result " + obj);
             }
         };
-        tutPop.text("yes",
-                new Label.LabelStyle(new BitmapFont(), new Color(0, 0, 0, 0)));
+
         tutPop.setResizable(true);
         // tutPop.scaleBy(5f);
         tutPop.setPosition(0, Gdx.graphics.getHeight() / 2);
         tutPop.pack();
-        float tutX = tutPop.getOriginX() + tutPop.getWidth();
-        float tutY = tutPop.getOriginY() + tutPop.getHeight();
+       // float tutX = tutPop.getOriginX() + tutPop.getWidth();
+       // float tutY = tutPop.getOriginY() + tutPop.getHeight();
 
         closeTut = new ImageButton(scoreBoardButtonDrawable);
         closeTut.addListener(new ChangeListener() {
@@ -109,11 +110,11 @@ public class MainMenuState extends State {
         });
 
         closeTut.setTransform(true);
-        closeTut.setScale(0.5f);
-        closeTut.setPosition(tutX, tutY);
-        tutPop.button(closeTut);
+        //closeTut.setScale(0.5f);
+        //closeTut.setPosition(tutX, tutY);
 
-        // tutPop.add(closeTut);
+
+         tutPop.add(closeTut);
     }
 
     @Override
@@ -142,12 +143,13 @@ public class MainMenuState extends State {
     public final void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-        stage.act();
+
         sb.begin();
         sb.draw(logo, Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2,
                 Gdx.graphics.getHeight() - logo.getHeight() * 2);
         sb.end();
+        stage.draw();
+        stage.act();
     }
 
     @Override
