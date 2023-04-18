@@ -1,6 +1,5 @@
 package prog.sumo;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import prog.sumo.states.PlayState;
@@ -19,24 +18,22 @@ public final class Player {
      */
     private final int direction;
     /**
-     * The player's texture.
-     */
-    private final Texture texture;
-    /**
      * The player's position.
      */
     private int position;
 
     private int score;
 
+    private final Character character;
+
     /**
      * Constructs a new Player.
      *
-     * @param playerTexture   The texture representing the player.
+     * @param character       The character the player is playing as.
      * @param playerDirection The direction the player is facing.
      */
-    public Player(final Texture playerTexture, final int playerDirection) {
-        this.texture = playerTexture;
+    public Player(final Character character, final int playerDirection) {
+        this.character = character;
         this.direction = playerDirection;
         if (direction == 1) {
             position = PlayState.startPosition2;
@@ -62,8 +59,12 @@ public final class Player {
     }
 
     public void incrementScore() {
-        
+
         this.score++;
+    }
+
+    public Character getCharacter() {
+        return character;
     }
 
     public int getScore() {
@@ -88,7 +89,7 @@ public final class Player {
      */
     public void movePlayer(final Player otherPlayer) {
         if (Math.abs(otherPlayer.getPosition() - this.getPosition())
-                <= this.texture.getHeight()) {
+                <= this.character.getTexture().getHeight()) {
             this.moveForward();
             otherPlayer.moveBackward();
         } else {
@@ -123,15 +124,6 @@ public final class Player {
      */
     public void setPosition(final int newPosition) {
         this.position = newPosition;
-    }
-
-    /**
-     * Gets the player's texture.
-     *
-     * @return The player's texture.
-     */
-    public Texture getTexture() {
-        return texture;
     }
 
   /*  private void roundOver(Player otherPlayer, int thisPosition,

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -17,9 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import prog.sumo.Character;
 import prog.sumo.Player;
-
-import java.util.Map;
 
 
 public class PlayState extends State {
@@ -28,7 +26,6 @@ public class PlayState extends State {
     private BitmapFont font; // Font to draw the countdown
     private BitmapFont fontForScore; // Font to draw the countdown
     private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
-    public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
 
@@ -49,13 +46,14 @@ public class PlayState extends State {
 
     // The following should be changed to Player objects when that part is ready
     String winnerOfTheRound = "";
-    String winnerOfTheGame = "";
+    Player winnerOfTheGame = null;
 
     int roundCounter;
     private final static int MAX_ROUNDS = 2;
     boolean isGameOver;
 
-    public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
+    public PlayState(GameStateManager gsm, Character player1Character,
+                     Character player2Character) {
 
         super(gsm);
         roundIsOver = false;
@@ -63,8 +61,6 @@ public class PlayState extends State {
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
         hand2Tex = new Texture("purplehand.png");
-        char1 = new Texture(playerHash.get(0));
-        char2 = new Texture(playerHash.get(1));
 
         settingsWheelDrawable = new TextureRegionDrawable(settingsWheel);
         player1Drawable = new TextureRegionDrawable(hand1Tex);
@@ -75,6 +71,9 @@ public class PlayState extends State {
         hand2 = new ImageButton(player2Drawable);
 
 
+        player1 = new Player(player1Character, 1);
+        player2 = new Player(player2Character, 0);
+
         roundCounter = 1;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -82,11 +81,8 @@ public class PlayState extends State {
         stage.addActor(hand1);
         stage.addActor(hand2);
         startPosition1 = Gdx.graphics.getHeight() / 2 + battleCircleRadius
-                - char1.getHeight();
+                - player1.getCharacter().getTexture().getHeight();
         startPosition2 = Gdx.graphics.getHeight() / 2 - battleCircleRadius;
-
-        player1 = new Player(char1, 1);
-        player2 = new Player(char2, 0);
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
@@ -142,7 +138,9 @@ public class PlayState extends State {
 
 
     public void isRoundOver() {
-        if (player1.getPosition() + player1.getTexture().getHeight() / 2 > startPosition1) {
+        if (player1.getPosition() +
+                player1.getCharacter().getTexture().getHeight() / 2 >
+                startPosition1) {
 
             //Increment score for player 2
             player1.setPosition(startPosition2);
@@ -150,7 +148,10 @@ public class PlayState extends State {
             whenRoundFinished();
             roundIsOver = true;
 
-        } else if (player2.getPosition() - player2.getTexture().getHeight() / 2 < startPosition2) {
+        } else if (
+                player2.getPosition() -
+                        player2.getCharacter().getTexture().getHeight() / 2 <
+                        startPosition2) {
             //Increment score for player 1
             player1.setPosition(startPosition2);
             player2.setPosition(startPosition1);
@@ -164,7 +165,7 @@ public class PlayState extends State {
     public void update(float dt) {
     }
 
-    public String getWinnerOfTheGame() {
+    public Player getWinnerOfTheGame() {
         return winnerOfTheGame;
     }
 
@@ -202,9 +203,9 @@ public class PlayState extends State {
                 isGameOver = true;
                 whenGameIsFinished();
 
-                winnerOfTheGame = "Player1";
+                winnerOfTheGame = player1;
             } else if (player2.getScore() > breakpoint) {
-                winnerOfTheGame = "Player2";
+                winnerOfTheGame = player2;
                 isGameOver = true;
                 whenGameIsFinished();
             }
@@ -268,9 +269,13 @@ public class PlayState extends State {
         shapeRenderer.end();
         drawScore(sb);
         sb.begin();
-        sb.draw(char1, Gdx.graphics.getWidth() / 2 - char1.getWidth() / 2,
+        sb.draw(player1.getCharacter().getTexture(),
+                Gdx.graphics.getWidth() / 2f -
+                        player1.getCharacter().getTexture().getWidth() / 2f,
                 player1.getPosition());
-        sb.draw(char2, Gdx.graphics.getWidth() / 2 - char2.getWidth() / 2,
+        sb.draw(player2.getCharacter().getTexture(),
+                Gdx.graphics.getWidth() / 2f -
+                        player2.getCharacter().getTexture().getWidth() / 2f,
                 player2.getPosition());
         sb.end();
         stage.draw();
@@ -319,8 +324,8 @@ public class PlayState extends State {
         settingsWheel.dispose();
         hand1Tex.dispose();
         hand2Tex.dispose();
-        char1.dispose();
-        char2.dispose();
+        player1.getCharacter().getTexture().dispose();
+        player2.getCharacter().getTexture().dispose();
         stage.dispose();
     }
 

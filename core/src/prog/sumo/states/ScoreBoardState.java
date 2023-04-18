@@ -33,6 +33,7 @@ public class ScoreBoardState extends State {
     private final Map<String, Long> scores;
 
     public ScoreBoardState(GameStateManager gsm, String winnerOfTheGame) {
+        // TODO: Use winnerOfTheGame
         this(gsm);
     }
 
