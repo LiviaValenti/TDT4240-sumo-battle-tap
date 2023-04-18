@@ -36,9 +36,9 @@ public final class Player {
         this.character = character;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = PlayState.startPosition2;
+            position = PlayState.startPositionOfPlayer2;
         } else {
-            position = PlayState.startPosition1;
+            position = PlayState.startPositionOfPlayer1;
         }
         score = 0;
     }
@@ -59,7 +59,6 @@ public final class Player {
     }
 
     public void incrementScore() {
-
         this.score++;
     }
 
@@ -88,13 +87,12 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition())
-                <= this.character.getTexture().getHeight()) {
-            this.moveForward();
+        float characterHeight = this.character.getTexture().getHeight();
+        float collisionPoint = Math.abs(otherPlayer.getPosition() - this.getPosition());
+        if (collisionPoint <= characterHeight) {
             otherPlayer.moveBackward();
-        } else {
-            this.moveForward();
         }
+        this.moveForward();
     }
 
     /**

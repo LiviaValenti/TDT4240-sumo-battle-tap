@@ -25,11 +25,10 @@ public class PlayState extends State {
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
     private BitmapFont fontForScore; // Font to draw the countdown
-    private SpriteBatch spriteBatch; // SpriteBatch to draw the countdown
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
 
-    public static int startPosition1, startPosition2;
+    public static int startPositionOfPlayer1, startPositionOfPlayer2;
     Texture settingsWheel;
     Texture hand1Tex, hand2Tex;
     ShapeRenderer shapeRenderer;
@@ -77,15 +76,17 @@ public class PlayState extends State {
         stage.addActor(settingsB);
         stage.addActor(hand1);
         stage.addActor(hand2);
-        startPosition1 = Gdx.graphics.getHeight() / 2 + battleCircleRadius
+        startPositionOfPlayer1 = Gdx.graphics.getHeight() / 2 + battleCircleRadius
                 - player1.getCharacter().getTexture().getHeight();
-        startPosition2 = Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+        startPositionOfPlayer2 = Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+        player1.setPosition(startPositionOfPlayer1);
+        player2.setPosition(startPositionOfPlayer2);
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
-                Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
-        hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2f - settingsB.getHeight() / 2);
+        hand1.setPosition(Gdx.graphics.getWidth() / 2f - hand1.getWidth() / 2,
                 0);
-        hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth() / 2,
+        hand2.setPosition(Gdx.graphics.getWidth() / 2f - hand2.getWidth() / 2,
                 Gdx.graphics.getHeight() - hand2.getHeight());
         isGameOver = false;
         countdownStartTime = 0f;
@@ -133,29 +134,21 @@ public class PlayState extends State {
         }
     }
 
-
     public void isRoundOver() {
+
+
         if (player1.getPosition() +
                 player1.getCharacter().getTexture().getHeight() / 2 >
-                startPosition1) {
-
+                startPositionOfPlayer1) {
             //Increment score for player 2
-            winnerOfTheRound = player2;
-            player1.setPosition(startPosition2);
-            player2.setPosition(startPosition1);
-            whenRoundFinished();
-
+            whenRoundFinished(player2);
         } else if (
                 player2.getPosition() -
                         player2.getCharacter().getTexture().getHeight() / 2 <
-                        startPosition2) {
+                        startPositionOfPlayer2) {
             //Increment score for player 1
-            winnerOfTheRound = player1;
-            player1.setPosition(startPosition2);
-            player2.setPosition(startPosition1);
-            whenRoundFinished();
+            whenRoundFinished(player1);
         }
-
     }
 
     @Override
@@ -171,11 +164,13 @@ public class PlayState extends State {
     }
 
     // The following method should be used when a round is finished
-    public void whenRoundFinished() {
+    public void whenRoundFinished(Player winner) {
         incrementRoundCounter();
+        this.winnerOfTheRound = winner;
         incrementScoreOfWinner();
         checkIfGameIsFinished();
-        Gdx.app.log("round", "" + roundCounter);
+        player1.setPosition(startPositionOfPlayer1);
+        player2.setPosition(startPositionOfPlayer2);
     }
 
     private void incrementRoundCounter() {
@@ -193,8 +188,6 @@ public class PlayState extends State {
                 isGameOver = true;
                 winnerOfTheGame = player1;
                 whenGameIsFinished();
-
-
             } else if (player2.getScore() > breakpoint) {
                 winnerOfTheGame = player2;
                 isGameOver = true;
@@ -235,12 +228,11 @@ public class PlayState extends State {
     }
 
     private void drawGame(SpriteBatch sb) {
-
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2, battleCircleHeight,
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f, battleCircleHeight,
                 battleCircleRadius);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -301,6 +293,9 @@ public class PlayState extends State {
                 Gdx.graphics.getHeight() / 2f);
         sb.end();
     }
+
+    // Player 1 er på bunnen
+    // Player 2 er på toppen
 
     @Override
     public final void render(SpriteBatch sb) {
