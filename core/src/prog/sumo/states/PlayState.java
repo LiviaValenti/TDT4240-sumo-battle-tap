@@ -163,7 +163,7 @@ public class PlayState extends State {
     }
 
     private void incrementScoreOfWinner() {
-        if (winnerOfTheRound.equals("Player1")) {
+        if (winnerOfTheRound.equals(player1)) {
             player1.incrementScore();
         } else {
             player2.incrementScore();
@@ -191,9 +191,10 @@ public class PlayState extends State {
             int breakpoint = (int) Math.floor(MAX_ROUNDS / 2f);
             if (player1.getScore() > breakpoint) {
                 isGameOver = true;
+                winnerOfTheGame = player1;
                 whenGameIsFinished();
 
-                winnerOfTheGame = player1;
+
             } else if (player2.getScore() > breakpoint) {
                 winnerOfTheGame = player2;
                 isGameOver = true;

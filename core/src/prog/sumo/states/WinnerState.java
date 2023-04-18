@@ -17,16 +17,13 @@ public class WinnerState extends State {
 
     private final Player winner;
     ShapeRenderer shapeRenderer;
-    private BitmapFont font; // Font to draw the countdown
     private BitmapFont fontForWinner; // Font to draw the winner
-    private SpriteBatch spriteBatch;
 
     public WinnerState(GameStateManager gameStateManager, Player winner) {
         super(gameStateManager);
         this.winner = winner;
         shapeRenderer = new ShapeRenderer();
-        SumoBattleTapGame.getScoreApi()
-                .incrementScore(winner.getCharacter().getName());
+        SumoBattleTapGame.getScoreApi().incrementScore(winner.getCharacter().getName());
     }
 
     @Override
