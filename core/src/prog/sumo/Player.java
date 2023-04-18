@@ -95,17 +95,6 @@ public final class Player {
         } else {
             this.moveForward();
         }
-
-      /*  if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
-                && this.direction == 1) {
-            //Player 1 wins
-            roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
-
-        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2
-                && this.direction == 0) {
-            //Player 2 wins
-            roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
-        }*/
     }
 
     /**
@@ -125,13 +114,4 @@ public final class Player {
     public void setPosition(final int newPosition) {
         this.position = newPosition;
     }
-
-  /*  private void roundOver(Player otherPlayer, int thisPosition,
-                           int otherPosition) {
-
-        // todo: INCREMENT WHEN ROUND IS OVER
-
-        this.setPosition(thisPosition);
-        otherPlayer.setPosition(otherPosition);
-    }*/
 }

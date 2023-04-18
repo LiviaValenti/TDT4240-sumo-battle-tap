@@ -36,8 +36,6 @@ public class PlayState extends State {
     Drawable settingsWheelDrawable;
     Drawable player1Drawable, player2Drawable;
     private float countdownStartTime;
-    private boolean roundIsOver;
-
     ImageButton settingsB;
     ImageButton hand1, hand2;
     Stage stage;
@@ -45,18 +43,17 @@ public class PlayState extends State {
     private final Player player2;
 
     // The following should be changed to Player objects when that part is ready
-    String winnerOfTheRound = "";
+    Player winnerOfTheRound = null;
     Player winnerOfTheGame = null;
 
     int roundCounter;
-    private final static int MAX_ROUNDS = 2;
+    private final static int MAX_ROUNDS = 3;
     boolean isGameOver;
 
     public PlayState(GameStateManager gsm, Character player1Character,
                      Character player2Character) {
 
         super(gsm);
-        roundIsOver = false;
         shapeRenderer = new ShapeRenderer();
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
@@ -143,35 +140,29 @@ public class PlayState extends State {
                 startPosition1) {
 
             //Increment score for player 2
+            winnerOfTheRound = player2;
             player1.setPosition(startPosition2);
             player2.setPosition(startPosition1);
             whenRoundFinished();
-            roundIsOver = true;
 
         } else if (
                 player2.getPosition() -
                         player2.getCharacter().getTexture().getHeight() / 2 <
                         startPosition2) {
             //Increment score for player 1
+            winnerOfTheRound = player1;
             player1.setPosition(startPosition2);
             player2.setPosition(startPosition1);
             whenRoundFinished();
-            roundIsOver = true;
         }
-        roundIsOver = false;
+
     }
 
     @Override
     public void update(float dt) {
     }
 
-    public Player getWinnerOfTheGame() {
-        return winnerOfTheGame;
-    }
-
     private void incrementScoreOfWinner() {
-        // TODO: winner is a string now, but needs to be changed to the Player object
-        // We need to determine how to keep track of the winner of the round. But that is another task
         if (winnerOfTheRound.equals("Player1")) {
             player1.incrementScore();
         } else {
@@ -183,7 +174,6 @@ public class PlayState extends State {
     public void whenRoundFinished() {
         incrementRoundCounter();
         incrementScoreOfWinner();
-
         checkIfGameIsFinished();
         Gdx.app.log("round", "" + roundCounter);
     }
