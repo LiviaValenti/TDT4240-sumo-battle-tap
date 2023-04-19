@@ -21,7 +21,7 @@ import java.util.Map;
 
 import prog.sumo.models.Player;
 
-public class PlayView extends View {
+public class GameView extends View {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
@@ -39,7 +39,7 @@ public class PlayView extends View {
     Stage stage;
     Window pinkWindow, orangeWindow;
 
-    public PlayView(GameViewManager gsm, Map<Integer, String> playerHash) {
+    public GameView(GameViewManager gsm, Map<Integer, String> playerHash) {
 
         super(gsm);
 

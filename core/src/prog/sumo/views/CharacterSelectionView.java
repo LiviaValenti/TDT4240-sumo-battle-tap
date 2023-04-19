@@ -111,7 +111,7 @@ public class CharacterSelectionView extends View {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayView(gsm, playerHash));
+            gsm.set(new GameView(gsm, playerHash));
         }
         if (name.equals("homeB")) {
             gsm.set(new MainMenuView(gsm));

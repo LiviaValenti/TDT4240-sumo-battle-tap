@@ -17,10 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
-import prog.sumo.ScoreAPI;
 import prog.sumo.SumoBattleTapGame;
+import prog.sumo.singletons.ScoreAPI;
 
-public class ScoreBoardView extends View {
+public class ScoreboardView extends View {
 
     Texture scoboTitle;
     Texture backButtonTex;
@@ -30,7 +30,7 @@ public class ScoreBoardView extends View {
     BitmapFont font;
     private final Map<String, Long> scores;
 
-    public ScoreBoardView(GameViewManager gsm) {
+    public ScoreboardView(GameViewManager gsm) {
         super(gsm);
 
         scores = new LinkedHashMap<>();

@@ -2,7 +2,7 @@
  * The ScoreAPI interface defines the methods for managing player scores in a
  * game.
  */
-package prog.sumo;
+package prog.sumo.singletons;
 
 import java.util.Map;
 

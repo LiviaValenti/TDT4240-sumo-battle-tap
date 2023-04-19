@@ -129,7 +129,7 @@ public class MainMenuView extends View {
             gsm.set(new CharacterSelectionView(gsm));
         }
         if (name.equals("scoreBoardB")) {
-            gsm.set(new ScoreBoardView(gsm));
+            gsm.set(new ScoreboardView(gsm));
         }
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);

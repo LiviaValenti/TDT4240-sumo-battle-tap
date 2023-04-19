@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import prog.sumo.singletons.ScoreAPI;
+
 /**
  * Android implementation of the ScoreAPI using Firebase.
  */

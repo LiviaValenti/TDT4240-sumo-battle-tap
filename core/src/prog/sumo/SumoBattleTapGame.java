@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import prog.sumo.singletons.ScoreAPI;
 import prog.sumo.views.GameViewManager;
 import prog.sumo.views.MainMenuView;
 
