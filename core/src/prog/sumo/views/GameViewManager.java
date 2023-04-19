@@ -1,24 +1,24 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Stack;
 
-public class GameStateManager {
-    private final Stack<State> states;
+public class GameViewManager {
+    private final Stack<View> views;
 
-    public GameStateManager() {
-        states = new Stack<State>();
+    public GameViewManager() {
+        views = new Stack<View>();
     }
 
     /**
-     * This method pushes a new state onto the stack. Subclasses can use this
-     * method to manage state transitions.
+     * This method pushes a new view onto the stack. Subclasses can use this
+     * method to manage view transitions.
      *
-     * @param state The state to be pushed onto the stack.
+     * @param view The view to be pushed onto the stack.
      */
-    public void push(State state) {
-        states.push(state);
+    public void push(View view) {
+        views.push(view);
     }
 
     /**
@@ -26,18 +26,18 @@ public class GameStateManager {
      * this method to manage state transitions.
      */
     public void pop() {
-        states.pop().dispose();
+        views.pop().dispose();
     }
 
     /**
-     * This method replaces the current state with a new state. Subclasses can
-     * use this method to manage state transitions.
+     * This method replaces the current view with a new view. Subclasses can use
+     * this method to manage view transitions.
      *
-     * @param state The new state to replace the current state.
+     * @param view The new view to replace the current view.
      */
-    public void set(State state) {
-        states.pop().dispose();
-        states.push(state);
+    public void set(View view) {
+        views.pop().dispose();
+        views.push(view);
     }
 
     /**
@@ -48,7 +48,7 @@ public class GameStateManager {
      * @param dt The elapsed time since the last update, in seconds.
      */
     public void update(float dt) {
-        states.peek().update(dt);
+        views.peek().update(dt);
     }
 
     /**
@@ -59,6 +59,6 @@ public class GameStateManager {
      * @param sb The SpriteBatch used for rendering.
      */
     public void render(SpriteBatch sb) {
-        states.peek().render(sb);
+        views.peek().render(sb);
     }
 }

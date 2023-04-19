@@ -1,9 +1,9 @@
-package prog.sumo;
+package prog.sumo.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import prog.sumo.states.PlayState;
+import prog.sumo.views.PlayView;
 
 /**
  * Represents a player in the sumo game.
@@ -15,11 +15,11 @@ public final class Player {
      */
 
     private static final int MAX_POSITION_1 =
-            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
-                    - PlayState.char1.getHeight();
+            Gdx.graphics.getHeight() / 2 + PlayView.battleCircleRadius
+                    - PlayView.char1.getHeight();
     private static final int MAX_POSITION_2 =
-            Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
-    private final int stepSize = PlayState.battleCircleHeight / 10;
+            Gdx.graphics.getHeight() / 2 - PlayView.battleCircleRadius;
+    private final int stepSize = PlayView.battleCircleHeight / 10;
     /**
      * The player's direction.
      */

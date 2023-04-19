@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,9 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Map;
 
-import prog.sumo.Player;
+import prog.sumo.models.Player;
 
-public class PlayState extends State {
+public class PlayView extends View {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
@@ -39,7 +39,7 @@ public class PlayState extends State {
     Stage stage;
     Window pinkWindow, orangeWindow;
 
-    public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
+    public PlayView(GameViewManager gsm, Map<Integer, String> playerHash) {
 
         super(gsm);
 
@@ -194,7 +194,7 @@ public class PlayState extends State {
     protected final void handleInput(String name) {
         switch (name) {
             case "settingsB":
-                //gsm.set(new MainMenuState(gsm));
+                //gsm.set(new MainMenuView(gsm));
                 stage.addActor(pinkWindow);
                 break;
             case "player1":
@@ -213,7 +213,7 @@ public class PlayState extends State {
                 stage.addActor(orangeWindow);
                 break;
             case "quitB":
-                gsm.set(new MainMenuState(gsm));
+                gsm.set(new MainMenuView(gsm));
                 break;
             case "backB":
                 stage.addAction(Actions.removeActor(pinkWindow));

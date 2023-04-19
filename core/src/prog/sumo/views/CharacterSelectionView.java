@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CharacterSelectionState extends State {
+public class CharacterSelectionView extends View {
 
     private final String[] colors =
             new String[] {"red", "green", "pink", "purple", "blue", "orange"};
@@ -47,7 +47,7 @@ public class CharacterSelectionState extends State {
     private int secondPlayerX = 0;
 
 
-    public CharacterSelectionState(GameStateManager gsm) {
+    public CharacterSelectionView(GameViewManager gsm) {
         super(gsm);
 
         for (int i = 0; i < buttonTextures.length; i++) {
@@ -111,10 +111,10 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm, playerHash));
+            gsm.set(new PlayView(gsm, playerHash));
         }
         if (name.equals("homeB")) {
-            gsm.set(new MainMenuState(gsm));
+            gsm.set(new MainMenuView(gsm));
         }
 
         // If name equals the first half of the color array,
