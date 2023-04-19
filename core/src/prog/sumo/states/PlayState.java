@@ -67,8 +67,8 @@ public class PlayState extends State {
         hand2 = new ImageButton(player2Drawable);
 
 
-        player1 = new Player(player1Character, 1);
-        player2 = new Player(player2Character, 0);
+        player1 = new Player(player1Character, 0);
+        player2 = new Player(player2Character, 1);
 
         roundCounter = 1;
         stage = new Stage();
@@ -76,9 +76,11 @@ public class PlayState extends State {
         stage.addActor(settingsB);
         stage.addActor(hand1);
         stage.addActor(hand2);
-        startPositionOfPlayer1 = Gdx.graphics.getHeight() / 2 + battleCircleRadius
-                - player1.getCharacter().getTexture().getHeight();
-        startPositionOfPlayer2 = Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+        startPositionOfPlayer1 =
+                Gdx.graphics.getHeight() / 2 + battleCircleRadius
+                        - player1.getCharacter().getTexture().getHeight();
+        startPositionOfPlayer2 =
+                Gdx.graphics.getHeight() / 2 - battleCircleRadius;
         player1.setPosition(startPositionOfPlayer1);
         player2.setPosition(startPositionOfPlayer2);
 
@@ -120,12 +122,12 @@ public class PlayState extends State {
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                player1.movePlayer(player2);
+                player2.movePlayer(player1);
                 isRoundOver();
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                player2.movePlayer(player1);
+                player1.movePlayer(player2);
                 isRoundOver();
                 break;
             default:
@@ -136,16 +138,15 @@ public class PlayState extends State {
 
     public void isRoundOver() {
 
-
-        if (player1.getPosition() +
+        //If player 1 is out of the battle circle
+        if (player1.getPosition() -
                 player1.getCharacter().getTexture().getHeight() / 2 >
                 startPositionOfPlayer1) {
             //Increment score for player 2
             whenRoundFinished(player2);
-        } else if (
-                player2.getPosition() -
-                        player2.getCharacter().getTexture().getHeight() / 2 <
-                        startPositionOfPlayer2) {
+        } else if (player2.getPosition() +
+                player2.getCharacter().getTexture().getHeight() / 2 <
+                startPositionOfPlayer2) {
             //Increment score for player 1
             whenRoundFinished(player1);
         }
