@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector3;
 public abstract class View {
     protected OrthographicCamera cam;
     protected Vector3 mouse;
-    protected GameViewManager gsm;
+    protected GameViewManager gvm;
 
     public View(GameViewManager gameViewManager) {
-        this.gsm = gameViewManager;
+        this.gvm = gameViewManager;
         cam = new OrthographicCamera();
         mouse = new Vector3();
     }

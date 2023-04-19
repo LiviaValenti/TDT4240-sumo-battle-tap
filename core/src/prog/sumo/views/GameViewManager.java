@@ -8,7 +8,7 @@ public class GameViewManager {
     private final Stack<View> views;
 
     public GameViewManager() {
-        views = new Stack<View>();
+        views = new Stack<>();
     }
 
     /**
@@ -22,8 +22,8 @@ public class GameViewManager {
     }
 
     /**
-     * This method pops the current state from the stack. Subclasses can use
-     * this method to manage state transitions.
+     * This method pops the current view from the stack. Subclasses can use this
+     * method to manage view transitions.
      */
     public void pop() {
         views.pop().dispose();
@@ -41,7 +41,7 @@ public class GameViewManager {
     }
 
     /**
-     * This method updates the state of the application based on the elapsed
+     * This method updates the view of the application based on the elapsed
      * time. Subclasses should override this method to provide their own update
      * logic.
      *
@@ -52,7 +52,7 @@ public class GameViewManager {
     }
 
     /**
-     * This method is responsible for rendering the current state to the screen.
+     * This method is responsible for rendering the current view to the screen.
      * Subclasses should override this method to provide their own rendering
      * logic.
      *

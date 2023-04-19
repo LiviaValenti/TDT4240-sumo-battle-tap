@@ -39,9 +39,9 @@ public class GameView extends View {
     Stage stage;
     Window pinkWindow, orangeWindow;
 
-    public GameView(GameViewManager gsm, Map<Integer, String> playerHash) {
+    public GameView(GameViewManager gvm, Map<Integer, String> playerHash) {
 
-        super(gsm);
+        super(gvm);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -213,7 +213,7 @@ public class GameView extends View {
                 stage.addActor(orangeWindow);
                 break;
             case "quitB":
-                gsm.set(new MainMenuView(gsm));
+                gvm.set(new MainMenuView(gvm));
                 break;
             case "backB":
                 stage.addAction(Actions.removeActor(pinkWindow));

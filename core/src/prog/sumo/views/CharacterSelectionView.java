@@ -47,8 +47,8 @@ public class CharacterSelectionView extends View {
     private int secondPlayerX = 0;
 
 
-    public CharacterSelectionView(GameViewManager gsm) {
-        super(gsm);
+    public CharacterSelectionView(GameViewManager gvm) {
+        super(gvm);
 
         for (int i = 0; i < buttonTextures.length; i++) {
             buttonDrawables[i] = new TextureRegionDrawable(buttonTextures[i]);
@@ -111,10 +111,10 @@ public class CharacterSelectionView extends View {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new GameView(gsm, playerHash));
+            gvm.set(new GameView(gvm, playerHash));
         }
         if (name.equals("homeB")) {
-            gsm.set(new MainMenuView(gsm));
+            gvm.set(new MainMenuView(gvm));
         }
 
         // If name equals the first half of the color array,

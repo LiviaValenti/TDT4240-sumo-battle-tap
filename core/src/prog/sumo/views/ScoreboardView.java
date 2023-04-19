@@ -30,8 +30,8 @@ public class ScoreboardView extends View {
     BitmapFont font;
     private final Map<String, Long> scores;
 
-    public ScoreboardView(GameViewManager gsm) {
-        super(gsm);
+    public ScoreboardView(GameViewManager gvm) {
+        super(gvm);
 
         scores = new LinkedHashMap<>();
         ScoreAPI scoreAPI = SumoBattleTapGame.getScoreApi();
@@ -67,7 +67,7 @@ public class ScoreboardView extends View {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("backB")) {
-            gsm.set(new MainMenuView(gsm));
+            gvm.set(new MainMenuView(gvm));
         }
     }
 

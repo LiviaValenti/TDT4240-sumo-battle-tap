@@ -26,8 +26,8 @@ public class MainMenuView extends View {
     Window tutPop;
     ImageButton writtenTutB, back2B;
 
-    public MainMenuView(GameViewManager gsm) {
-        super(gsm);
+    public MainMenuView(GameViewManager gvm) {
+        super(gvm);
         playButtonTex = new Texture("newGame.png");
         scoreBoardButtonTex = new Texture("scoreBoard.png");
         tutorialButtonTex = new Texture("tutorialButton.png");
@@ -126,10 +126,10 @@ public class MainMenuView extends View {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new CharacterSelectionView(gsm));
+            gvm.set(new CharacterSelectionView(gvm));
         }
         if (name.equals("scoreBoardB")) {
-            gsm.set(new ScoreboardView(gsm));
+            gvm.set(new ScoreboardView(gvm));
         }
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);
