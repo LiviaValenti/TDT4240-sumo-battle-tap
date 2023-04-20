@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -17,15 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.util.Map;
-
 import prog.sumo.controllers.PlayerController;
+import prog.sumo.models.Character;
 import prog.sumo.models.Player;
 
 public class PlayState extends State {
-    public static Texture char1, char2;
+    private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
+    private float timeElapsed = 0f; // Time elapsed since countdown started
+    private BitmapFont font; // Font to draw the countdown
+    private BitmapFont fontForScore; // Font to draw the countdown
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
+
+    public static int startPositionOfPlayer1, startPositionOfPlayer2;
     private final Player player1;
     private final Player player2;
     Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex,
@@ -35,22 +40,28 @@ public class PlayState extends State {
     Drawable settingsWheelDrawable, windowDraw, backDraw, quitDraw,
             tutorialDraw, tutWinDraw, writtenTutDraw, back2Draw;
     Drawable player1Drawable, player2Drawable;
+    private final float countdownStartTime;
     ImageButton settingsB, quitB, backB, tutB, writtenTutB, back2B;
     ImageButton hand1, hand2;
     Stage stage;
-    Window pinkWindow, orangeWindow;
 
-    public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
+    Window pinkWindow, orangeWindow;
+    // The following should be changed to Player objects when that part is ready
+    Player winnerOfTheRound = null;
+    Player winnerOfTheGame = null;
+
+    int roundCounter;
+    private final static int MAX_ROUNDS = 3;
+    boolean isGameOver;
+
+    public PlayState(GameStateManager gsm, Character player1Character,
+                     Character player2Character) {
 
         super(gsm);
-
         shapeRenderer = new ShapeRenderer();
-
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
         hand2Tex = new Texture("purplehand.png");
-        char1 = new Texture(playerHash.get(0));
-        char2 = new Texture(playerHash.get(1));
         windowTex = new Texture("pinkWindow.png");
         quitTex = new Texture("quitGame.png");
         backTex = new Texture("backToGame.png");
@@ -89,23 +100,33 @@ public class PlayState extends State {
         back2B.setTransform(true);
         back2B.setScale(2f);
 
+
+        player1 = new Player(player1Character, 0);
+        player2 = new Player(player2Character, 1);
+
+        roundCounter = 1;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(settingsB);
         stage.addActor(hand1);
         stage.addActor(hand2);
-
-        player1 = new Player(char1, 1);
-        player2 = new Player(char2, 0);
+        startPositionOfPlayer1 =
+                Gdx.graphics.getHeight() / 2 + battleCircleRadius
+                        - player1.getCharacter().getTexture().getHeight();
+        startPositionOfPlayer2 =
+                Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+        player1.setPosition(startPositionOfPlayer1);
+        player2.setPosition(startPositionOfPlayer2);
 
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
-                Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
-        hand1.setPosition(Gdx.graphics.getWidth() / 2 - hand1.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2f - settingsB.getHeight() / 2);
+        hand1.setPosition(Gdx.graphics.getWidth() / 2f - hand1.getWidth() / 2,
                 0);
-        hand2.setPosition(Gdx.graphics.getWidth() / 2 - hand2.getWidth() / 2,
+        hand2.setPosition(Gdx.graphics.getWidth() / 2f - hand2.getWidth() / 2,
                 Gdx.graphics.getHeight() - hand2.getHeight());
-
+        isGameOver = false;
+        countdownStartTime = 0f;
         settingsB.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -169,11 +190,11 @@ public class PlayState extends State {
 
         Table table = new Table();
         // Add buttons to the table
-        table.add(tutB).padRight(Gdx.graphics.getWidth() / 2 + 30);
+        table.add(tutB).padRight(Gdx.graphics.getWidth() / 2f + 30);
         table.row().padTop(200); // Create a new row
-        table.add(backB).padRight(Gdx.graphics.getWidth() / 2 + 30);
+        table.add(backB).padRight(Gdx.graphics.getWidth() / 2f + 30);
         table.row().padTop(185); // Create a new row
-        table.add(quitB).padRight(Gdx.graphics.getWidth() / 2 + 30);
+        table.add(quitB).padRight(Gdx.graphics.getWidth() / 2f + 30);
 
         pinkWindow.setResizable(true);
         pinkWindow.add(table);
@@ -181,10 +202,10 @@ public class PlayState extends State {
 
         Table table2 = new Table();
 
-        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2 + 40)
+        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2f + 40)
                 .padTop(550);
         table2.row().padTop(300);
-        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2 + 30);
+        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2f + 30);
 
         //table2.add(back2B).padRight(Gdx.graphics.getWidth()/ 2 +30);
         orangeWindow.add(table2);
@@ -196,16 +217,17 @@ public class PlayState extends State {
     protected final void handleInput(String name) {
         switch (name) {
             case "settingsB":
-                //gsm.set(new MainMenuState(gsm));
                 stage.addActor(pinkWindow);
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                PlayerController.movePlayer(player1, player2);
+                PlayerController.movePlayer(player2, player1);
+                isRoundOver();
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                PlayerController.movePlayer(player2, player1);
+                PlayerController.movePlayer(player1, player2);
+                isRoundOver();
                 break;
             default:
                 // handle invalid input
@@ -226,43 +248,171 @@ public class PlayState extends State {
         }
     }
 
+    public void isRoundOver() {
+
+        //If player 1 is out of the battle circle
+        if (player1.getPosition() -
+                player1.getCharacter().getTexture().getHeight() / 2 >
+                startPositionOfPlayer1) {
+            //Increment score for player 2
+            whenRoundFinished(player2);
+        } else if (player2.getPosition() +
+                player2.getCharacter().getTexture().getHeight() / 2 <
+                startPositionOfPlayer2) {
+            //Increment score for player 1
+            whenRoundFinished(player1);
+        }
+    }
+
     @Override
     public void update(float dt) {
         stage.act();
     }
 
-    @Override
-    public final void render(SpriteBatch sb) {
+    private void incrementScoreOfWinner() {
+        if (winnerOfTheRound.equals(player1)) {
+            player1.incrementScore();
+        } else {
+            player2.incrementScore();
+        }
+    }
+
+    // The following method should be used when a round is finished
+    public void whenRoundFinished(Player winner) {
+        incrementRoundCounter();
+        this.winnerOfTheRound = winner;
+        incrementScoreOfWinner();
+        checkIfGameIsFinished();
+        player1.setPosition(startPositionOfPlayer1);
+        player2.setPosition(startPositionOfPlayer2);
+    }
+
+    private void incrementRoundCounter() {
+        roundCounter++;
+    }
+
+    public void checkIfGameIsFinished() {
+        // to avoid running unneccessary code in simplest code
+        if (roundCounter == MAX_ROUNDS) {
+            isGameOver = true;
+        } else {
+            // if either player has higher score than half of max rounds, the game is over
+            int breakpoint = (int) Math.floor(MAX_ROUNDS / 2f);
+            if (player1.getScore() > breakpoint) {
+                isGameOver = true;
+                winnerOfTheGame = player1;
+                whenGameIsFinished();
+            } else if (player2.getScore() > breakpoint) {
+                winnerOfTheGame = player2;
+                isGameOver = true;
+                whenGameIsFinished();
+            }
+        }
+    }
+
+    public void whenGameIsFinished() {
+        if (isGameOver) {
+            gsm.set(new WinnerState(gsm, winnerOfTheGame));
+        }
+    }
+
+    private void drawScore(SpriteBatch sb) {
+        Matrix4 originalMatrix =
+                sb.getTransformMatrix().cpy(); // Save the original matrix
+        sb.begin();
+        sb.setTransformMatrix(
+                new Matrix4().setToRotation(0, 0, 1, 90));
+        if (fontForScore == null) {
+            fontForScore = new BitmapFont();
+            fontForScore.getData().setScale(5f);
+        }
+        fontForScore.setColor(Color.BLACK);
+        fontForScore.draw(sb, "" + player1.getScore(),
+                Gdx.graphics.getWidth() + (fontForScore.getCapHeight() * 2),
+                -fontForScore.getCapHeight());
+        fontForScore.draw(sb, "-",
+                Gdx.graphics.getWidth() + (fontForScore.getCapHeight()),
+                -fontForScore.getCapHeight());
+        fontForScore.draw(sb, "" + player2.getScore(),
+                Gdx.graphics.getWidth(),
+                -fontForScore.getCapHeight());
+        sb.end();
+        sb.setTransformMatrix(originalMatrix); // Restore the original matrix
+
+    }
+
+    private void drawGame(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2, battleCircleHeight,
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f, battleCircleHeight,
                 battleCircleRadius);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 2 - 70);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                Gdx.graphics.getWidth() / 2f - 70);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(Gdx.graphics.getWidth() + 10,
-                Gdx.graphics.getHeight() / 2, 160);
+                Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2, 160);
+        shapeRenderer.circle(-10, Gdx.graphics.getHeight() / 2f, 160);
         shapeRenderer.end();
-
+        drawScore(sb);
         sb.begin();
-        sb.draw(char1, Gdx.graphics.getWidth() / 2 - char1.getWidth() / 2,
+        sb.draw(player1.getCharacter().getTexture(),
+                Gdx.graphics.getWidth() / 2f -
+                        player1.getCharacter().getTexture().getWidth() / 2f,
                 player1.getPosition());
-        sb.draw(char2, Gdx.graphics.getWidth() / 2 - char2.getWidth() / 2,
+        sb.draw(player2.getCharacter().getTexture(),
+                Gdx.graphics.getWidth() / 2f -
+                        player2.getCharacter().getTexture().getWidth() / 2f,
                 player2.getPosition());
         sb.end();
-
         stage.draw();
+    }
+
+    private void showCountdown(SpriteBatch sb) {
+        float countdownEndtime = countdownStartTime + COUNTDOWN_TIME;
+        // Draw game in background
+        drawGame(sb);
+
+        // Draw the background and overlay
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0, 0, 0, 0.69f);
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight());
+        shapeRenderer.end();
+
+        // Update the countdown timer
+        timeElapsed += Gdx.graphics.getDeltaTime();
+        // Draw the countdown
+        int countdownNumber = (int) (countdownEndtime - timeElapsed) + 1;
+        if (font == null) {
+            font = new BitmapFont();
+            font.getData().setScale(12f);
+        }
+        sb.begin();
+        font.draw(sb, Integer.toString(countdownNumber),
+                Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f);
+        sb.end();
+    }
+
+    @Override
+    public final void render(SpriteBatch sb) {
+        drawGame(sb);
+        if (timeElapsed < COUNTDOWN_TIME) {
+            showCountdown(sb);
+        }
     }
 
     @Override
@@ -270,8 +420,8 @@ public class PlayState extends State {
         settingsWheel.dispose();
         hand1Tex.dispose();
         hand2Tex.dispose();
-        char1.dispose();
-        char2.dispose();
+        player1.getCharacter().getTexture().dispose();
+        player2.getCharacter().getTexture().dispose();
         stage.dispose();
     }
 

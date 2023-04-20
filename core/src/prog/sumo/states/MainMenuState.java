@@ -55,17 +55,17 @@ public class MainMenuState extends State {
         back2B.setScale(2f);
 
         playButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
+                Gdx.graphics.getWidth() / 2f - scoreBoardButton.getWidth(),
                 tutorialButton.getHeight() + scoreBoardButton.getHeight() * 4);
         playButton.setTransform(true);
         playButton.setScale(2f);
         scoreBoardButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
+                Gdx.graphics.getWidth() / 2f - scoreBoardButton.getWidth(),
                 tutorialButton.getHeight() + scoreBoardButton.getHeight() * 2);
         scoreBoardButton.setTransform(true);
         scoreBoardButton.setScale(2f);
         tutorialButton.setPosition(
-                Gdx.graphics.getWidth() / 2 - scoreBoardButton.getWidth(),
+                Gdx.graphics.getWidth() / 2f - scoreBoardButton.getWidth(),
                 tutorialButton.getHeight());
         tutorialButton.setTransform(true);
         tutorialButton.setScale(2f);
@@ -112,10 +112,10 @@ public class MainMenuState extends State {
 
         Table table2 = new Table();
 
-        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2 + 40)
+        table2.add(writtenTutB).padRight(Gdx.graphics.getWidth() / 2f + 40)
                 .padTop(550);
         table2.row().padTop(300);
-        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2 + 30);
+        table2.add(back2B).padRight(Gdx.graphics.getWidth() / 2f + 30);
 
         tutPop.add(table2);
         tutPop.pack();
@@ -151,11 +151,12 @@ public class MainMenuState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sb.begin();
-        sb.draw(logo, Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2,
+        sb.draw(logo, Gdx.graphics.getWidth() / 2f - logo.getWidth() / 2f,
                 Gdx.graphics.getHeight() - logo.getHeight() * 2);
         sb.end();
         stage.draw();
         stage.act();
+
     }
 
     @Override

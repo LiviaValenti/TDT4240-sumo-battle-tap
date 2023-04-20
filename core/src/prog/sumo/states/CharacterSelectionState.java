@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import java.util.HashMap;
 import java.util.Map;
 
+import prog.sumo.models.Character;
+
 public class CharacterSelectionState extends State {
 
     private final String[] colors =
@@ -42,6 +44,8 @@ public class CharacterSelectionState extends State {
 
     // Map for player hash
     private final Map<Integer, String> playerHash = new HashMap<>();
+    private final Map<String, Texture> characterTextures = new HashMap<>();
+
 
     private int firstPlayerX = 0;
     private int secondPlayerX = 0;
@@ -49,6 +53,11 @@ public class CharacterSelectionState extends State {
 
     public CharacterSelectionState(GameStateManager gsm) {
         super(gsm);
+
+        for (String color : colors) {
+            characterTextures.put(color,
+                    new Texture(color + "player.png"));
+        }
 
         for (int i = 0; i < buttonTextures.length; i++) {
             buttonDrawables[i] = new TextureRegionDrawable(buttonTextures[i]);
@@ -111,7 +120,12 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new PlayState(gsm, playerHash));
+            Character player1Character =
+                    new Character(playerHash.get(1), characterTextures.get(
+                            playerHash.get(1)));
+            Character player2Character = new Character(playerHash.get(0),
+                    characterTextures.get(playerHash.get(0)));
+            gsm.set(new PlayState(gsm, player1Character, player2Character));
         }
         if (name.equals("homeB")) {
             gsm.set(new MainMenuState(gsm));
@@ -121,7 +135,7 @@ public class CharacterSelectionState extends State {
         // add key 1 to the playerHash map
         for (int i = 0; i < colors.length / 2; i++) {
             if (name.equals(colors[i] + "player.png")) {
-                playerHash.put(1, name);
+                playerHash.put(1, colors[i]);
                 // Set the position of xCoordinates to the
                 // x position of the button
                 secondPlayerX = (int) buttons[i + 2].getX();
@@ -132,7 +146,7 @@ public class CharacterSelectionState extends State {
         // add key 0 to the playerHash map
         for (int i = colors.length / 2; i < colors.length; i++) {
             if (name.equals(colors[i] + "player.png")) {
-                playerHash.put(0, name);
+                playerHash.put(0, colors[i]);
                 //Set the position of xCoordinates to the
                 // x position of the button
                 firstPlayerX = (int) buttons[i + 2].getX();

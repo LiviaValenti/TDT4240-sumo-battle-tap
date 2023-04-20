@@ -1,8 +1,5 @@
 package prog.sumo.models;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
 import prog.sumo.states.PlayState;
 
 /**
@@ -13,44 +10,39 @@ public final class Player {
     /**
      * The maximum position a player can have.
      */
-
-    private static final int MAX_POSITION_1 =
-            Gdx.graphics.getHeight() / 2 + PlayState.battleCircleRadius
-                    - PlayState.char1.getHeight();
-    private static final int MAX_POSITION_2 =
-            Gdx.graphics.getHeight() / 2 - PlayState.battleCircleRadius;
     private final int stepSize = PlayState.battleCircleHeight / 10;
     /**
      * The player's direction.
      */
     private final int direction;
     /**
-     * The player's texture.
-     */
-    private final Texture texture;
-    /**
      * The player's position.
      */
     private int position;
 
+    private int score;
+
+    private final Character character;
+
     /**
      * Constructs a new Player.
      *
-     * @param playerTexture   The texture representing the player.
+     * @param character       The character the player is playing as.
      * @param playerDirection The direction the player is facing.
      */
-    public Player(final Texture playerTexture, final int playerDirection) {
-        this.texture = playerTexture;
+    public Player(final Character character, final int playerDirection) {
+        this.character = character;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = MAX_POSITION_2;
+            position = PlayState.startPositionOfPlayer2;
         } else {
-            position = MAX_POSITION_1;
+            position = PlayState.startPositionOfPlayer1;
         }
+        score = 0;
     }
 
     public int getHeight() {
-        return texture.getHeight();
+        return character.getTexture().getHeight();
     }
 
     /**
@@ -62,6 +54,22 @@ public final class Player {
         } else {
             position -= stepSize;
         }
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void incrementScore() {
+        this.score++;
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     /**
@@ -81,15 +89,13 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
-                && this.direction == 1) {
-            //Player 1 wins
-            roundOver(otherPlayer, MAX_POSITION_2, MAX_POSITION_1);
-        } else if (this.getPosition() - texture.getHeight() / 2 < MAX_POSITION_2
-                && this.direction == 0) {
-            //Player 2 wins
-            roundOver(otherPlayer, MAX_POSITION_1, MAX_POSITION_2);
+        float characterHeight = this.character.getTexture().getHeight();
+        float collisionPoint =
+                Math.abs(otherPlayer.getPosition() - this.getPosition());
+        if (collisionPoint <= characterHeight) {
+            otherPlayer.moveBackward();
         }
+        this.moveForward();
     }
 
     /**
@@ -108,23 +114,5 @@ public final class Player {
      */
     public void setPosition(final int newPosition) {
         this.position = newPosition;
-    }
-
-    /**
-     * Gets the player's texture.
-     *
-     * @return The player's texture.
-     */
-    public Texture getTexture() {
-        return texture;
-    }
-
-    private void roundOver(Player otherPlayer, int thisPosition,
-                           int otherPosition) {
-
-        // todo: INCREMENT WHEN ROUND IS OVER
-
-        this.setPosition(thisPosition);
-        otherPlayer.setPosition(otherPosition);
     }
 }

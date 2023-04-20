@@ -4,7 +4,7 @@ import prog.sumo.models.Player;
 
 public class PlayerCollisionDetector {
     public static boolean collides(Player p1, Player p2) {
-        return Math.abs(p2.getPosition() - p1.getPosition())
-                <= p1.getHeight();
+        return Math.abs(p2.getPosition() - p1.getPosition()) <=
+                p1.getCharacter().getTexture().getHeight();
     }
 }
