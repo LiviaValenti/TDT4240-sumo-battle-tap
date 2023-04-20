@@ -129,7 +129,7 @@ public class MainMenuState extends State {
             gsm.set(new CharacterSelectionState(gsm));
         }
         if (name.equals("scoreBoardB")) {
-            gsm.set(new ScoreboardState(gsm));
+            gsm.set(new ScoreBoardState(gsm));
         }
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);

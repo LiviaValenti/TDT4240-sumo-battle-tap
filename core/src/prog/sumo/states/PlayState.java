@@ -22,7 +22,7 @@ import java.util.Map;
 import prog.sumo.controllers.PlayerController;
 import prog.sumo.models.Player;
 
-public class GameState extends State {
+public class PlayState extends State {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
@@ -40,7 +40,7 @@ public class GameState extends State {
     Stage stage;
     Window pinkWindow, orangeWindow;
 
-    public GameState(GameStateManager gsm, Map<Integer, String> playerHash) {
+    public PlayState(GameStateManager gsm, Map<Integer, String> playerHash) {
 
         super(gsm);
 

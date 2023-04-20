@@ -20,7 +20,7 @@ import java.util.Map;
 import prog.sumo.SumoBattleTapGame;
 import prog.sumo.singletons.ScoreAPI;
 
-public class ScoreboardState extends State {
+public class ScoreBoardState extends State {
 
     Texture scoboTitle;
     Texture backButtonTex;
@@ -30,7 +30,7 @@ public class ScoreboardState extends State {
     BitmapFont font;
     private final Map<String, Long> scores;
 
-    public ScoreboardState(GameStateManager gsm) {
+    public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
 
         scores = new LinkedHashMap<>();

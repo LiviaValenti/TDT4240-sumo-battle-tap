@@ -111,7 +111,7 @@ public class CharacterSelectionState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gsm.set(new GameState(gsm, playerHash));
+            gsm.set(new PlayState(gsm, playerHash));
         }
         if (name.equals("homeB")) {
             gsm.set(new MainMenuState(gsm));
