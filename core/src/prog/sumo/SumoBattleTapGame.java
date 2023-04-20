@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import prog.sumo.singletons.ScoreAPI;
-import prog.sumo.views.GameViewManager;
-import prog.sumo.views.MainMenuView;
+import prog.sumo.states.GameStateManager;
+import prog.sumo.states.MainMenuState;
 
 public final class SumoBattleTapGame extends ApplicationAdapter {
     public static final String TITLE = "Sumo";
@@ -19,7 +19,7 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
      * The SpriteBatch object used for drawing images to the screen.
      */
     private SpriteBatch spriteBatch;
-    private GameViewManager gameViewManager;
+    private GameStateManager gameStateManager;
 
     /**
      * Constructs a new SumoBattleTapGame instance with the given ScoreAPI
@@ -44,8 +44,8 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
-        gameViewManager = new GameViewManager();
-        gameViewManager.push(new MainMenuView(gameViewManager));
+        gameStateManager = new GameStateManager();
+        gameStateManager.push(new MainMenuState(gameStateManager));
     }
 
     /**
@@ -56,8 +56,8 @@ public final class SumoBattleTapGame extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
-        gameViewManager.update(Gdx.graphics.getDeltaTime());
-        gameViewManager.render(spriteBatch);
+        gameStateManager.update(Gdx.graphics.getDeltaTime());
+        gameStateManager.render(spriteBatch);
     }
 
     /**

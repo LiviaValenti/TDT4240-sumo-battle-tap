@@ -3,7 +3,7 @@ package prog.sumo.models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import prog.sumo.views.GameView;
+import prog.sumo.states.GameState;
 
 /**
  * Represents a player in the sumo game.
@@ -15,11 +15,11 @@ public final class Player {
      */
 
     private static final int MAX_POSITION_1 =
-            Gdx.graphics.getHeight() / 2 + GameView.battleCircleRadius
-                    - GameView.char1.getHeight();
+            Gdx.graphics.getHeight() / 2 + GameState.battleCircleRadius
+                    - GameState.char1.getHeight();
     private static final int MAX_POSITION_2 =
-            Gdx.graphics.getHeight() / 2 - GameView.battleCircleRadius;
-    private final int stepSize = GameView.battleCircleHeight / 10;
+            Gdx.graphics.getHeight() / 2 - GameState.battleCircleRadius;
+    private final int stepSize = GameState.battleCircleHeight / 10;
     /**
      * The player's direction.
      */
@@ -47,6 +47,10 @@ public final class Player {
         } else {
             position = MAX_POSITION_1;
         }
+    }
+
+    public int getHeight() {
+        return texture.getHeight();
     }
 
     /**
@@ -77,14 +81,6 @@ public final class Player {
      * @param otherPlayer The other player in the game.
      */
     public void movePlayer(final Player otherPlayer) {
-        if (Math.abs(otherPlayer.getPosition() - this.getPosition())
-                <= this.texture.getHeight()) {
-            this.moveForward();
-            otherPlayer.moveBackward();
-        } else {
-            this.moveForward();
-        }
-
         if (this.getPosition() + texture.getHeight() / 2 > MAX_POSITION_1
                 && this.direction == 1) {
             //Player 1 wins

@@ -1,4 +1,4 @@
-package prog.sumo.views;
+package prog.sumo.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,9 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Map;
 
+import prog.sumo.controllers.PlayerController;
 import prog.sumo.models.Player;
 
-public class GameView extends View {
+public class GameState extends State {
     public static Texture char1, char2;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
@@ -39,9 +40,9 @@ public class GameView extends View {
     Stage stage;
     Window pinkWindow, orangeWindow;
 
-    public GameView(GameViewManager gvm, Map<Integer, String> playerHash) {
+    public GameState(GameStateManager gsm, Map<Integer, String> playerHash) {
 
-        super(gvm);
+        super(gsm);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -96,6 +97,7 @@ public class GameView extends View {
 
         player1 = new Player(char1, 1);
         player2 = new Player(char2, 0);
+
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2 - settingsB.getHeight() / 2);
@@ -194,16 +196,16 @@ public class GameView extends View {
     protected final void handleInput(String name) {
         switch (name) {
             case "settingsB":
-                //gsm.set(new MainMenuView(gsm));
+                //gsm.set(new MainMenuState(gsm));
                 stage.addActor(pinkWindow);
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                player1.movePlayer(player2);
+                PlayerController.movePlayer(player1, player2);
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                player2.movePlayer(player1);
+                PlayerController.movePlayer(player2, player1);
                 break;
             default:
                 // handle invalid input
@@ -213,7 +215,7 @@ public class GameView extends View {
                 stage.addActor(orangeWindow);
                 break;
             case "quitB":
-                gvm.set(new MainMenuView(gvm));
+                gsm.set(new MainMenuState(gsm));
                 break;
             case "backB":
                 stage.addAction(Actions.removeActor(pinkWindow));
@@ -226,7 +228,7 @@ public class GameView extends View {
 
     @Override
     public void update(float dt) {
-
+        stage.act();
     }
 
     @Override
@@ -261,7 +263,6 @@ public class GameView extends View {
         sb.end();
 
         stage.draw();
-        stage.act();
     }
 
     @Override

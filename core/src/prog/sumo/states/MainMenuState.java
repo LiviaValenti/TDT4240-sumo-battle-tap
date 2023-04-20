@@ -1,4 +1,4 @@
-package prog.sumo.views;
+package prog.sumo.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class MainMenuView extends View {
+public class MainMenuState extends State {
     Texture playButtonTex, scoreBoardButtonTex, tutorialButtonTex, logo,
             windowTex, writtenTutTex, back2Tex;
     Drawable playButtonDrawable, scoreBoardButtonDrawable, windowDraw,
@@ -26,8 +26,8 @@ public class MainMenuView extends View {
     Window tutPop;
     ImageButton writtenTutB, back2B;
 
-    public MainMenuView(GameViewManager gvm) {
-        super(gvm);
+    public MainMenuState(GameStateManager gsm) {
+        super(gsm);
         playButtonTex = new Texture("newGame.png");
         scoreBoardButtonTex = new Texture("scoreBoard.png");
         tutorialButtonTex = new Texture("tutorialButton.png");
@@ -126,10 +126,10 @@ public class MainMenuView extends View {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("playB")) {
-            gvm.set(new CharacterSelectionView(gvm));
+            gsm.set(new CharacterSelectionState(gsm));
         }
         if (name.equals("scoreBoardB")) {
-            gvm.set(new ScoreboardView(gvm));
+            gsm.set(new ScoreboardState(gsm));
         }
         if (name.equals("tutorialB")) {
             stage.addActor(tutPop);
