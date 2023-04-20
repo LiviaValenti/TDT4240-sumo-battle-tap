@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Timer;
 
-import jdk.tools.jmod.Main;
 import prog.sumo.Player;
 import prog.sumo.SumoBattleTapGame;
 
@@ -23,7 +22,8 @@ public class WinnerState extends State {
         super(gameStateManager);
         this.winner = winner;
         shapeRenderer = new ShapeRenderer();
-        SumoBattleTapGame.getScoreApi().incrementScore(winner.getCharacter().getName());
+        SumoBattleTapGame.getScoreApi()
+                .incrementScore(winner.getCharacter().getName());
     }
 
     @Override

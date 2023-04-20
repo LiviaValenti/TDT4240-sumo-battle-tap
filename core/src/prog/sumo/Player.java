@@ -1,7 +1,5 @@
 package prog.sumo;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import prog.sumo.states.PlayState;
 
 /**
@@ -88,7 +86,8 @@ public final class Player {
      */
     public void movePlayer(final Player otherPlayer) {
         float characterHeight = this.character.getTexture().getHeight();
-        float collisionPoint = Math.abs(otherPlayer.getPosition() - this.getPosition());
+        float collisionPoint =
+                Math.abs(otherPlayer.getPosition() - this.getPosition());
         if (collisionPoint <= characterHeight) {
             otherPlayer.moveBackward();
         }
