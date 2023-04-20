@@ -1,5 +1,7 @@
 package prog.sumo.models;
 
+import com.badlogic.gdx.Gdx;
+
 import prog.sumo.states.PlayState;
 
 /**
@@ -10,7 +12,7 @@ public final class Player {
     /**
      * The maximum position a player can have.
      */
-    private final int stepSize = PlayState.battleCircleHeight / 10;
+    private final int stepSize = (Gdx.graphics.getHeight() / 2) / 10;
     /**
      * The player's direction.
      */

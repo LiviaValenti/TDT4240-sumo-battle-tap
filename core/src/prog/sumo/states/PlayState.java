@@ -21,15 +21,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import prog.sumo.controllers.PlayerController;
 import prog.sumo.models.Character;
 import prog.sumo.models.Player;
+import prog.sumo.models.WrestleRing;
 
 public class PlayState extends State {
     private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
     private BitmapFont fontForScore; // Font to draw the countdown
-    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
-    public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
-
+    private final WrestleRing wrestleRing;
     public static int startPositionOfPlayer1, startPositionOfPlayer2;
     private final Player player1;
     private final Player player2;
@@ -100,6 +99,7 @@ public class PlayState extends State {
         back2B.setTransform(true);
         back2B.setScale(2f);
 
+        wrestleRing = new WrestleRing(Gdx.graphics.getWidth() / 2 + 20);
 
         player1 = new Player(player1Character, 0);
         player2 = new Player(player2Character, 1);
@@ -111,10 +111,10 @@ public class PlayState extends State {
         stage.addActor(hand1);
         stage.addActor(hand2);
         startPositionOfPlayer1 =
-                Gdx.graphics.getHeight() / 2 + battleCircleRadius
+                Gdx.graphics.getHeight() / 2 + wrestleRing.getRadius()
                         - player1.getCharacter().getTexture().getHeight();
         startPositionOfPlayer2 =
-                Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+                Gdx.graphics.getHeight() / 2 - wrestleRing.getRadius();
         player1.setPosition(startPositionOfPlayer1);
         player2.setPosition(startPositionOfPlayer2);
 
@@ -346,8 +346,9 @@ public class PlayState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f, battleCircleHeight,
-                battleCircleRadius);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                wrestleRing.getRadius());
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
