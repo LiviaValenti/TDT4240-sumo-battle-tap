@@ -2,7 +2,7 @@ package prog.sumo.utils;
 
 import prog.sumo.models.Player;
 
-public class PlayerCollisionDetector {
+public final class PlayerCollisionDetector {
 
     private PlayerCollisionDetector() {
     }
