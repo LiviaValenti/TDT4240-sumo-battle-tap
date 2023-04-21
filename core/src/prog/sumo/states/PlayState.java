@@ -21,17 +21,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import prog.sumo.Character;
 import prog.sumo.Player;
 
-public class PlayState extends State {
-    private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
-    private float timeElapsed = 0f; // Time elapsed since countdown started
-    private BitmapFont font; // Font to draw the countdown
-    private BitmapFont fontForScore; // Font to draw the countdown
+public final class PlayState extends State {
+    private static final int MAX_ROUNDS = 3;
     public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
-
     public static int startPositionOfPlayer1, startPositionOfPlayer2;
+    private final float countdownTime = 3f; // Countdown time in seconds
     private final Player player1;
     private final Player player2;
+    private final float countdownStartTime;
     Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex,
             writtenTutTex, back2Tex;
     Texture hand1Tex, hand2Tex;
@@ -39,19 +37,18 @@ public class PlayState extends State {
     Drawable settingsWheelDrawable, windowDraw, backDraw, quitDraw,
             tutorialDraw, tutWinDraw, writtenTutDraw, back2Draw;
     Drawable player1Drawable, player2Drawable;
-    private final float countdownStartTime;
     ImageButton settingsB, quitB, backB, tutB, writtenTutB, back2B;
     ImageButton hand1, hand2;
     Stage stage;
-
     Window pinkWindow, orangeWindow;
     // The following should be changed to Player objects when that part is ready
     Player winnerOfTheRound = null;
     Player winnerOfTheGame = null;
-
     int roundCounter;
-    private final static int MAX_ROUNDS = 3;
     boolean isGameOver;
+    private float timeElapsed = 0f; // Time elapsed since countdown started
+    private BitmapFont font; // Font to draw the countdown
+    private BitmapFont fontForScore; // Font to draw the countdown
 
     public PlayState(GameStateManager gsm, Character player1Character,
                      Character player2Character) {
@@ -212,7 +209,7 @@ public class PlayState extends State {
     }
 
     @Override
-    protected final void handleInput(String name) {
+    protected void handleInput(String name) {
         switch (name) {
             case "settingsB":
                 stage.addActor(pinkWindow);
@@ -246,17 +243,21 @@ public class PlayState extends State {
         }
     }
 
+    /**
+     * Checks if the round is over. This method can be safely extended by
+     * subclasses.
+     */
     public void isRoundOver() {
 
         //If player 1 is out of the battle circle
-        if (player1.getPosition() -
-                player1.getCharacter().getTexture().getHeight() / 2 >
-                startPositionOfPlayer1) {
+        if (player1.getPosition()
+                - player1.getCharacter().getTexture().getHeight() / 2
+                > startPositionOfPlayer1) {
             //Increment score for player 2
             whenRoundFinished(player2);
-        } else if (player2.getPosition() +
-                player2.getCharacter().getTexture().getHeight() / 2 <
-                startPositionOfPlayer2) {
+        } else if (player2.getPosition()
+                + player2.getCharacter().getTexture().getHeight() / 2
+                < startPositionOfPlayer2) {
             //Increment score for player 1
             whenRoundFinished(player1);
         }
@@ -293,7 +294,8 @@ public class PlayState extends State {
         if (roundCounter == MAX_ROUNDS) {
             isGameOver = true;
         } else {
-            // if either player has higher score than half of max rounds, the game is over
+            // if either player has higher score than half
+            // of max rounds, the game is over
             int breakpoint = (int) Math.floor(MAX_ROUNDS / 2f);
             if (player1.getScore() > breakpoint) {
                 isGameOver = true;
@@ -317,8 +319,7 @@ public class PlayState extends State {
         Matrix4 originalMatrix =
                 sb.getTransformMatrix().cpy(); // Save the original matrix
         sb.begin();
-        sb.setTransformMatrix(
-                new Matrix4().setToRotation(0, 0, 1, 90));
+        sb.setTransformMatrix(new Matrix4().setToRotation(0, 0, 1, 90));
         if (fontForScore == null) {
             fontForScore = new BitmapFont();
             fontForScore.getData().setScale(5f);
@@ -330,8 +331,7 @@ public class PlayState extends State {
         fontForScore.draw(sb, "-",
                 Gdx.graphics.getWidth() + (fontForScore.getCapHeight()),
                 -fontForScore.getCapHeight());
-        fontForScore.draw(sb, "" + player2.getScore(),
-                Gdx.graphics.getWidth(),
+        fontForScore.draw(sb, "" + player2.getScore(), Gdx.graphics.getWidth(),
                 -fontForScore.getCapHeight());
         sb.end();
         sb.setTransformMatrix(originalMatrix); // Restore the original matrix
@@ -364,12 +364,12 @@ public class PlayState extends State {
         drawScore(sb);
         sb.begin();
         sb.draw(player1.getCharacter().getTexture(),
-                Gdx.graphics.getWidth() / 2f -
-                        player1.getCharacter().getTexture().getWidth() / 2f,
+                Gdx.graphics.getWidth() / 2f
+                        - player1.getCharacter().getTexture().getWidth() / 2f,
                 player1.getPosition());
         sb.draw(player2.getCharacter().getTexture(),
-                Gdx.graphics.getWidth() / 2f -
-                        player2.getCharacter().getTexture().getWidth() / 2f,
+                Gdx.graphics.getWidth() / 2f
+                        - player2.getCharacter().getTexture().getWidth() / 2f,
                 player2.getPosition());
         sb.end();
         stage.draw();
@@ -377,7 +377,7 @@ public class PlayState extends State {
     }
 
     private void showCountdown(SpriteBatch sb) {
-        float countdownEndtime = countdownStartTime + COUNTDOWN_TIME;
+        float countdownEndtime = countdownStartTime + countdownTime;
         // Draw game in background
         drawGame(sb);
 
@@ -400,21 +400,20 @@ public class PlayState extends State {
         }
         sb.begin();
         font.draw(sb, Integer.toString(countdownNumber),
-                Gdx.graphics.getWidth() / 2f,
-                Gdx.graphics.getHeight() / 2f);
+                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         sb.end();
     }
 
     @Override
-    public final void render(SpriteBatch sb) {
+    public void render(SpriteBatch sb) {
         drawGame(sb);
-        if (timeElapsed < COUNTDOWN_TIME) {
+        if (timeElapsed < countdownTime) {
             showCountdown(sb);
         }
     }
 
     @Override
-    public final void dispose() {
+    public void dispose() {
         settingsWheel.dispose();
         hand1Tex.dispose();
         hand2Tex.dispose();

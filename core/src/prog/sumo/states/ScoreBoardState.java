@@ -32,8 +32,8 @@ public class ScoreBoardState extends State {
     BitmapFont font;
     private final Map<String, Long> scores;
 
-    public ScoreBoardState(GameStateManager gsm, String winnerOfTheGame) {
-        // TODO: Use winnerOfTheGame
+    public ScoreBoardState(GameStateManager gsm, String gameWinner) {
+        // todo: Use gameWinner
         this(gsm);
     }
 

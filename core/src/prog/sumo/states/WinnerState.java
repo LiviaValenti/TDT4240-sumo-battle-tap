@@ -18,9 +18,9 @@ public class WinnerState extends State {
     ShapeRenderer shapeRenderer;
     private BitmapFont fontForWinner; // Font to draw the winner
 
-    public WinnerState(GameStateManager gameStateManager, Player winner) {
+    public WinnerState(GameStateManager gameStateManager, Player playerWinner) {
         super(gameStateManager);
-        this.winner = winner;
+        this.winner = playerWinner;
         shapeRenderer = new ShapeRenderer();
         SumoBattleTapGame.getScoreApi()
                 .incrementScore(winner.getCharacter().getName());
@@ -36,6 +36,12 @@ public class WinnerState extends State {
 
     }
 
+    /**
+     * Renders the winner screen. To safely extend this class, override this
+     * method and call super.render(sb) at the end of the overriding method.
+     *
+     * @param sb the SpriteBatch used for rendering
+     */
     @Override
     public void render(SpriteBatch sb) {
         Gdx.gl.glClearColor(252 / 255f, 231 / 255f, 239 / 255f, 1);
@@ -46,8 +52,7 @@ public class WinnerState extends State {
         }
         Matrix4 originalMatrix =
                 sb.getTransformMatrix().cpy(); // Save the original matrix
-        sb.setTransformMatrix(
-                new Matrix4().setToRotation(0, 0, 1, 90));
+        sb.setTransformMatrix(new Matrix4().setToRotation(0, 0, 1, 90));
         sb.begin();
         fontForWinner.setColor(Color.BLACK);
         fontForWinner.draw(sb,

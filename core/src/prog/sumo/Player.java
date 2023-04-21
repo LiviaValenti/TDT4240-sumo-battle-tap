@@ -15,14 +15,12 @@ public final class Player {
      * The player's direction.
      */
     private final int direction;
+    private final Character character;
     /**
      * The player's position.
      */
     private int position;
-
     private int score;
-
-    private final Character character;
 
     /**
      * Constructs a new Player.
@@ -30,8 +28,8 @@ public final class Player {
      * @param character       The character the player is playing as.
      * @param playerDirection The direction the player is facing.
      */
-    public Player(final Character character, final int playerDirection) {
-        this.character = character;
+    public Player(final Character playerCharacter, final int playerDirection) {
+        this.character = playerCharacter;
         this.direction = playerDirection;
         if (direction == 1) {
             position = PlayState.startPositionOfPlayer2;
@@ -50,10 +48,6 @@ public final class Player {
         } else {
             position -= stepSize;
         }
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public void incrementScore() {
