@@ -26,16 +26,9 @@ public class ScoreBoardView extends View {
     Texture backButtonTex;
     Drawable backButtonDrawable;
     ImageButton backB;
-    String winnerOfTheGame = "";
-
     Stage stage;
     BitmapFont font;
     private final Map<String, Long> scores;
-
-    public ScoreBoardView(GameViewManager gvm, String winnerOfTheGame) {
-        // TODO: Use winnerOfTheGame
-        this(gvm);
-    }
 
     public ScoreBoardView(GameViewManager gvm) {
         super(gvm);

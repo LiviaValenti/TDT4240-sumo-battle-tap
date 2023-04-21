@@ -63,10 +63,7 @@ public class WinnerView extends View {
         sb.setTransformMatrix(originalMatrix); // Restore the original matrix
         Timer.schedule(new Timer.Task() {
             public void run() {
-                gvm.set(new ScoreBoardView(gvm,
-                        winner.getCharacter().getName()));
-
-
+                gvm.set(new ScoreBoardView(gvm));
             }
         }, 3);
     }

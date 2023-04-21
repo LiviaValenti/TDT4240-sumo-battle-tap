@@ -414,7 +414,7 @@ public final class PlayView extends View {
     }
 
     @Override
-    public final void render(SpriteBatch sb) {
+    public void render(SpriteBatch sb) {
         drawGame(sb);
         if (timeElapsed < countdownTime) {
             showCountdown(sb);
