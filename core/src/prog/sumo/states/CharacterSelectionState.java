@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -32,14 +34,11 @@ public class CharacterSelectionState extends State {
                     new Texture("blueplayer.png"),
                     new Texture("orangeplayer.png"),
             };
-    private final Drawable[] buttonDrawables =
-            new Drawable[buttonTextures.length];
     private final ImageButton[] buttons =
             new ImageButton[buttonTextures.length];
 
     // Stage, sprite batch, and font
     private final Stage stage = new Stage();
-    private final SpriteBatch batch = new SpriteBatch();
     private final BitmapFont font = new BitmapFont();
 
     // Map for player hash
@@ -60,6 +59,7 @@ public class CharacterSelectionState extends State {
         }
 
         for (int i = 0; i < buttonTextures.length; i++) {
+            Drawable[] buttonDrawables = new Drawable[buttonTextures.length];
             buttonDrawables[i] = new TextureRegionDrawable(buttonTextures[i]);
             buttons[i] = new ImageButton(buttonDrawables[i]);
             // Waiting to add the Play button to the stage
@@ -70,21 +70,21 @@ public class CharacterSelectionState extends State {
 
         // Set button positions
         buttons[1].setPosition(Gdx.graphics.getWidth() - buttons[1].getWidth(),
-                Gdx.graphics.getHeight() / 2 - buttons[1].getHeight() / 2);
+                Gdx.graphics.getHeight() / 2f - buttons[1].getHeight() / 2);
         buttons[0].setPosition(buttons[0].getWidth() / 3,
-                Gdx.graphics.getHeight() / 2 - buttons[0].getHeight() / 2);
-        buttons[2].setPosition(Gdx.graphics.getWidth() / 2 - 100,
-                Gdx.graphics.getHeight() / 2 + 400);
-        buttons[3].setPosition(Gdx.graphics.getWidth() / 2 + 220,
-                Gdx.graphics.getHeight() / 2 + 400);
-        buttons[4].setPosition(Gdx.graphics.getWidth() / 4 - 150,
-                Gdx.graphics.getHeight() / 2 + 400);
-        buttons[5].setPosition(Gdx.graphics.getWidth() / 2 - 100,
-                Gdx.graphics.getHeight() / 2 - 600);
-        buttons[6].setPosition(Gdx.graphics.getWidth() / 2 + 220,
-                Gdx.graphics.getHeight() / 2 - 600);
-        buttons[7].setPosition(Gdx.graphics.getWidth() / 4 - 150,
-                Gdx.graphics.getHeight() / 2 - 600);
+                Gdx.graphics.getHeight() / 2f - buttons[0].getHeight() / 2);
+        buttons[2].setPosition(Gdx.graphics.getWidth() / 2f - 100,
+                Gdx.graphics.getHeight() / 2f + 400);
+        buttons[3].setPosition(Gdx.graphics.getWidth() / 2f + 220,
+                Gdx.graphics.getHeight() / 2f + 400);
+        buttons[4].setPosition(Gdx.graphics.getWidth() / 4f - 150,
+                Gdx.graphics.getHeight() / 2f + 400);
+        buttons[5].setPosition(Gdx.graphics.getWidth() / 2f - 100,
+                Gdx.graphics.getHeight() / 2f - 600);
+        buttons[6].setPosition(Gdx.graphics.getWidth() / 2f + 220,
+                Gdx.graphics.getHeight() / 2f - 600);
+        buttons[7].setPosition(Gdx.graphics.getWidth() / 4f - 150,
+                Gdx.graphics.getHeight() / 2f - 600);
 
         // Set input processor
         Gdx.input.setInputProcessor(stage);
@@ -171,34 +171,42 @@ public class CharacterSelectionState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();
-        batch.begin();
+        sb.begin();
         font.getData().setScale(4f);
         font.setColor(0, 0, 0, 1);
-        font.draw(batch, "Player 1: Choose your character!",
-                Gdx.graphics.getWidth() / 8,
-                Gdx.graphics.getHeight() / 2 - 250);
+        font.draw(sb, "Player 1: Choose your character!",
+                Gdx.graphics.getWidth() / 8f,
+                Gdx.graphics.getHeight() / 2f - 250);
+        sb.end();
 
-        font.draw(batch, "Player 2: Choose your character!",
-                Gdx.graphics.getWidth() / 8,
-                Gdx.graphics.getHeight() / 2 + 300);
-
+        Matrix4 originalMatrix = sb.getProjectionMatrix().cpy();
+        Matrix4 rotatedMatrix =
+                new Matrix4(originalMatrix).rotate(new Vector3(0, 0, 1), 180);
+        sb.setProjectionMatrix(rotatedMatrix);
+        sb.begin();
+        font.draw(sb, "Player 2: Choose your character!",
+                -Gdx.graphics.getWidth() / 8f - 850,
+                -(Gdx.graphics.getHeight() / 2f + 300));
+        sb.end();
+        sb.setProjectionMatrix(originalMatrix);
+        sb.begin();
         // If the map contains a key 0,
         // draw an X on top of the player's character
         if (playerHash.containsKey(0)) {
             font.getData().setScale(25f);
-            font.draw(batch, "O", firstPlayerX - 20,
-                    Gdx.graphics.getHeight() / 2 - 300);
+            font.draw(sb, "O", firstPlayerX - 20,
+                    Gdx.graphics.getHeight() / 2f - 300);
         }
         //If the map contains a key 1,
         // draw a black rectangle around the player's character
         if (playerHash.containsKey(1)) {
             //Set font size to 10
             font.getData().setScale(25f);
-            font.draw(batch, "O", secondPlayerX - 20,
-                    Gdx.graphics.getHeight() / 2 + 700);
+            font.draw(sb, "O", secondPlayerX - 20,
+                    Gdx.graphics.getHeight() / 2f + 700);
         }
 
-        batch.end();
+        sb.end();
     }
 
     @Override
@@ -207,7 +215,6 @@ public class CharacterSelectionState extends State {
             t.dispose();
         }
         stage.dispose();
-        batch.dispose();
         font.dispose();
     }
 
