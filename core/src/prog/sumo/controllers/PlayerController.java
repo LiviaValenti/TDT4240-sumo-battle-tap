@@ -4,7 +4,7 @@ import prog.sumo.models.Player;
 import prog.sumo.utils.PlayerCollisionDetector;
 
 public class PlayerController {
-    public static void movePlayer(Player toMove, Player opponent) {
+    public void movePlayer(Player toMove, Player opponent) {
         if (PlayerCollisionDetector.collides(toMove, opponent)) {
             opponent.moveBackward();
         }

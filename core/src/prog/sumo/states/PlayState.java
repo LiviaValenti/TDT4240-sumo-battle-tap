@@ -32,6 +32,7 @@ public class PlayState extends State {
     public static int startPositionOfPlayer1, startPositionOfPlayer2;
     private final Player player1;
     private final Player player2;
+    private final PlayerController playerController;
     Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex,
             writtenTutTex, back2Tex;
     Texture hand1Tex, hand2Tex;
@@ -101,6 +102,7 @@ public class PlayState extends State {
 
         wrestleRing = new WrestleRing(Gdx.graphics.getWidth() / 2 + 20);
 
+        playerController = new PlayerController();
         player1 = new Player(player1Character, 0);
         player2 = new Player(player2Character, 1);
 
@@ -221,12 +223,12 @@ public class PlayState extends State {
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                PlayerController.movePlayer(player2, player1);
+                playerController.movePlayer(player2, player1);
                 isRoundOver();
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                PlayerController.movePlayer(player1, player2);
+                playerController.movePlayer(player1, player2);
                 isRoundOver();
                 break;
             default:
