@@ -2,6 +2,8 @@ package prog.sumo;
 
 import java.util.Map;
 
+import prog.sumo.singletons.ScoreAPI;
+
 /**
  * The UnimplementedScoreAPI class is an implementation of the ScoreAPI
  * interface where none of the functions are actually implemented.

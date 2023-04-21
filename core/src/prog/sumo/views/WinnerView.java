@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,18 +9,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Timer;
 
-import prog.sumo.Player;
 import prog.sumo.SumoBattleTapGame;
+import prog.sumo.models.Player;
 
-public class WinnerState extends State {
+public class WinnerView extends View {
 
     private final Player winner;
     ShapeRenderer shapeRenderer;
     private BitmapFont fontForWinner; // Font to draw the winner
 
-    public WinnerState(GameStateManager gameStateManager, Player playerWinner) {
-        super(gameStateManager);
-        this.winner = playerWinner;
+    public WinnerView(GameViewManager gameViewManager, Player winner) {
+        super(gameViewManager);
+        this.winner = winner;
         shapeRenderer = new ShapeRenderer();
         SumoBattleTapGame.getScoreApi()
                 .incrementScore(winner.getCharacter().getName());
@@ -63,10 +63,7 @@ public class WinnerState extends State {
         sb.setTransformMatrix(originalMatrix); // Restore the original matrix
         Timer.schedule(new Timer.Task() {
             public void run() {
-                gsm.set(new ScoreBoardState(gsm,
-                        winner.getCharacter().getName()));
-
-
+                gvm.set(new ScoreBoardView(gvm));
             }
         }, 3);
     }

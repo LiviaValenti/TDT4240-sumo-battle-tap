@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import prog.sumo.singletons.ScoreAPI;
+
 /**
  * Android implementation of the ScoreAPI using Firebase.
  */
@@ -58,13 +60,13 @@ public final class FirebaseScoreAPI implements ScoreAPI {
         scoresRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                scoresHolder.clear();
+                Map<String, Long> tmp = new HashMap<>();
                 for (DataSnapshot score : snapshot.getChildren()) {
-                    scoresHolder.put(score.getKey(),
+                    tmp.put(score.getKey(),
                             score.getValue(Long.class));
                 }
                 List<Entry<String, Long>> list =
-                        new ArrayList<>(scoresHolder.entrySet());
+                        new ArrayList<>(tmp.entrySet());
                 list.sort(Entry.comparingByValue());
                 scoresHolder.clear();
                 for (Entry<String, Long> entry : list) {

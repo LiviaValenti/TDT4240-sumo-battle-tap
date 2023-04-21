@@ -1,6 +1,8 @@
-package prog.sumo;
+package prog.sumo.models;
 
-import prog.sumo.states.PlayState;
+import com.badlogic.gdx.Gdx;
+
+import prog.sumo.views.PlayView;
 
 /**
  * Represents a player in the sumo game.
@@ -10,7 +12,7 @@ public final class Player {
     /**
      * The maximum position a player can have.
      */
-    private final int stepSize = PlayState.battleCircleHeight / 10;
+    private final int stepSize = (Gdx.graphics.getHeight() / 2) / 10;
     /**
      * The player's direction.
      */
@@ -25,16 +27,16 @@ public final class Player {
     /**
      * Constructs a new Player.
      *
-     * @param character       The character the player is playing as.
+     * @param playerCharacter The character the player is playing as.
      * @param playerDirection The direction the player is facing.
      */
     public Player(final Character playerCharacter, final int playerDirection) {
         this.character = playerCharacter;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = PlayState.startPositionOfPlayer2;
+            position = PlayView.startPositionOfPlayer2;
         } else {
-            position = PlayState.startPositionOfPlayer1;
+            position = PlayView.startPositionOfPlayer1;
         }
         score = 0;
     }
@@ -71,21 +73,6 @@ public final class Player {
         } else {
             position += stepSize;
         }
-    }
-
-    /**
-     * Moves the player based on the other player's position.
-     *
-     * @param otherPlayer The other player in the game.
-     */
-    public void movePlayer(final Player otherPlayer) {
-        float characterHeight = this.character.getTexture().getHeight();
-        float collisionPoint =
-                Math.abs(otherPlayer.getPosition() - this.getPosition());
-        if (collisionPoint <= characterHeight) {
-            otherPlayer.moveBackward();
-        }
-        this.moveForward();
     }
 
     /**

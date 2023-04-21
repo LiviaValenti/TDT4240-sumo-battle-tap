@@ -1,4 +1,4 @@
-package prog.sumo;
+package prog.sumo.models;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -6,9 +6,9 @@ public class Character {
     private final String name;
     private final Texture texture;
 
-    public Character(String characterName, Texture characterTexture) {
-        this.name = characterName;
-        this.texture = characterTexture;
+    public Character(String name, Texture texture) {
+        this.name = name;
+        this.texture = texture;
     }
 
     public String getName() {

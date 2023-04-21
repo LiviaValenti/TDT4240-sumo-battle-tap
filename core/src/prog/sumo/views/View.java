@@ -1,16 +1,16 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class State {
+public abstract class View {
     protected OrthographicCamera cam;
     protected Vector3 mouse;
-    protected GameStateManager gsm;
+    protected GameViewManager gvm;
 
-    public State(GameStateManager gameStateManager) {
-        this.gsm = gameStateManager;
+    public View(GameViewManager gameViewManager) {
+        this.gvm = gameViewManager;
         cam = new OrthographicCamera();
         mouse = new Vector3();
     }

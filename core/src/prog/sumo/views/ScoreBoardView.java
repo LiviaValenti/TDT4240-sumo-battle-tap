@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,28 +17,21 @@ import java.util.LinkedHashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
-import prog.sumo.ScoreAPI;
 import prog.sumo.SumoBattleTapGame;
+import prog.sumo.singletons.ScoreAPI;
 
-public class ScoreBoardState extends State {
+public class ScoreBoardView extends View {
 
     Texture scoboTitle;
     Texture backButtonTex;
     Drawable backButtonDrawable;
     ImageButton backB;
-    String winnerOfTheGame = "";
-
     Stage stage;
     BitmapFont font;
     private final Map<String, Long> scores;
 
-    public ScoreBoardState(GameStateManager gsm, String gameWinner) {
-        // todo: Use gameWinner
-        this(gsm);
-    }
-
-    public ScoreBoardState(GameStateManager gsm) {
-        super(gsm);
+    public ScoreBoardView(GameViewManager gvm) {
+        super(gvm);
 
         scores = new LinkedHashMap<>();
         ScoreAPI scoreAPI = SumoBattleTapGame.getScoreApi();
@@ -72,7 +65,7 @@ public class ScoreBoardState extends State {
     @Override
     protected final void handleInput(String name) {
         if (name.equals("backB")) {
-            gsm.set(new MainMenuState(gsm));
+            gvm.set(new MainMenuView(gvm));
         }
     }
 

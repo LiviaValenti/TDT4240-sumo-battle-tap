@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -18,18 +18,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import prog.sumo.Character;
-import prog.sumo.Player;
+import prog.sumo.controllers.PlayerController;
+import prog.sumo.models.Character;
+import prog.sumo.models.Player;
+import prog.sumo.models.WrestleRing;
 
-public final class PlayState extends State {
+public final class PlayView extends View {
     private static final int MAX_ROUNDS = 3;
-    public static int battleCircleHeight = Gdx.graphics.getHeight() / 2;
     public static int battleCircleRadius = Gdx.graphics.getWidth() / 2 + 20;
     public static int startPositionOfPlayer1, startPositionOfPlayer2;
     private final float countdownTime = 3f; // Countdown time in seconds
+    private final float countdownStartTime;
+    private float timeElapsed = 0f; // Time elapsed since countdown started
+    private final WrestleRing wrestleRing;
     private final Player player1;
     private final Player player2;
-    private final float countdownStartTime;
+    private final PlayerController playerController;
+    private BitmapFont font; // Font to draw the countdown
+    private BitmapFont fontForScore; // Font to draw the countdown
     Texture settingsWheel, windowTex, backTex, quitTex, tutorialTex, tutWinTex,
             writtenTutTex, back2Tex;
     Texture hand1Tex, hand2Tex;
@@ -40,20 +46,18 @@ public final class PlayState extends State {
     ImageButton settingsB, quitB, backB, tutB, writtenTutB, back2B;
     ImageButton hand1, hand2;
     Stage stage;
+
     Window pinkWindow, orangeWindow;
     // The following should be changed to Player objects when that part is ready
     Player winnerOfTheRound = null;
     Player winnerOfTheGame = null;
     int roundCounter;
     boolean isGameOver;
-    private float timeElapsed = 0f; // Time elapsed since countdown started
-    private BitmapFont font; // Font to draw the countdown
-    private BitmapFont fontForScore; // Font to draw the countdown
 
-    public PlayState(GameStateManager gsm, Character player1Character,
-                     Character player2Character) {
+    public PlayView(GameViewManager gvm, Character player1Character,
+                    Character player2Character) {
 
-        super(gsm);
+        super(gvm);
         shapeRenderer = new ShapeRenderer();
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
@@ -96,7 +100,9 @@ public final class PlayState extends State {
         back2B.setTransform(true);
         back2B.setScale(2f);
 
+        wrestleRing = new WrestleRing(Gdx.graphics.getWidth() / 2 + 20);
 
+        playerController = new PlayerController();
         player1 = new Player(player1Character, 0);
         player2 = new Player(player2Character, 1);
 
@@ -107,12 +113,13 @@ public final class PlayState extends State {
         stage.addActor(hand1);
         stage.addActor(hand2);
         startPositionOfPlayer1 =
-                Gdx.graphics.getHeight() / 2 + battleCircleRadius
+                Gdx.graphics.getHeight() / 2 + wrestleRing.getRadius()
                         - player1.getCharacter().getTexture().getHeight();
         startPositionOfPlayer2 =
-                Gdx.graphics.getHeight() / 2 - battleCircleRadius;
+                Gdx.graphics.getHeight() / 2 - wrestleRing.getRadius();
         player1.setPosition(startPositionOfPlayer1);
         player2.setPosition(startPositionOfPlayer2);
+
 
         settingsB.setPosition(Gdx.graphics.getWidth() - settingsB.getWidth(),
                 Gdx.graphics.getHeight() / 2f - settingsB.getHeight() / 2);
@@ -216,12 +223,12 @@ public final class PlayState extends State {
                 break;
             case "player1":
                 //Calling the movePlayer method from the Player class
-                player2.movePlayer(player1);
+                playerController.movePlayer(player2, player1);
                 isRoundOver();
                 break;
             case "player2":
                 //Calling the movePlayer method from the Player class
-                player1.movePlayer(player2);
+                playerController.movePlayer(player1, player2);
                 isRoundOver();
                 break;
             default:
@@ -232,7 +239,7 @@ public final class PlayState extends State {
                 stage.addActor(orangeWindow);
                 break;
             case "quitB":
-                gsm.set(new MainMenuState(gsm));
+                gvm.set(new MainMenuView(gvm));
                 break;
             case "backB":
                 stage.addAction(Actions.removeActor(pinkWindow));
@@ -265,6 +272,7 @@ public final class PlayState extends State {
 
     @Override
     public void update(float dt) {
+        stage.act();
     }
 
     private void incrementScoreOfWinner() {
@@ -311,7 +319,7 @@ public final class PlayState extends State {
 
     public void whenGameIsFinished() {
         if (isGameOver) {
-            gsm.set(new WinnerState(gsm, winnerOfTheGame));
+            gvm.set(new WinnerView(gvm, winnerOfTheGame));
         }
     }
 
@@ -343,8 +351,9 @@ public final class PlayState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f, battleCircleHeight,
-                battleCircleRadius);
+        shapeRenderer.circle(Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f,
+                wrestleRing.getRadius());
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(255 / 255f, 236 / 255f, 136 / 255f, 1);
@@ -373,7 +382,6 @@ public final class PlayState extends State {
                 player2.getPosition());
         sb.end();
         stage.draw();
-        stage.act();
     }
 
     private void showCountdown(SpriteBatch sb) {
@@ -400,7 +408,8 @@ public final class PlayState extends State {
         }
         sb.begin();
         font.draw(sb, Integer.toString(countdownNumber),
-                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+                Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 2f);
         sb.end();
     }
 
