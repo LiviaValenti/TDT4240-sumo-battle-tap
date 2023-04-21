@@ -43,10 +43,6 @@ public final class Player {
         score = 0;
     }
 
-    public int getHeight() {
-        return character.getTexture().getHeight();
-    }
-
     /**
      * Moves the player forward.
      */
