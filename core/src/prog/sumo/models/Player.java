@@ -43,10 +43,6 @@ public final class Player {
         score = 0;
     }
 
-    public int getHeight() {
-        return character.getTexture().getHeight();
-    }
-
     /**
      * Moves the player forward.
      */
@@ -83,21 +79,6 @@ public final class Player {
         } else {
             position += stepSize;
         }
-    }
-
-    /**
-     * Moves the player based on the other player's position.
-     *
-     * @param otherPlayer The other player in the game.
-     */
-    public void movePlayer(final Player otherPlayer) {
-        float characterHeight = this.character.getTexture().getHeight();
-        float collisionPoint =
-                Math.abs(otherPlayer.getPosition() - this.getPosition());
-        if (collisionPoint <= characterHeight) {
-            otherPlayer.moveBackward();
-        }
-        this.moveForward();
     }
 
     /**
