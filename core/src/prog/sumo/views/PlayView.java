@@ -1,4 +1,4 @@
-package prog.sumo.states;
+package prog.sumo.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -23,7 +23,7 @@ import prog.sumo.models.Character;
 import prog.sumo.models.Player;
 import prog.sumo.models.WrestleRing;
 
-public class PlayState extends State {
+public class PlayView extends View {
     private final float COUNTDOWN_TIME = 3f; // Countdown time in seconds
     private float timeElapsed = 0f; // Time elapsed since countdown started
     private BitmapFont font; // Font to draw the countdown
@@ -54,10 +54,10 @@ public class PlayState extends State {
     private final static int MAX_ROUNDS = 3;
     boolean isGameOver;
 
-    public PlayState(GameStateManager gsm, Character player1Character,
-                     Character player2Character) {
+    public PlayView(GameViewManager gvm, Character player1Character,
+                    Character player2Character) {
 
-        super(gsm);
+        super(gvm);
         shapeRenderer = new ShapeRenderer();
         settingsWheel = new Texture("settingswheel.png");
         hand1Tex = new Texture("greenhand.png");
@@ -239,7 +239,7 @@ public class PlayState extends State {
                 stage.addActor(orangeWindow);
                 break;
             case "quitB":
-                gsm.set(new MainMenuState(gsm));
+                gvm.set(new MainMenuView(gvm));
                 break;
             case "backB":
                 stage.addAction(Actions.removeActor(pinkWindow));
@@ -314,7 +314,7 @@ public class PlayState extends State {
 
     public void whenGameIsFinished() {
         if (isGameOver) {
-            gsm.set(new WinnerState(gsm, winnerOfTheGame));
+            gvm.set(new WinnerView(gvm, winnerOfTheGame));
         }
     }
 

@@ -2,7 +2,7 @@ package prog.sumo.models;
 
 import com.badlogic.gdx.Gdx;
 
-import prog.sumo.states.PlayState;
+import prog.sumo.views.PlayView;
 
 /**
  * Represents a player in the sumo game.
@@ -36,9 +36,9 @@ public final class Player {
         this.character = character;
         this.direction = playerDirection;
         if (direction == 1) {
-            position = PlayState.startPositionOfPlayer2;
+            position = PlayView.startPositionOfPlayer2;
         } else {
-            position = PlayState.startPositionOfPlayer1;
+            position = PlayView.startPositionOfPlayer1;
         }
         score = 0;
     }
