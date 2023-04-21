@@ -26,9 +26,16 @@ public class ScoreBoardState extends State {
     Texture backButtonTex;
     Drawable backButtonDrawable;
     ImageButton backB;
+    String winnerOfTheGame = "";
+
     Stage stage;
     BitmapFont font;
     private final Map<String, Long> scores;
+
+    public ScoreBoardState(GameStateManager gsm, String gameWinner) {
+        // todo: Use gameWinner
+        this(gsm);
+    }
 
     public ScoreBoardState(GameStateManager gsm) {
         super(gsm);
@@ -49,9 +56,7 @@ public class ScoreBoardState extends State {
 
         stage = new Stage();
         stage.addActor(backB);
-
         Gdx.input.setInputProcessor(stage);
-
         backB.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -91,7 +96,7 @@ public class ScoreBoardState extends State {
                 Gdx.graphics.getWidth() / 2f - scoboTitle.getWidth() / 2f;
         float yOffset = Gdx.graphics.getHeight() - scoboTitle.getHeight();
         ListIterator<Map.Entry<String, Long>> iterator =
-                new ArrayList<Map.Entry<String, Long>>(
+                new ArrayList<>(
                         scores.entrySet()).listIterator(
                         scores.size());
         while (iterator.hasPrevious()) {

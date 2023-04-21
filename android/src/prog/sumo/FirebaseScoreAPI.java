@@ -10,7 +10,6 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +65,7 @@ public final class FirebaseScoreAPI implements ScoreAPI {
                 }
                 List<Entry<String, Long>> list =
                         new ArrayList<>(scoresHolder.entrySet());
-                Collections.sort(list, Entry.comparingByValue());
+                list.sort(Entry.comparingByValue());
                 scoresHolder.clear();
                 for (Entry<String, Long> entry : list) {
                     scoresHolder.put(entry.getKey(), entry.getValue());
